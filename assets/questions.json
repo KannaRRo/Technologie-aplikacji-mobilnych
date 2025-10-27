@@ -1,0 +1,188 @@
+{
+  "latwe": [
+    {
+      "text": "Pytanie 1 poziom łatwy",
+      "options": ["Odpowiedź A", "Odpowiedź B", "Odpowiedź C", "Odpowiedź D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 1 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 2 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 2,
+      "why": "Wyjaśnienie: to przykładowe pytanie 2 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 3 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 3 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 4 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 3,
+      "why": "Wyjaśnienie: to przykładowe pytanie 4 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 5 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 5 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 6 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 6 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 7 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 2,
+      "why": "Wyjaśnienie: to przykładowe pytanie 7 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 8 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 3,
+      "why": "Wyjaśnienie: to przykładowe pytanie 8 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 9 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 9 poziomu łatwego."
+    },
+    {
+      "text": "Pytanie 10 poziom łatwy",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 10 poziomu łatwego."
+    }
+  ],
+  "srednie": [
+    {
+      "text": "Pytanie 1 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 2,
+      "why": "Wyjaśnienie: to przykładowe pytanie 1 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 2 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 2 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 3 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 3,
+      "why": "Wyjaśnienie: to przykładowe pytanie 3 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 4 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 4 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 5 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 5 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 6 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 6 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 7 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 2,
+      "why": "Wyjaśnienie: to przykładowe pytanie 7 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 8 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 3,
+      "why": "Wyjaśnienie: to przykładowe pytanie 8 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 9 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 9 poziomu średniego."
+    },
+    {
+      "text": "Pytanie 10 poziom średni",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 10 poziomu średniego."
+    }
+  ],
+  "trudne": [
+    {
+      "text": "Pytanie 1 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 1 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 2 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 2,
+      "why": "Wyjaśnienie: to przykładowe pytanie 2 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 3 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 3 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 4 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 3,
+      "why": "Wyjaśnienie: to przykładowe pytanie 4 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 5 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 5 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 6 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 6 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 7 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 2,
+      "why": "Wyjaśnienie: to przykładowe pytanie 7 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 8 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 3,
+      "why": "Wyjaśnienie: to przykładowe pytanie 8 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 9 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 1,
+      "why": "Wyjaśnienie: to przykładowe pytanie 9 poziomu zaawansowanego."
+    },
+    {
+      "text": "Pytanie 10 poziom zaawansowany",
+      "options": ["A", "B", "C", "D"],
+      "correct": 0,
+      "why": "Wyjaśnienie: to przykładowe pytanie 10 poziomu zaawansowanego."
+    }
+  ]
+}
