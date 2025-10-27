@@ -60,10 +60,51 @@
     .modal-content{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:600px;width:90%;color:var(--text)}
     .modal.show{display:flex}
     .site-footer{max-width:960px;margin:24px auto;padding:0 20px;color:var(--muted);text-align:center}
-    .q-img{width:100%;height:auto;border:radius dashed var(--border);border-radius:14px;display:grid;place-items:center;color:var(--muted);background:#0b1220;overflow:hidden;margin:10px 0 14px}
-    .light .q-img{background:#f1f5f9}
-    .q-img img{width:100%;max-height:300px;object-fit:contain;display:none}
-    .q-img figcaption{font-size:13px;color:var(--muted);padding:6px}
+    .q-img {
+  width: 100%;
+  background: radial-gradient(circle at center, #0d182f 0%, #0a1225 80%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 12px 0 18px;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.q-img:hover {
+  transform: scale(1.015);
+  box-shadow: 0 10px 25px rgba(0, 200, 180, 0.25);
+}
+
+.q-img img {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: 12px;
+  background-color: #0a1428;
+  display: none; /* pokazywany dynamicznie w JS */
+}
+
+.q-img figcaption {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 8px;
+  text-align: center;
+  font-style: italic;
+}
+
+.light .q-img {
+  background: radial-gradient(circle at center, #f1f5f9 0%, #e2e8f0 80%);
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
     /* Tabela / KPI / charts */
     .kpi{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px solid var(--border);background:rgba(255,255,255,.02);border-radius:12px;min-width:160px}
     .kpi .kpi-label{color:var(--muted);font-size:13px}
@@ -538,5 +579,6 @@
   </script>
 </body>
 </html>
+
 
 
