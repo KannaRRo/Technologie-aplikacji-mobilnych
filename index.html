@@ -29,7 +29,17 @@
     /* Header */
     .site-header{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:rgba(15,23,42,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
     .light .site-header{background:rgba(255,255,255,.8)}
-    .site-logo img{display:block;height:clamp(32px,6vw,66px)}
+    .site-logo img {
+  display:block;
+  height:clamp(60px,10vw,100px);
+  filter: drop-shadow(0 0 6px rgba(56,189,248,0.6));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.site-logo img:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 10px rgba(52,211,153,0.8));
+}
+
     .site-actions{display:flex;gap:8px}
     .btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:10px;padding:8px 10px;font-weight:600;cursor:pointer}
     .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b1220;border:none}
@@ -654,6 +664,7 @@
   </script>
 </body>
 </html>
+
 
 
 
