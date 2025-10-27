@@ -60,7 +60,7 @@
     .modal-content{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:600px;width:90%;color:var(--text)}
     .modal.show{display:flex}
     .site-footer{max-width:960px;margin:24px auto;padding:0 20px;color:var(--muted);text-align:center}
-    .q-img {
+   .q-img {
   width: 100%;
   background: radial-gradient(circle at center, #0d182f 0%, #0a1225 80%);
   border: 1px solid var(--border);
@@ -88,7 +88,14 @@
   object-fit: contain;
   border-radius: 12px;
   background-color: #0a1428;
-  display: none; /* pokazywany dynamicznie w JS */
+  display: none; /* pokazuje się w JS po wczytaniu */
+  opacity: 0;
+  animation: fadeIn .8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .q-img figcaption {
@@ -104,6 +111,7 @@
   border: 1px solid #cbd5e1;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
+
 
     /* Tabela / KPI / charts */
     .kpi{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px solid var(--border);background:rgba(255,255,255,.02);border-radius:12px;min-width:160px}
@@ -579,6 +587,7 @@
   </script>
 </body>
 </html>
+
 
 
 
