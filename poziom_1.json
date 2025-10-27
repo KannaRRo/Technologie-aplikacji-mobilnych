@@ -1,0 +1,112 @@
+[
+  {
+    "pytanie": "Które hasło jest najbezpieczniejsze?",
+    "odpowiedzi": {
+      "A": "123456",
+      "B": "Janek2024",
+      "C": "M!eszko_85!"
+    },
+    "poprawna": "C",
+    "feedback": "Hasło z literami, cyframi i znakami specjalnymi jest trudniejsze do złamania.",
+    "ilustracja": "klawiatura_zamknięta_kłódka"
+  },
+  {
+    "pytanie": "Dostałeś e-mail z prośbą o podanie hasła. Co robisz?",
+    "odpowiedzi": {
+      "A": "Podaję hasło",
+      "B": "Kasuję wiadomość",
+      "C": "Przesyłam do kolegi"
+    },
+    "poprawna": "B",
+    "feedback": "Nigdy nie podawaj hasła w wiadomości e-mail – to może być oszustwo.",
+    "ilustracja": "podejrzany_email_z_alertem"
+  },
+  {
+    "pytanie": "Czy można używać tego samego hasła do wszystkiego?",
+    "odpowiedzi": {
+      "A": "Tak, to wygodne",
+      "B": "Nie, każde konto powinno mieć inne hasło",
+      "C": "Tylko w pracy"
+    },
+    "poprawna": "B",
+    "feedback": "Różne hasła chronią Cię, gdy jedno z nich zostanie ujawnione.",
+    "ilustracja": "różne_hasła_dla_różnych_kont"
+  },
+  {
+    "pytanie": "Znalazłeś pendrive’a na parkingu. Co robisz?",
+    "odpowiedzi": {
+      "A": "Podłączam i sprawdzam, co jest w środku",
+      "B": "Oddaję do działu IT",
+      "C": "Zostawiam na biurku kolegi"
+    },
+    "poprawna": "B",
+    "feedback": "Nieznany pendrive może zawierać wirusy – oddaj go specjalistom.",
+    "ilustracja": "pendrive_znaleziony_na_ziemi"
+  },
+  {
+    "pytanie": "Po co są aktualizacje systemu?",
+    "odpowiedzi": {
+      "A": "Żeby komputer działał szybciej",
+      "B": "Żeby poprawić wygląd",
+      "C": "Żeby usunąć błędy i luki w bezpieczeństwie"
+    },
+    "poprawna": "C",
+    "feedback": "Aktualizacje chronią przed nowymi zagrożeniami.",
+    "ilustracja": "ekran_z_aktualizacją_systemu"
+  },
+  {
+    "pytanie": "Co zrobisz, gdy komputer sam się wyłącza i działa dziwnie?",
+    "odpowiedzi": {
+      "A": "Ignoruję to",
+      "B": "Zgłaszam do działu IT",
+      "C": "Proszę kolegę, by naprawił"
+    },
+    "poprawna": "B",
+    "feedback": "Dziwne zachowanie może oznaczać wirusa – zgłoś to specjalistom.",
+    "ilustracja": "pracownik_dzwoni_do_IT"
+  },
+  {
+    "pytanie": "Czy wolno instalować gry lub programy na komputerze firmowym?",
+    "odpowiedzi": {
+      "A": "Tak, jeśli mam czas",
+      "B": "Tylko za zgodą działu IT",
+      "C": "Nie, nigdy"
+    },
+    "poprawna": "B",
+    "feedback": "Programy spoza firmy mogą zawierać wirusy.",
+    "ilustracja": "ikony_programów_zakaz"
+  },
+  {
+    "pytanie": "Co powinieneś zrobić, gdy ktoś prosi o pożyczenie Twojej karty dostępu?",
+    "odpowiedzi": {
+      "A": "Pożyczam, to kolega",
+      "B": "Odmówię – karta jest tylko moja",
+      "C": "Oddaję przełożonemu"
+    },
+    "poprawna": "B",
+    "feedback": "Karta jest osobista – nie wolno jej przekazywać innym.",
+    "ilustracja": "karta_dostępu_z_kłódką"
+  },
+  {
+    "pytanie": "Jak rozpoznasz podejrzany e-mail?",
+    "odpowiedzi": {
+      "A": "Zawiera błędy i prośby o dane",
+      "B": "Jest od szefa",
+      "C": "Ma logo firmy"
+    },
+    "poprawna": "A",
+    "feedback": "Fałszywe wiadomości często zawierają błędy lub prośby o dane.",
+    "ilustracja": "email_z_błędem_i_alertem"
+  },
+  {
+    "pytanie": "Czy można używać prywatnego telefonu do pracy?",
+    "odpowiedzi": {
+      "A": "Tylko jeśli ma zabezpieczenia",
+      "B": "Zawsze",
+      "C": "Nigdy"
+    },
+    "poprawna": "A",
+    "feedback": "Prywatne urządzenie może być użyte tylko, jeśli jest dobrze zabezpieczone.",
+    "ilustracja": "smartfon_z_hasłem"
+  }
+]

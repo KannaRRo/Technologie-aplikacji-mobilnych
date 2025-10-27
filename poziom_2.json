@@ -1,0 +1,112 @@
+[
+  {
+    "pytanie": "Otrzymujesz e-mail od klienta z prośbą o ponowne podanie danych logowania. Co robisz?",
+    "odpowiedzi": {
+      "A": "Odpisuję i podaję dane",
+      "B": "Sprawdzam adres nadawcy i zgłaszam do IT",
+      "C": "Klikam w link, by sprawdzić"
+    },
+    "poprawna": "B",
+    "feedback": "Phishing często udaje wiadomości od klientów lub banków – zawsze sprawdzaj adres nadawcy.",
+    "ilustracja": "email_od_klienta_z_alertem"
+  },
+  {
+    "pytanie": "Jesteś w kawiarni i chcesz sprawdzić pocztę firmową. Co robisz?",
+    "odpowiedzi": {
+      "A": "Łączę się z publicznym Wi-Fi",
+      "B": "Używam hotspotu z telefonu",
+      "C": "Wysyłam hasło przez Wi-Fi"
+    },
+    "poprawna": "B",
+    "feedback": "Publiczne Wi-Fi może być niebezpieczne – lepiej użyć własnego internetu.",
+    "ilustracja": "pracownik_w_kawiarni_z_hotspotem"
+  },
+  {
+    "pytanie": "Jak najlepiej zabezpieczyć dokument z danymi klientów?",
+    "odpowiedzi": {
+      "A": "Zachować na biurku",
+      "B": "Zaszyfrować lub przechowywać w systemie firmowym",
+      "C": "Wysłać do siebie na prywatny e-mail"
+    },
+    "poprawna": "B",
+    "feedback": "Dane klientów muszą być przechowywane tylko w bezpiecznym systemie firmowym.",
+    "ilustracja": "dokument_zaszyfrowany_kłódka"
+  },
+  {
+    "pytanie": "Kiedy należy zmienić hasło do systemu?",
+    "odpowiedzi": {
+      "A": "Tylko po awarii komputera",
+      "B": "Regularnie i po każdym podejrzeniu wycieku",
+      "C": "Nigdy, jeśli działa"
+    },
+    "poprawna": "B",
+    "feedback": "Regularna zmiana haseł zmniejsza ryzyko włamania.",
+    "ilustracja": "ekran_zmien_hasło"
+  },
+  {
+    "pytanie": "Co zrobić, jeśli przypadkiem wysłałeś e-mail z danymi klienta do złej osoby?",
+    "odpowiedzi": {
+      "A": "Nic, to się zdarza",
+      "B": "Zgłosić natychmiast do przełożonego lub działu IT",
+      "C": "Usunąć e-mail z wysłanych"
+    },
+    "poprawna": "B",
+    "feedback": "To może być naruszenie danych osobowych – trzeba to zgłosić.",
+    "ilustracja": "email_z_danymi_i_alertem"
+  },
+  {
+    "pytanie": "Jak postąpić z fakturą w załączniku od nieznanego nadawcy?",
+    "odpowiedzi": {
+      "A": "Otworzyć i sprawdzić",
+      "B": "Pobrać i zachować",
+      "C": "Nie otwierać, zgłosić do IT"
+    },
+    "poprawna": "C",
+    "feedback": "Załączniki z nieznanych źródeł mogą zawierać wirusy.",
+    "ilustracja": "fałszywa_faktura_email"
+  },
+  {
+    "pytanie": "Po zakończeniu pracy przy komputerze biurowym należy:",
+    "odpowiedzi": {
+      "A": "Zostawić komputer włączony",
+      "B": "Zablokować ekran lub się wylogować",
+      "C": "Nic nie robić"
+    },
+    "poprawna": "B",
+    "feedback": "Zablokowanie komputera chroni dane przed niepowołanym dostępem.",
+    "ilustracja": "ekran_zablokowany_komputer"
+  },
+  {
+    "pytanie": "Jak rozpoznać fałszywą stronę logowania?",
+    "odpowiedzi": {
+      "A": "Ma błędy w adresie URL",
+      "B": "Wygląda identycznie jak oryginalna",
+      "C": "Zawsze działa wolno"
+    },
+    "poprawna": "A",
+    "feedback": "Zawsze sprawdzaj adres strony – oszuści często zmieniają 1–2 litery.",
+    "ilustracja": "adres_strony_z_błędem"
+  },
+  {
+    "pytanie": "Czy można udostępniać dane klientów innym firmom?",
+    "odpowiedzi": {
+      "A": "Tylko z pisemną zgodą i zgodnie z przepisami",
+      "B": "Tak, jeśli to partner biznesowy",
+      "C": "Zawsze, by przyspieszyć obsługę"
+    },
+    "poprawna": "A",
+    "feedback": "Udostępnianie danych bez zgody jest naruszeniem przepisów RODO.",
+    "ilustracja": "ikona_RODO_dane_klientów"
+  },
+  {
+    "pytanie": "Po czym poznasz, że wiadomość jest próbą phishingu?",
+    "odpowiedzi": {
+      "A": "Zawiera link do logowania i groźby blokady konta",
+      "B": "Jest od znajomego",
+      "C": "Zawiera pozdrowienia"
+    },
+    "poprawna": "A",
+    "feedback": "Phishing często straszy utratą konta, by wymusić kliknięcie.",
+    "ilustracja": "wiadomość_z_groźbą_blokady"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "pytanie": "Jakie jest pierwsze działanie kierownika po wykryciu incydentu bezpieczeństwa?",
+    "odpowiedzi": {
+      "A": "Ukryć zdarzenie",
+      "B": "Zgłosić do zespołu bezpieczeństwa i rozpocząć analizę",
+      "C": "Samodzielnie naprawić błąd"
+    },
+    "poprawna": "B",
+    "feedback": "Zgłoszenie i analiza są kluczowe dla ograniczenia skutków incydentu.",
+    "ilustracja": "zespół_reagujący_na_incydent"
+  },
+  {
+    "pytanie": "Które działanie najlepiej ogranicza skutki ataku ransomware?",
+    "odpowiedzi": {
+      "A": "Regularne kopie zapasowe",
+      "B": "Wyłączenie komputera po ataku",
+      "C": "Zapłata okupu"
+    },
+    "poprawna": "A",
+    "feedback": "Kopie zapasowe umożliwiają odzyskanie danych bez płacenia okupu.",
+    "ilustracja": "backup_danych_serwer"
+  },
+  {
+    "pytanie": "Jakie dane należy uznać za strategiczne dla firmy?",
+    "odpowiedzi": {
+      "A": "Dane kontaktowe pracowników",
+      "B": "Cenniki, strategie i projekty rozwojowe",
+      "C": "Publiczne oferty sprzedaży"
+    },
+    "poprawna": "B",
+    "feedback": "Informacje o strategii i planach to dane strategiczne wymagające szczególnej ochrony.",
+    "ilustracja": "dokument_strategiczny_z_napisem_tajne"
+  },
+  {
+    "pytanie": "Kto odpowiada za przestrzeganie polityki bezpieczeństwa w zespole?",
+    "odpowiedzi": {
+      "A": "Dział IT",
+      "B": "Każdy pracownik, pod nadzorem kierownika",
+      "C": "Tylko kierownik"
+    },
+    "poprawna": "B",
+    "feedback": "Bezpieczeństwo to wspólna odpowiedzialność wszystkich pracowników.",
+    "ilustracja": "zespół_z_kierownikiem"
+  },
+  {
+    "pytanie": "Jak postąpić, gdy partner biznesowy prosi o dostęp do systemu firmowego?",
+    "odpowiedzi": {
+      "A": "Udzielić od razu",
+      "B": "Zgłosić do działu IT i ocenić ryzyko",
+      "C": "Wysłać dane e-mailem"
+    },
+    "poprawna": "B",
+    "feedback": "Dostęp zewnętrzny wymaga analizy ryzyka i autoryzacji IT.",
+    "ilustracja": "partner_zewnętrzny_dostęp_system"
+  },
+  {
+    "pytanie": "Które działanie jest elementem zarządzania incydentem?",
+    "odpowiedzi": {
+      "A": "Zgłoszenie, analiza, raport i działania naprawcze",
+      "B": "Kasowanie dowodów",
+      "C": "Publiczne informowanie o zdarzeniu"
+    },
+    "poprawna": "A",
+    "feedback": "Zarządzanie incydentem obejmuje pełny cykl od zgłoszenia po wnioski.",
+    "ilustracja": "cykl_zarządzania_incydentem"
+  },
+  {
+    "pytanie": "Co oznacza zasada 'need to know' w ochronie informacji?",
+    "odpowiedzi": {
+      "A": "Każdy może znać wszystko",
+      "B": "Dostęp mają tylko osoby, którym jest to niezbędne do pracy",
+      "C": "Informacje są publiczne po roku"
+    },
+    "poprawna": "B",
+    "feedback": "Zasada ogranicza dostęp tylko do niezbędnych informacji.",
+    "ilustracja": "dokument_dostęp_tylko_autoryzowany"
+  },
+  {
+    "pytanie": "Jakie konsekwencje może mieć naruszenie RODO?",
+    "odpowiedzi": {
+      "A": "Brak konsekwencji",
+      "B": "Kary finansowe i utrata zaufania klientów",
+      "C": "Tylko ostrzeżenie"
+    },
+    "poprawna": "B",
+    "feedback": "Naruszenie RODO może skutkować wysokimi karami i utratą reputacji.",
+    "ilustracja": "RODO_kara_finansowa"
+  },
+  {
+    "pytanie": "Jak kierownik powinien reagować na próbę socjotechniczną (np. podszywanie się pod prezesa)?",
+    "odpowiedzi": {
+      "A": "Sprawdzić autentyczność i zgłosić do bezpieczeństwa",
+      "B": "Zrealizować polecenie bez pytań",
+      "C": "Odpisać dla pewności"
+    },
+    "poprawna": "A",
+    "feedback": "Ataki socjotechniczne wymagają weryfikacji źródła przed działaniem.",
+    "ilustracja": "oszust_podszywający_się_prezes"
+  },
+  {
+    "pytanie": "Które działanie zwiększa odporność organizacji na cyberzagrożenia?",
+    "odpowiedzi": {
+      "A": "Szkolenia i testy bezpieczeństwa",
+      "B": "Poleganie na intuicji pracowników",
+      "C": "Zakaz używania komputerów"
+    },
+    "poprawna": "A",
+    "feedback": "Regularne szkolenia zwiększają świadomość i zmniejszają ryzyko błędów ludzkich.",
+    "ilustracja": "szkolenie_cyberbezpieczeństwo"
+  }
+]
