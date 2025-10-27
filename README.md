@@ -38,11 +38,12 @@ Możliwość rozbudowy o własne pytania i grafiki
 <br>
 📸 **Zrzuty ekranu**
 
-  DO UZUPEŁNIENIA
+***DO UZUPEŁNIENIA***
 <br>
 <br>
 🛠️ **Struktura projektu**  
 
+***DO ODŚWIEŻENIA PO ZAKOŃCZENIU PROJEKTU***  
 Technologie-aplikacji-mobilnych/
 │
 ├── index.html       → główny plik aplikacji (quiz)
@@ -69,11 +70,33 @@ Działająca wersja dostępna na GitHub Pages:
 👉 https://kannarro.github.io/Technologie-aplikacji-mobilnych
 <br>  
 <br>
+💡 **Możliwości rozbudowy projektu**  
+
+[ ] Napisanie aplikacji mobilnej
+[ ] Personalizacja maili
+[ ] Rozszerzenie quizu o wersję anglojęzyczną
+<br>
+<br>
+🙏 **Podziękowania**  
+
+Ten projekt został stworzony w ramach zajęć „Technologie aplikacji mobilnych” na
+Uniwersytecie WSB Merito w Toruniu (rok akademicki 2025/2026).  
+
+Inspiracją były przykłady aplikacji edukacyjnych o bezpieczeństwie IT i quizy e-learningowe
+<br>
+<br>
+
 👥 **Autorzy projektu**  
 
-55914 Angelika Adamczewska  
+55914 Adamczewska Angelika  
 54103 Król Damian  
 
 Zespół „Technologie aplikacji mobilnych”  
 Uniwersytet WSB Merito w Toruniu  
 Rok akademicki 2025/2026
+<br>
+<br>
+📬 **Kontakt**
+
+Masz pytania lub pomysły na rozwój projektu?  
+✉️ Skontaktuj się ***DO UZUPEŁNIENIA***
