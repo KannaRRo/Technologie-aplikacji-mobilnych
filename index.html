@@ -64,6 +64,12 @@
 
     .quiz { padding: 18px; }
 
+    /* Proste powiadomienie (toast) */
+    .toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+      background: #0b1220; border:1px solid var(--border); color: var(--text);
+      padding: 10px 14px; border-radius: 12px; box-shadow: var(--shadow); opacity:0; pointer-events:none; transition:opacity .25s ease; }
+    .toast.show { opacity: 1; }
+
     .card { background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
     .meta { display:flex; justify-content:space-between; align-items:center; color: var(--muted); font-size: 14px; margin-bottom: 14px; }
     .progress { height: 8px; background:#0b1220; border:1px solid var(--border); border-radius:999px; overflow:hidden; }
@@ -127,7 +133,7 @@
         </div>
         <div class="row">
           <label for="count">Liczba pytań</label>
-          <input id="count" type="number" min="1" max="30" value="10" />
+          <input id=\"count\" type=\"number\" min=\"1\" max=\"10\" value=\"10\" />
         </div>
         <div class="row">
           <label class="switch"><input id="shuffle" type="checkbox" checked /><span class="track"><span class="thumb"></span></span>Losuj kolejność</label>
@@ -202,31 +208,24 @@
           id: 'm1',
           tag: 'Łatwe',
           text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
-          image: '', // TODO: np. 'img/magazyn-1.jpg'
+          image: '',
           imageAlt: 'Opis obrazu do dostępności',
           options: ['Lorem', 'Ipsum', 'Dolor', 'Sit amet'],
           correct: 1,
+          why: 'Wyjaśnienie: lorem ipsum – przykładowy opis dlaczego odpowiedź B jest poprawna.'
         },
-        {
-          id: 'm2', tag: 'Łatwe',
-          text: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?',
-          image: '', options: ['Tempor', 'Incididunt', 'Ut', 'Labore'], correct: 3,
-        },
-        {
-          id: 'm3', tag: 'Łatwe',
-          text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco?',
-          image: '', options: ['Ut enim', 'Ad minim', 'Veniam', 'Nostrud'], correct: 0,
-        },
+        { id: 'm2', tag: 'Łatwe', text: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?', image: '', options: ['Tempor', 'Incididunt', 'Ut', 'Labore'], correct: 3, why: 'Wyjaśnienie: lorem ipsum – wskazówka do zadania.' },
+        { id: 'm3', tag: 'Łatwe', text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco?', image: '', options: ['Ut enim', 'Ad minim', 'Veniam', 'Nostrud'], correct: 0, why: 'Wyjaśnienie: lorem ipsum – uzasadnienie poprawnej odpowiedzi.' },
       ],
       sprzedaz: [
-        { id:'s1', tag:'Średnie', text:'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum?', image:'', options:['Duis','Aute','Irure','Dolor'], correct:2 },
-        { id:'s2', tag:'Średnie', text:'Excepteur sint occaecat cupidatat non proident?', image:'', options:['Excepteur','Sint','Occaecat','Cupidatat'], correct:0 },
-        { id:'s3', tag:'Średnie', text:'Sunt in culpa qui officia deserunt mollit anim id est laborum?', image:'', options:['Sunt','In culpa','Qui officia','Deserunt'], correct:1 },
+        { id:'s1', tag:'Średnie', text:'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum?', image:'', options:['Duis','Aute','Irure','Dolor'], correct:2, why: 'Wyjaśnienie: lorem ipsum.' },
+        { id:'s2', tag:'Średnie', text:'Excepteur sint occaecat cupidatat non proident?', image:'', options:['Excepteur','Sint','Occaecat','Cupidatat'], correct:0, why: 'Wyjaśnienie: lorem ipsum.' },
+        { id:'s3', tag:'Średnie', text:'Sunt in culpa qui officia deserunt mollit anim id est laborum?', image:'', options:['Sunt','In culpa','Qui officia','Deserunt'], correct:1, why: 'Wyjaśnienie: lorem ipsum.' },
       ],
       kadra: [
-        { id:'k1', tag:'Zaawansowane', text:'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus?', image:'', options:['Curabitur','Non nulla','Sit amet','Nisl'], correct:3 },
-        { id:'k2', tag:'Zaawansowane', text:'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi?', image:'', options:['Praesent','Sapien','Massa','Convallis'], correct:1 },
-        { id:'k3', tag:'Zaawansowane', text:'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui?', image:'', options:['Vestibulum','Ac diam','Sit amet','Quam'], correct:0 },
+        { id:'k1', tag:'Zaawansowane', text:'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus?', image:'', options:['Curabitur','Non nulla','Sit amet','Nisl'], correct:3, why: 'Wyjaśnienie: lorem ipsum.' },
+        { id:'k2', tag:'Zaawansowane', text:'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi?', image:'', options:['Praesent','Sapien','Massa','Convallis'], correct:1, why: 'Wyjaśnienie: lorem ipsum.' },
+        { id:'k3', tag:'Zaawansowane', text:'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui?', image:'', options:['Vestibulum','Ac diam','Sit amet','Quam'], correct:0, why: 'Wyjaśnienie: lorem ipsum.' },
       ]
     };
 
@@ -276,10 +275,26 @@
 
     function buildPool(category, count, doShuffle){
       let pool = [];
-      if(category === 'mix') pool = [...BANK.magazyn, ...BANK.sprzedaz, ...BANK.kadra];
-      else pool = [...BANK[category]];
-      if(doShuffle) shuffleArray(pool);
-      return pool.slice(0, Math.min(count, pool.length));
+      const LIMIT = 10; // max 10 na poziom
+      if(category === 'mix'){
+        // do 10 z każdej kategorii
+        const m = [...BANK.magazyn];
+        const s = [...BANK.sprzedaz];
+        const k = [...BANK.kadra];
+        if(doShuffle){ shuffleArray(m); shuffleArray(s); shuffleArray(k); }
+        pool = [...m.slice(0, Math.min(LIMIT, m.length)),
+                ...s.slice(0, Math.min(LIMIT, s.length)),
+                ...k.slice(0, Math.min(LIMIT, k.length))];
+        // Jeśli użytkownik poda mniejszą liczbę – przytnij do count; w każdym razie nie więcej niż 30
+        const maxMix = Math.min(pool.length, LIMIT*3);
+        pool = pool.slice(0, Math.min(count || maxMix, maxMix));
+      } else {
+        pool = [...BANK[category]];
+        if(doShuffle) shuffleArray(pool);
+        // nie więcej niż 10 w danej kategorii
+        pool = pool.slice(0, Math.min(count, Math.min(LIMIT, pool.length)));
+      }
+      return pool;
     }
 
     function renderQuestion(){
@@ -290,13 +305,42 @@
 
       els.qText.textContent = q.text;
 
-      // Obrazek (placeholder, jeśli brak ścieżki)
       if(q.image){
         els.qImage.src = q.image;
         els.qImage.alt = q.imageAlt || 'Grafika do pytania';
         els.qImage.style.display = 'block';
         els.qImageCap.textContent = q.imageAlt || '';
       } else {
+        els.qImage.removeAttribute('src');
+        els.qImage.style.display = 'none';
+        els.qImageCap.textContent = 'Miejsce na grafikę (opcjonalnie)';
+      }
+
+      els.answers.innerHTML = '';
+      q.options.forEach((opt, idx)=>{
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.setAttribute('role','radio');
+        btn.setAttribute('aria-checked','false');
+        btn.innerHTML = `<strong>${String.fromCharCode(65+idx)}.</strong> ${opt}`;
+        btn.addEventListener('click', ()=>selectAnswer(idx));
+        const saved = state.answers[state.current];
+        if(saved){
+          const checked = saved.choice === idx;
+          btn.setAttribute('aria-checked', checked ? 'true':'false');
+          if(saved.reveal){
+            btn.classList.toggle('correct', idx === q.correct);
+            btn.classList.toggle('wrong', checked && idx !== q.correct);
+          }
+        }
+        els.answers.appendChild(btn);
+      });
+
+      const progress = ((state.current) / state.pool.length) * 100;
+      els.bar.style.width = `${progress}%`;
+
+      updateControls();
+    } else {
         els.qImage.removeAttribute('src');
         els.qImage.style.display = 'none';
         els.qImageCap.textContent = 'Miejsce na grafikę (opcjonalnie)';
@@ -343,8 +387,38 @@
     }
 
     function finishQuiz(){
-      // Odsłoń poprawne/wrong w widoku pytań
       state.answers = state.answers.map((a, i)=> a ? {...a, reveal:true} : { choice:null, correct:false, reveal:true });
+      const q = state.pool[state.current];
+      [...els.answers.children].forEach((el, i)=>{
+        el.classList.toggle('correct', i===q.correct);
+        if(state.answers[state.current]?.choice === i && i!==q.correct) el.classList.add('wrong');
+      });
+
+      const good = state.answers.filter(a=>a && a.correct).length;
+      els.scoreText.textContent = `Wynik: ${good}/${state.pool.length}`;
+
+      els.review.innerHTML = '';
+      state.pool.forEach((qq, i)=>{
+        const a = state.answers[i];
+        const item = document.createElement('div');
+        item.className = 'card';
+        item.innerHTML = `
+          <div class=\"meta\">
+            <span class=\"pill\">#${i+1}</span>
+            <span class=\"pill ${a?.correct ? 'tag' : ''}\">${a?.correct ? 'POPRAWNIE' : 'BŁĄD'}</span>
+          </div>
+          <div style=\"font-weight:600; margin-bottom:6px;\">${qq.text}</div>
+          <div style=\"font-size:14px; color:var(--muted);\">Poprawna: <strong>${String.fromCharCode(65+qq.correct)}</strong> – ${qq.options[qq.correct]}</div>
+          ${a && a.choice!=null ? `<div style=\"font-size:13px; color:${a.correct ? 'var(--accent-2)' : 'var(--danger)'};\">Twoja odpowiedź: <strong>${String.fromCharCode(65+a.choice)}</strong> – ${qq.options[a.choice]}</div>` : '<div style=\"font-size:13px; color:var(--warn);\">Brak odpowiedzi</div>'}
+          ${qq.why ? `<div style=\"margin-top:6px; font-size:13px; color:var(--muted);\"><em>${qq.why}</em></div>` : ''}
+        `;
+        els.review.appendChild(item);
+      });
+
+      els.quizView.classList.add('hidden');
+      els.resultsView.classList.remove('hidden');
+      toast('Test zakończony. Zobacz podsumowanie.');
+    } : { choice:null, correct:false, reveal:true });
       const q = state.pool[state.current];
       [...els.answers.children].forEach((el, i)=>{
         el.classList.toggle('correct', i===q.correct);
@@ -405,7 +479,14 @@
     // ====== ZDARZENIA / LOGIKA APLIKACJI ======
     function startQuiz(){
       const cat = els.category.value;
-      const cnt = parseInt(els.count.value, 10) || 10;
+      // Ustal limit zgodnie z kategorią (10 na poziom; 30 w miksie)
+      const limitPerLevel = 10;
+      const maxForCat = cat === 'mix' ? Math.min(limitPerLevel*3, BANK.magazyn.length + BANK.sprzedaz.length + BANK.kadra.length) : Math.min(limitPerLevel, BANK[cat].length);
+      // Dopasuj UI (max) i bieżącą wartość
+      els.count.max = String(maxForCat);
+      if(parseInt(els.count.value, 10) > maxForCat) els.count.value = String(maxForCat);
+
+      const cnt = parseInt(els.count.value, 10) || Math.min(10, maxForCat);
       const pool = buildPool(cat, cnt, els.shuffle.checked);
       state.pool = pool;
       state.current = 0;
@@ -416,7 +497,20 @@
       renderQuestion();
     }
 
-    function next(){ if(state.current < state.pool.length - 1){ state.current++; renderQuestion(); } }
+    function next(){
+      if(state.current < state.pool.length - 1){
+        state.current++;
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+    function updateControls(){
+      els.prevBtn.disabled = state.current === 0;
+      const last = state.current >= state.pool.length - 1;
+      els.nextBtn.textContent = last ? 'Zakończ' : 'Dalej';
+      els.finishBtn.disabled = false;
+    } }
     function prev(){ if(state.current > 0){ state.current--; renderQuestion(); } }
 
     // Motyw (prosty toggle – w razie potrzeby można dodać jasną paletę)
@@ -435,6 +529,20 @@
       startQuiz();
     });
     els.exportBtn.addEventListener('click', exportCSV);
+    els.category.addEventListener('change', ()=>{
+      const cat = els.category.value;
+      const limitPerLevel = 10;
+      const maxForCat = cat === 'mix' ? Math.min(limitPerLevel*3, BANK.magazyn.length + BANK.sprzedaz.length + BANK.kadra.length) : Math.min(limitPerLevel, BANK[cat].length);
+      els.count.max = String(maxForCat);
+      if(parseInt(els.count.value, 10) > maxForCat) els.count.value = String(maxForCat);
+    });
+
+    function toast(msg){
+      let t = document.querySelector('.toast');
+      if(!t){ t = document.createElement('div'); t.className='toast'; document.body.appendChild(t); }
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(()=> t.classList.remove('show'), 2000);
+    }
 
     // Init
     document.getElementById('year').textContent = new Date().getFullYear();
