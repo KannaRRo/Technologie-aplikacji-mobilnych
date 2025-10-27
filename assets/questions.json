@@ -12,7 +12,7 @@
     { "text": "Pytanie 10 poziom łatwy", "options": ["A", "B", "C", "D"], "correct": 0, "why": "Lorem ipsum – wyjaśnienie do pytania 10 (łatwy).", "image": "assets/img/test1.png", "imageAlt": "Ilustracja poziom łatwy" },
   ],
   "srednie": [
-    { "text": "Pytanie 1 poziom średni", "options": ["A", "B", "C", "D"], "correct": 2, "why": "Lorem ipsum – wyjaśnienie 1 (średni).", "image": "assets/img/srednie-1.jpg", "imageAlt": "Ilustracja do pytania 1 – poziom średni" },
+    { "text": "Pytanie 1 poziom średni", "options": ["A", "B", "C", "D"], "correct": 2, "why": "Lorem ipsum – wyjaśnienie 1 (średni).", "image": "assets/img/test2.png", "imageAlt": "Ilustracja do pytania 1 – poziom średni" },
     { "text": "Pytanie 2 poziom średni", "options": ["A", "B", "C", "D"], "correct": 1, "why": "Lorem ipsum – wyjaśnienie 2 (średni)." },
     { "text": "Pytanie 3 poziom średni", "options": ["A", "B", "C", "D"], "correct": 3, "why": "Lorem ipsum – wyjaśnienie 3 (średni)." },
     { "text": "Pytanie 4 poziom średni", "options": ["A", "B", "C", "D"], "correct": 0, "why": "Lorem ipsum – wyjaśnienie 4 (średni)." },
@@ -36,5 +36,6 @@
     { "text": "Pytanie 10 poziom zaawansowany", "options": ["A", "B", "C", "D"], "correct": 0, "why": "Lorem ipsum – wyjaśnienie 10 (zaawans.)." }
   ]
 }
+
 
 
