@@ -244,15 +244,82 @@
   </main>
 
   <!-- Modal O projekcie -->
-  <div id="aboutModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="aboutTitle">
-    <div class="modal-content">
-      <h2 id="aboutTitle">O projekcie</h2>
-      <p><strong>SecCoach</strong> – interaktywny quiz zwiększający świadomość cyberbezpieczeństwa pracowników.</p>
-      <p>Wykonany w ramach <em>Technologie aplikacji mobilnych</em> (WSB Merito Toruń). Stack: HTML, CSS, JS, GitHub Pages.</p>
-      <p>Autorzy: Damian Król, Angelika Adamczewska.</p>
+<div id="aboutModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="aboutTitle">
+  <div class="modal-content" style="max-height:85vh; overflow-y:auto;">
+    <h2 id="aboutTitle">O projekcie</h2>
+
+    <p><strong>SecCoach</strong> to interaktywny quiz edukacyjny, który pomaga zwiększyć świadomość 
+      <strong>cyberbezpieczeństwa</strong> wśród pracowników przedsiębiorstw.</p>
+
+    <p>Projekt symuluje realistyczne sytuacje zagrożeń, takie jak <em>phishing</em>, 
+      fałszywe logowania czy próby wyłudzenia danych. 
+      Dzięki temu użytkownik może w bezpiecznym środowisku nauczyć się rozpoznawać i unikać niebezpiecznych działań online.</p>
+
+    <h3>Cel projektu</h3>
+    <p>Celem było stworzenie <strong>praktycznego narzędzia szkoleniowego</strong>, 
+      które łączy naukę z elementem grywalizacji. 
+      Quiz ma uczyć przez działanie – angażować, zaskakiwać i utrwalać dobre nawyki bezpieczeństwa.</p>
+
+    <h3>Dlaczego warto?</h3>
+    <p>Większość incydentów cyberbezpieczeństwa wynika z błędu człowieka. 
+      SecCoach uczy reagować na zagrożenia zanim one się wydarzą. 
+      To przykład, jak <strong>prosta aplikacja webowa</strong> może pełnić rolę symulatora ataków w celach edukacyjnych.</p>
+
+    <blockquote style="border-left:3px solid var(--accent);margin:10px 0;padding-left:10px;color:var(--muted);font-style:italic;">
+      „Najlepsze szkolenie to takie, które daje ci lekcję zanim popełnisz błąd.”
+    </blockquote>
+
+    <h3>Zastosowane technologie</h3>
+    <ul style="margin-left:20px;">
+      <li><strong>HTML5</strong> – struktura strony i quizu</li>
+      <li><strong>CSS3</strong> – responsywny układ i animacje</li>
+      <li><strong>JavaScript (ES6)</strong> – logika quizu, licznik czasu, zapisy wyników</li>
+      <li><strong>Chart.js</strong> – generowanie wykresów statystyk</li>
+      <li><strong>LocalStorage</strong> – przechowywanie wyników i historii użytkownika</li>
+      <li><strong>GitHub Pages</strong> – hosting projektu</li>
+    </ul>
+
+    <h3>Funkcjonalności</h3>
+    <ul style="margin-left:20px;">
+      <li>Trzy poziomy trudności: łatwy, średni, zaawansowany</li>
+      <li>Tryb <strong>symulacji</strong> – generowanie przykładowych wyników</li>
+      <li>Eksport danych do CSV i JSON</li>
+      <li>Ranking TOP 5 użytkowników</li>
+      <li>Tryb ciemny i jasny</li>
+      <li>Responsywne menu i panel statystyk</li>
+      <li>Edukacyjny modal z ostrzeżeniem „Nie klikaj w podejrzane linki”</li>
+    </ul>
+
+    <h3>Symulacja phishingu</h3>
+    <p>W wersji demonstracyjnej projektu wysyłany jest e-mail z zaproszeniem do szkolenia. 
+      Po kliknięciu w link uczestnik trafia na stronę ostrzegającą przed klikaniem w podejrzane odnośniki. 
+      W ten sposób użytkownicy uczą się rozpoznawać zagrożenia w praktyce – bez ryzyka.</p>
+
+    <h3>Autorzy</h3>
+    <p>
+      <strong>Damian Król</strong> – koncepcja, projekt graficzny, implementacja front-end, logika quizu i integracja z LocalStorage.<br>
+      <strong>Angelika Adamczewska</strong> – opracowanie treści pytań, materiały szkoleniowe i testy użytkowe.
+    </p>
+
+    <h3>Przydatne zasoby</h3>
+    <ul style="margin-left:20px;">
+      <li><a href="https://www.gov.pl/web/cyfryzacja/bezpieczenstwo-w-sieci" target="_blank" style="color:var(--accent);">Oficjalny portal GOV – Bezpieczeństwo w sieci</a></li>
+      <li><a href="https://haveibeenpwned.com/" target="_blank" style="color:var(--accent);">Sprawdź, czy Twój e-mail został przejęty</a></li>
+      <li><a href="https://cyberbezpieczenstwo.policja.pl" target="_blank" style="color:var(--accent);">Materiały edukacyjne Policji RP</a></li>
+    </ul>
+
+    <p style="margin-top:16px;">Projekt powstał w ramach przedmiotu 
+      <em>Technologie aplikacji mobilnych</em> na kierunku 
+      <strong>Informatyka w Biznesie</strong>, Uniwersytet WSB Merito w Toruniu.</p>
+
+    <p style="color:var(--muted);font-size:13px;">Wersja 1.1 • © 2025 SecCoach</p>
+
+    <div style="text-align:right;margin-top:16px;">
       <button id="closeAbout" class="btn primary">Zamknij</button>
     </div>
   </div>
+</div>
+
 
   <footer class="site-footer">
     <small>© <span id="year"></span> SecCoach • Wersja 1.1</small>
@@ -587,6 +654,7 @@
   </script>
 </body>
 </html>
+
 
 
 
