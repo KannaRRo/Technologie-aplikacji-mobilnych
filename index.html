@@ -5,62 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SecCoach – Quiz szkoleniowy</title>
   <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --muted: #94a3b8;
-      --text: #e5e7eb;
-      --accent: #38bdf8;
-      --accent-2: #34d399;
-      --danger: #f43f5e;
-      --warn: #f59e0b;
-      --card: #0b1220;
-      --border: #1f2937;
-      --shadow: 0 10px 25px rgba(0,0,0,.35);
-      --radius: 16px;
+    :root{
+      --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb;
+      --accent:#38bdf8; --accent-2:#34d399; --danger:#f43f5e; --warn:#f59e0b;
+      --card:#0b1220; --border:#1f2937; --shadow:0 10px 25px rgba(0,0,0,.35);
+      --radius:16px;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; background: var(--bg); color: var(--text);
-      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter, Ubuntu, sans-serif;
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,sans-serif}
+    header{max-width:1100px;margin:24px auto 0;padding:16px 20px;text-align:center}
+    .container{max-width:900px;margin:0 auto;padding:0 20px 40px}
+    .panel{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-top:20px}
+    .row{margin:10px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    select,input,button{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:10px;padding:10px 12px;font-size:15px}
+    button{cursor:pointer}
+    .primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b1220;font-weight:700;border:none}
+    .pill{padding:3px 10px;border-radius:999px;background:#0b1220;border:1px solid var(--border);font-size:13px;color:var(--muted)}
+    .bar{height:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:.3s;border-radius:8px}
+    .answers{display:grid;gap:8px;margin:10px 0}
+    .option{padding:12px;border:1px solid var(--border);border-radius:12px;background:#0e1627;text-align:left}
+    .option.correct{border-color:var(--accent-2);background:rgba(52,211,153,.1)}
+    .option.wrong{border-color:var(--danger);background:rgba(244,63,94,.1)}
+    .dots{display:flex;justify-content:center;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+    .dot{width:10px;height:10px;border-radius:50%;background:#1f2937;cursor:pointer}
+    .dot.active{background:var(--accent)}
+    #timer{font-weight:700;color:var(--accent);text-align:center;margin-top:5px}
+    #accessibilityBtn{margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--text)}
+    .toast{position:fixed;left:50%;bottom:15px;transform:translateX(-50%);background:#0b1220;border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:12px;opacity:0;transition:.3s}
+    .toast.show{opacity:1}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}
+    .modal-content{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:600px;width:90%;color:var(--text)}
+    .modal.show{display:flex}
+    .large-font{font-size:18px}
+    .high-contrast{background:#000 !important;color:#fff !important}
+
+    /* blok obrazka pytania */
+    .q-img{
+      width:100%;height:clamp(160px,28vw,260px);border:1px dashed var(--border);
+      border-radius:14px;display:grid;place-items:center;color:var(--muted);
+      background:#0b1220;overflow:hidden;margin:10px 0 14px;
     }
-    header { max-width: 1100px; margin: 24px auto 0; padding: 16px 20px; text-align:center; }
-    .container { max-width: 900px; margin: 0 auto; padding: 0 20px 40px; }
-    .panel { background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding:20px; margin-top:20px; }
-    .row { margin:10px 0; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    select, input, button { border:1px solid var(--border); background:var(--card); color:var(--text); border-radius:10px; padding:10px 12px; font-size:15px; }
-    button { cursor:pointer; }
-    .primary { background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b1220; font-weight:700; border:none; }
-    .pill { padding:3px 10px; border-radius:999px; background:#0b1220; border:1px solid var(--border); font-size:13px; color:var(--muted); }
-    .bar { height:8px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0%; transition:.3s; border-radius:8px; }
-    .answers { display:grid; gap:8px; margin:10px 0; }
-    .option { padding:12px; border:1px solid var(--border); border-radius:12px; background:#0e1627; text-align:left; }
-    .option.correct { border-color:var(--accent-2); background:rgba(52,211,153,.1); }
-    .option.wrong { border-color:var(--danger); background:rgba(244,63,94,.1); }
-    .dots { display:flex; justify-content:center; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
-    .dot { width:10px; height:10px; border-radius:50%; background:#1f2937; cursor:pointer; }
-    .dot.active { background:var(--accent); }
-    #timer { font-weight:700; color:var(--accent); text-align:center; margin-top:5px; }
-    #accessibilityBtn { margin-left:auto; background:transparent; border:1px solid var(--border); color:var(--text); }
-    .toast { position:fixed; left:50%; bottom:15px; transform:translateX(-50%); background:#0b1220; border:1px solid var(--border); color:var(--text); padding:10px 16px; border-radius:12px; opacity:0; transition:.3s; }
-    .toast.show { opacity:1; }
-    .modal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; }
-    .modal-content { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px; max-width:600px; width:90%; color:var(--text); }
-    .modal.show { display:flex; }
-    .large-font { font-size:18px; }
-    .high-contrast { background:#000 !important; color:#fff !important; }
+    .q-img img{width:100%;height:100%;object-fit:cover;display:none}
+    .q-img figcaption{font-size:13px;color:var(--muted);padding:6px}
   </style>
 </head>
 <body>
-  <header>
-    <h1>SecCoach – interaktywny quiz szkoleniowy</h1>
-  </header>
+  <header><h1>SecCoach – interaktywny quiz szkoleniowy</h1></header>
 
   <main class="container">
     <section class="panel" id="settings">
       <h2>Ustawienia</h2>
       <div class="row">
-        <label>Kategoria:</label>
+        <label for="category">Kategoria:</label>
         <select id="category">
           <option value="latwe">Łatwe</option>
           <option value="srednie">Średnie</option>
@@ -69,7 +65,7 @@
         </select>
       </div>
       <div class="row">
-        <label>Liczba pytań:</label>
+        <label for="count">Liczba pytań:</label>
         <input id="count" type="number" min="1" max="10" value="10">
       </div>
       <div class="row">
@@ -83,9 +79,16 @@
       <div class="dots" id="dots"></div>
       <div class="pill">Pytanie <span id="qIndex">0</span>/<span id="qTotal">0</span></div>
       <div class="bar" id="bar"></div>
+
+      <!-- obrazek pytania -->
+      <figure class="q-img" id="qImageBox">
+        <img id="qImage" alt="Obraz ilustrujący pytanie" />
+        <figcaption id="qImageCap">Miejsce na grafikę (opcjonalnie)</figcaption>
+      </figure>
+
       <h3 id="qText"></h3>
       <div id="answers" class="answers"></div>
-      <div id="explanation" style="color:var(--muted); font-size:14px; margin-top:6px;"></div>
+      <div id="explanation" style="color:var(--muted);font-size:14px;margin-top:6px;"></div>
       <div class="row">
         <button id="prevBtn">Wstecz</button>
         <button id="nextBtn" class="primary">Dalej</button>
@@ -105,9 +108,9 @@
   <div id="aboutModal" class="modal">
     <div class="modal-content">
       <h2>O projekcie</h2>
-      <p><strong>SecCoach</strong> to projekt edukacyjny mający na celu podniesienie świadomości cyberbezpieczeństwa pracowników.</p>
-      <p>Stworzony w ramach przedmiotu <em>Technologie aplikacji mobilnych</em> na Uniwersytecie WSB Merito w Toruniu.</p>
-      <p>Autorzy: zespół studentów kierunku Informatyka w Biznesie.</p>
+      <p><strong>SecCoach</strong> to projekt edukacyjny zwiększający świadomość cyberbezpieczeństwa pracowników poprzez szybkie quizy.</p>
+      <p>Wykonany w ramach przedmiotu <em>Technologie aplikacji mobilnych</em> (WSB Merito Toruń). Stack: HTML, CSS, JS, GitHub Pages.</p>
+      <p>Autorzy: zespół studentów — role: frontend, pytania/treści, grafika, testy.</p>
       <button id="closeAbout" class="primary">Zamknij</button>
     </div>
   </div>
@@ -115,14 +118,17 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    let questions = [];
+    // ===== ZMIENNE I ELEMENTY =====
+    let questions = { latwe:[], srednie:[], trudne:[] };
     let state = { pool: [], current: 0, answers: [], timer: 180 };
+    let timerInterval;
+
     const els = {
       category: document.getElementById('category'),
       count: document.getElementById('count'),
       startBtn: document.getElementById('startBtn'),
-      quiz: document.getElementById('quiz'),
       settings: document.getElementById('settings'),
+      quiz: document.getElementById('quiz'),
       result: document.getElementById('result'),
       qText: document.getElementById('qText'),
       answers: document.getElementById('answers'),
@@ -140,31 +146,34 @@
       accessibilityBtn: document.getElementById('accessibilityBtn'),
       aboutBtn: document.getElementById('aboutBtn'),
       aboutModal: document.getElementById('aboutModal'),
-      closeAbout: document.getElementById('closeAbout')
+      closeAbout: document.getElementById('closeAbout'),
+      qImage: document.getElementById('qImage'),
+      qImageBox: document.getElementById('qImageBox'),
+      qImageCap: document.getElementById('qImageCap')
     };
 
-    // Toast
+    // ===== POMOCNICZE =====
     function toast(msg){ els.toast.textContent = msg; els.toast.classList.add('show'); setTimeout(()=>els.toast.classList.remove('show'),2000); }
+    function clampCount(max){
+      const raw = String(els.count.value || '').replace(/[^0-9]/g,'');
+      let n = parseInt(raw,10); if(isNaN(n)||n<1) n=1; if(max) n=Math.min(n,max);
+      els.count.value = String(n); return n;
+    }
 
-    // Zegar
-    let timerInterval;
+    // ===== TIMER =====
     function startTimer(){
-      clearInterval(timerInterval);
-      state.timer = 180;
-      updateTimer();
+      clearInterval(timerInterval); state.timer = 180; updateTimer();
       timerInterval = setInterval(()=>{
-        state.timer--;
-        updateTimer();
+        state.timer--; updateTimer();
         if(state.timer<=0){ clearInterval(timerInterval); finishQuiz(); toast('Czas minął!'); }
       },1000);
     }
     function updateTimer(){
-      const m = Math.floor(state.timer/60);
-      const s = state.timer%60;
+      const m = Math.floor(state.timer/60), s = state.timer%60;
       els.timer.textContent = `Czas: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
-    // Renderowanie pytania
+    // ===== RENDER PYTANIA =====
     function renderQuestion(){
       const q = state.pool[state.current];
       els.qText.textContent = q.text;
@@ -172,97 +181,139 @@
       els.explanation.textContent = '';
       els.qIndex.textContent = state.current+1;
       els.qTotal.textContent = state.pool.length;
-      const progress = (state.current/state.pool.length)*100;
-      els.bar.style.width = progress+'%';
+      els.bar.style.width = ((state.current/state.pool.length)*100)+'%';
 
+      // kropki
       els.dots.innerHTML = '';
       state.pool.forEach((_,i)=>{
-        const d = document.createElement('div');
-        d.className = 'dot'+(i===state.current?' active':'');
+        const d=document.createElement('div'); d.className='dot'+(i===state.current?' active':'');
         d.onclick=()=>{state.current=i; renderQuestion();};
         els.dots.appendChild(d);
       });
 
+      // obrazek (opcjonalny)
+      if(q.image){
+        els.qImage.style.display='block';
+        els.qImage.src=q.image;
+        els.qImage.alt=q.imageAlt||'Grafika do pytania';
+        els.qImageCap.textContent=q.imageAlt||'';
+        els.qImage.onerror=()=>{ els.qImage.removeAttribute('src'); els.qImage.style.display='none'; els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)'; };
+      } else {
+        els.qImage.removeAttribute('src'); els.qImage.style.display='none';
+        els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)';
+      }
+
+      // odpowiedzi
       q.options.forEach((opt,idx)=>{
-        const btn=document.createElement('button');
-        btn.className='option';
-        btn.textContent=opt;
+        const btn=document.createElement('button'); btn.className='option'; btn.textContent=opt;
         btn.onclick=()=>selectAnswer(idx);
         els.answers.appendChild(btn);
       });
+
+      // jeżeli było coś zaznaczone wcześniej – odtwórz stan
+      const prev = state.answers[state.current];
+      if(prev){
+        [...els.answers.children].forEach((b,i)=>{
+          if(i===q.correct) b.classList.add('correct');
+          if(prev.choice===i && !prev.correct) b.classList.add('wrong');
+          b.disabled = true;
+        });
+        els.explanation.textContent = q.why || '';
+      }
     }
 
-    // Odpowiedź
+    // ===== ODP. I WYJAŚNIENIE =====
     function selectAnswer(idx){
       const q = state.pool[state.current];
       const correct = idx===q.correct;
-      state.answers[state.current]={choice:idx,correct};
+      state.answers[state.current] = { choice: idx, correct };
       [...els.answers.children].forEach((b,i)=>{
         b.disabled=true;
-        if(i===q.correct)b.classList.add('correct');
-        if(i===idx&&!correct)b.classList.add('wrong');
+        if(i===q.correct) b.classList.add('correct');
+        if(i===idx && !correct) b.classList.add('wrong');
       });
-      els.explanation.textContent=q.why;
+      els.explanation.textContent = q.why || '';
       saveProgress();
     }
 
-    function next(){
-      if(state.current<state.pool.length-1){state.current++;renderQuestion();}
-      else finishQuiz();
-    }
-    function prev(){ if(state.current>0){state.current--;renderQuestion();} }
+    function next(){ if(state.current<state.pool.length-1){ state.current++; renderQuestion(); } else { finishQuiz(); } }
+    function prev(){ if(state.current>0){ state.current--; renderQuestion(); } }
 
     function finishQuiz(){
       clearInterval(timerInterval);
-      const good=state.answers.filter(a=>a&&a.correct).length;
-      els.quiz.style.display='none';
-      els.result.style.display='block';
-      els.score.textContent=`Wynik: ${good}/${state.pool.length}`;
+      const good = state.answers.filter(a=>a&&a.correct).length;
+      els.quiz.style.display='none'; els.result.style.display='block';
+      els.score.textContent = `Wynik: ${good}/${state.pool.length}`;
       localStorage.removeItem('quizProgress');
     }
 
+    // ===== START QUIZU =====
     function startQuiz(){
-      const cat=els.category.value; const cnt=parseInt(els.count.value)||10;
+      const cat = els.category.value;
+      const limitPerLevel = 10;
+      const maxForCat = cat==='mix'
+        ? Math.min(limitPerLevel*3, questions.latwe.length + questions.srednie.length + questions.trudne.length)
+        : Math.min(limitPerLevel, questions[cat].length);
+      els.count.max = String(maxForCat);
+      const cnt = clampCount(maxForCat);
+
       let pool=[];
       if(cat==='mix'){
-        pool=[...questions.latwe,...questions.srednie,...questions.trudne];
-      } else pool=[...questions[cat]];
-      pool=pool.slice(0,cnt);
+        pool=[...questions.latwe.slice(0,limitPerLevel),
+              ...questions.srednie.slice(0,limitPerLevel),
+              ...questions.trudne.slice(0,limitPerLevel)];
+        pool = pool.slice(0,cnt); // pozwól wybrać mniej niż 30
+      } else {
+        pool=[...questions[cat]].slice(0,cnt);
+      }
+
       state={pool,current:0,answers:new Array(pool.length),timer:180};
       els.settings.style.display='none'; els.quiz.style.display='block'; els.result.style.display='none';
       renderQuestion(); startTimer(); saveProgress();
     }
 
-    // Zapisywanie postępu
-    function saveProgress(){
-      localStorage.setItem('quizProgress',JSON.stringify({state}));
-    }
+    // ===== ZAPIS POSTĘPÓW =====
+    function saveProgress(){ localStorage.setItem('quizProgress', JSON.stringify({state})); }
     function loadProgress(){
       const data=localStorage.getItem('quizProgress');
       if(data){
-        const saved=JSON.parse(data).state;
-        if(saved){state=saved; els.settings.style.display='none'; els.quiz.style.display='block'; renderQuestion(); startTimer();}
+        try{
+          const saved=JSON.parse(data).state;
+          if(saved && saved.pool && saved.pool.length){
+            state=saved; els.settings.style.display='none'; els.quiz.style.display='block';
+            renderQuestion(); startTimer();
+          }
+        }catch{ /* ign */ }
       }
     }
 
-    // Dostępność
-    els.accessibilityBtn.onclick=()=>{
-      document.body.classList.toggle('large-font');
-      document.body.classList.toggle('high-contrast');
-    };
-
-    // Modal
+    // ===== DOSTĘPNOŚĆ / MODAL =====
+    els.accessibilityBtn.onclick=()=>{ document.body.classList.toggle('large-font'); document.body.classList.toggle('high-contrast'); };
     els.aboutBtn.onclick=()=>els.aboutModal.classList.add('show');
     els.closeAbout.onclick=()=>els.aboutModal.classList.remove('show');
 
-    // Ładowanie pytań
-    fetch('assets/questions.json').then(r=>r.json()).then(d=>{questions=d;loadProgress();});
+    // ===== ŁADOWANIE PYTAŃ Z JSON (z obsługą błędu) =====
+    fetch('assets/questions.json')
+      .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(d=>{ questions=d; loadProgress(); })
+      .catch(err=>{ console.error(err); toast('Nie udało się załadować pytań. Sprawdź plik assets/questions.json'); });
 
-    // Eventy
+    // ===== EVENTY =====
     els.startBtn.onclick=startQuiz;
     els.nextBtn.onclick=next;
     els.prevBtn.onclick=prev;
-    els.retryBtn.onclick=()=>{localStorage.removeItem('quizProgress');location.reload();};
+    els.retryBtn.onclick=()=>{ localStorage.removeItem('quizProgress'); location.reload(); };
+
+    // dopasuj max count przy zmianie kategorii
+    els.category.addEventListener('change', ()=>{
+      const cat=els.category.value, limit=10;
+      const maxForCat = cat==='mix'
+        ? Math.min(limit*3, questions.latwe.length + questions.srednie.length + questions.trudne.length)
+        : Math.min(limit, (questions[cat]||[]).length);
+      els.count.max = String(maxForCat||10);
+      clampCount(maxForCat||10);
+    });
+    els.count.addEventListener('input', ()=> clampCount(parseInt(els.count.max,10)||10) );
   </script>
 </body>
 </html>
