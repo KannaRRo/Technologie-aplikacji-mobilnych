@@ -60,9 +60,9 @@
     .modal-content{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:600px;width:90%;color:var(--text)}
     .modal.show{display:flex}
     .site-footer{max-width:960px;margin:24px auto;padding:0 20px;color:var(--muted);text-align:center}
-    .q-img{width:100%;height:clamp(160px,28vw,260px);border:1px dashed var(--border);border-radius:14px;display:grid;place-items:center;color:var(--muted);background:#0b1220;overflow:hidden;margin:10px 0 14px}
+    .q-img{width:100%;height:auto;border:radius dashed var(--border);border-radius:14px;display:grid;place-items:center;color:var(--muted);background:#0b1220;overflow:hidden;margin:10px 0 14px}
     .light .q-img{background:#f1f5f9}
-    .q-img img{width:100%;height:100%;object-fit:cover;display:none}
+    .q-img img{width:100%;max-height:300px;object-fit:contain;display:none}
     .q-img figcaption{font-size:13px;color:var(--muted);padding:6px}
     /* Tabela / KPI / charts */
     .kpi{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px solid var(--border);background:rgba(255,255,255,.02);border-radius:12px;min-width:160px}
@@ -538,4 +538,5 @@
   </script>
 </body>
 </html>
+
 
