@@ -1,6 +1,6 @@
 {
   "latwe": [
-    { "text": "Pytanie 1 poziom łatwy", "options": ["A", "B", "C", "D"], "correct": 1, "why": "Lorem ipsum – wyjaśnienie do pytania 1 (łatwy).", "image": "assets/img/latwe-1.jpg", "imageAlt": "Ilustracja do pytania 1 – poziom łatwy" },
+    { "text": "Pytanie 1 poziom łatwy", "options": ["A", "B", "C", "D"], "correct": 1, "why": "Lorem ipsum – wyjaśnienie do pytania 1 (łatwy).", "image": "assets/img/test2.png", "imageAlt": "Ilustracja do pytania 1 – poziom łatwy" },
     { "text": "Pytanie 2 poziom łatwy", "options": ["A", "B", "C", "D"], "correct": 2, "why": "Lorem ipsum – wyjaśnienie 2 (łatwy)." },
     { "text": "Pytanie 3 poziom łatwy", "options": ["A", "B", "C", "D"], "correct": 0, "why": "Lorem ipsum – wyjaśnienie 3 (łatwy)." },
     { "text": "Pytanie 4 poziom łatwy", "options": ["A", "B", "C", "D"], "correct": 3, "why": "Lorem ipsum – wyjaśnienie 4 (łatwy)." },
@@ -36,3 +36,4 @@
     { "text": "Pytanie 10 poziom zaawansowany", "options": ["A", "B", "C", "D"], "correct": 0, "why": "Lorem ipsum – wyjaśnienie 10 (zaawans.)." }
   ]
 }
+
