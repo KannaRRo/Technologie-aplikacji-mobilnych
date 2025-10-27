@@ -6,546 +6,263 @@
   <title>SecCoach – Quiz szkoleniowy</title>
   <style>
     :root {
-      --bg: #0f172a;          /* slate-900 */
-      --panel: #111827;       /* gray-900 */
-      --muted: #94a3b8;       /* slate-400 */
-      --text: #e5e7eb;        /* gray-200 */
-      --accent: #38bdf8;      /* sky-400 */
-      --accent-2: #34d399;    /* emerald-400 */
-      --danger: #f43f5e;      /* rose-500 */
-      --warn: #f59e0b;        /* amber-500 */
-      --card: #0b1220;        /* deep panel */
-      --border: #1f2937;      /* gray-800 */
+      --bg: #0f172a;
+      --panel: #111827;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --accent: #38bdf8;
+      --accent-2: #34d399;
+      --danger: #f43f5e;
+      --warn: #f59e0b;
+      --card: #0b1220;
+      --border: #1f2937;
       --shadow: 0 10px 25px rgba(0,0,0,.35);
       --radius: 16px;
     }
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
     body {
-      margin: 0; background: radial-gradient(1200px 600px at 80% -10%, rgba(56,189,248,.12), transparent),
-                              radial-gradient(800px 400px at -10% 120%, rgba(52,211,153,.12), transparent), var(--bg);
-      color: var(--text); font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter, Ubuntu, 'Helvetica Neue', Arial, "Noto Sans", sans-serif;
+      margin: 0; background: var(--bg); color: var(--text);
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Inter, Ubuntu, sans-serif;
     }
-    header {
-      max-width: 1100px; margin: 24px auto 0; padding: 16px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .brand { display:flex; align-items:center; gap:12px; }
-    .logo {
-      width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: var(--shadow);
-    }
-    .brand h1 { margin:0; font-size: clamp(18px, 2.2vw, 22px); letter-spacing:.3px; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 48px; }
-
-    .grid { display:grid; grid-template-columns: 1.1fr .9fr; gap: 22px; }
-    @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
-
-    .panel { background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
-    .panel h2 { margin:0 0 14px; font-size: 18px; color: var(--text); }
-
-    .settings { padding: 18px; }
-/* Sticky tylko na desktopie, aby na telefonach nic się nie nakładało */
-@media (min-width: 961px) {
-  .settings { position: sticky; top: 16px; }
-}
-    .row { display:flex; gap:12px; align-items:center; margin: 10px 0; }
-    label { color: var(--muted); font-size: 14px; }
-    select, input[type="number"], button, .btn {
-      appearance:none; border: 1px solid var(--border); background: var(--card); color: var(--text);
-      padding: 10px 12px; border-radius: 12px; font-weight: 600; letter-spacing:.2px;
-    }
-    select, input[type="number"] { width: 100%; }
-    .switch { display:inline-flex; gap:8px; align-items:center; cursor:pointer; user-select:none; }
-    .switch input { display:none; }
-    .switch .track { width: 44px; height: 24px; background: #1f2937; border-radius: 999px; position:relative; border:1px solid var(--border); }
-    .switch .thumb { position:absolute; top:2px; left:2px; width: 18px; height: 18px; background:#e5e7eb; border-radius:50%; transition:.2s; }
-    .switch input:checked + .track .thumb { transform: translateX(20px); background: white; }
-
-    .quiz { padding: 18px; }
-
-    /* Proste powiadomienie (toast) */
-    .toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
-      background: #0b1220; border:1px solid var(--border); color: var(--text);
-      padding: 10px 14px; border-radius: 12px; box-shadow: var(--shadow); opacity:0; pointer-events:none; transition:opacity .25s ease; }
-    .toast.show { opacity: 1; }
-
-    .card { background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); border:1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
-    .meta { display:flex; justify-content:space-between; align-items:center; color: var(--muted); font-size: 14px; margin-bottom: 14px; }
-    .progress { height: 8px; background:#0b1220; border:1px solid var(--border); border-radius:999px; overflow:hidden; }
-    .bar { height:100%; width:0%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .25s ease; }
-
-    .q-img { width: 100%; height: clamp(160px, 28vw, 260px); border:1px dashed var(--border); border-radius: 14px; display:grid; place-items:center; color: var(--muted); background: #0b1220; overflow:hidden; margin: 10px 0 14px; }
-    .q-img img { width:100%; height:100%; object-fit:cover; display:none; }
-
-    .q-text { font-size: clamp(18px, 2.2vw, 22px); margin: 8px 0 14px; }
-
-    .answers { display:grid; grid-template-columns: 1fr; gap: 10px; }
-    .option { border:1px solid var(--border); background: #0e1627; border-radius: 12px; padding: 12px 14px; cursor:pointer; text-align:left; }
-    .option:hover { border-color: #334155; }
-    .option[aria-checked="true"] { outline: 2px solid var(--accent); }
-    .option.correct { border-color: rgba(52,211,153,.8); background: rgba(52,211,153,.08); }
-    .option.wrong { border-color: rgba(244,63,94,.8); background: rgba(244,63,94,.08); }
-
-    .controls { display:flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-    .btn { display:inline-flex; align-items:center; gap:8px; }
-    .primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none; color: #0b1220; }
-    .ghost { background: transparent; }
-
-    .hidden { display:none !important; }
-
-    .results { padding: 18px; }
-    .score { font-size: 20px; margin-bottom: 10px; }
-    .review { display:grid; gap: 10px; }
-    .pill { display:inline-flex; align-items:center; gap:6px; padding: 3px 10px; border-radius: 999px; background:#0b1220; border:1px solid var(--border); color: var(--muted); font-size: 12px; }
-    .tag { color:#0ea5e9; font-weight:700; font-size: 11px; background: rgba(14,165,233,.12); border:1px solid rgba(14,165,233,.25); }
-
-    footer { max-width: 1100px; margin: 24px auto; padding: 0 20px; color: var(--muted); font-size: 12px; }
-    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+    header { max-width: 1100px; margin: 24px auto 0; padding: 16px 20px; text-align:center; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px 40px; }
+    .panel { background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding:20px; margin-top:20px; }
+    .row { margin:10px 0; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    select, input, button { border:1px solid var(--border); background:var(--card); color:var(--text); border-radius:10px; padding:10px 12px; font-size:15px; }
+    button { cursor:pointer; }
+    .primary { background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b1220; font-weight:700; border:none; }
+    .pill { padding:3px 10px; border-radius:999px; background:#0b1220; border:1px solid var(--border); font-size:13px; color:var(--muted); }
+    .bar { height:8px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); width:0%; transition:.3s; border-radius:8px; }
+    .answers { display:grid; gap:8px; margin:10px 0; }
+    .option { padding:12px; border:1px solid var(--border); border-radius:12px; background:#0e1627; text-align:left; }
+    .option.correct { border-color:var(--accent-2); background:rgba(52,211,153,.1); }
+    .option.wrong { border-color:var(--danger); background:rgba(244,63,94,.1); }
+    .dots { display:flex; justify-content:center; gap:6px; margin-bottom:8px; flex-wrap:wrap; }
+    .dot { width:10px; height:10px; border-radius:50%; background:#1f2937; cursor:pointer; }
+    .dot.active { background:var(--accent); }
+    #timer { font-weight:700; color:var(--accent); text-align:center; margin-top:5px; }
+    #accessibilityBtn { margin-left:auto; background:transparent; border:1px solid var(--border); color:var(--text); }
+    .toast { position:fixed; left:50%; bottom:15px; transform:translateX(-50%); background:#0b1220; border:1px solid var(--border); color:var(--text); padding:10px 16px; border-radius:12px; opacity:0; transition:.3s; }
+    .toast.show { opacity:1; }
+    .modal { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; }
+    .modal-content { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px; max-width:600px; width:90%; color:var(--text); }
+    .modal.show { display:flex; }
+    .large-font { font-size:18px; }
+    .high-contrast { background:#000 !important; color:#fff !important; }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand" aria-label="brand">
-      <div class="logo" aria-hidden="true"></div>
-      <h1>SecCoach – interaktywny quiz szkoleniowy</h1>
-    </div>
-    <label class="switch" title="Tryb wysoki kontrast (jasny/ciemny)">
-      <input id="themeToggle" type="checkbox" />
-      <span class="track"><span class="thumb"></span></span>
-      <span aria-hidden="true" class="sr-only">Przełącz motyw</span>
-    </label>
+    <h1>SecCoach – interaktywny quiz szkoleniowy</h1>
   </header>
 
   <main class="container">
-    <div class="grid">
-      <!-- USTAWIENIA / PANEL STARTOWY -->
-      <section class="panel settings" aria-label="Ustawienia">
-        <h2>Ustawienia quizu</h2>
-        <div class="row">
-          <label for="category">Kategoria pytań</label>
-          <select id="category">
-            <option value="magazyn">Łatwe – magazyn</option>
-            <option value="sprzedaz">Średnie – sprzedaż</option>
-            <option value="kadra">Zaawansowane – kadra</option>
-            <option value="mix">Miks losowy (wszystkie)</option>
-          </select>
-        </div>
-        <div class="row">
-          <label for="count">Liczba pytań</label>
-          <input id=\"count\" type=\"number\" min=\"1\" max=\"10\" value=\"10\" />
-        </div>
-        <div class="row">
-          <label class="switch"><input id="shuffle" type="checkbox" checked /><span class="track"><span class="thumb"></span></span>Losuj kolejność</label>
-        </div>
-        <div class="row">
-          <button id="startBtn" class="btn primary" style="width:100%">Rozpocznij quiz</button>
-        </div>
-        <hr style="border-color: var(--border); opacity:.5; margin: 14px 0;">
-        <p style="color:var(--muted); font-size:14px; margin:0">
-          <strong>Uwaga:</strong> pytania i grafiki są na razie zastąpione <em>lorem ipsum</em>. W miejscach oznaczonych komentarzem <code>// TODO</code> wstawisz docelowe treści i obrazy.
-        </p>
-      </section>
+    <section class="panel" id="settings">
+      <h2>Ustawienia</h2>
+      <div class="row">
+        <label>Kategoria:</label>
+        <select id="category">
+          <option value="latwe">Łatwe</option>
+          <option value="srednie">Średnie</option>
+          <option value="trudne">Zaawansowane</option>
+          <option value="mix">Miks</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>Liczba pytań:</label>
+        <input id="count" type="number" min="1" max="10" value="10">
+      </div>
+      <div class="row">
+        <button id="startBtn" class="primary">Rozpocznij quiz</button>
+        <button id="accessibilityBtn">Tryb dostępności</button>
+      </div>
+    </section>
 
-      <!-- OBSZAR QUIZU -->
-      <section class="panel quiz" aria-live="polite" aria-atomic="true">
-        <div id="quizView" class="card">
-          <!-- Meta / postęp -->
-          <div class="meta">
-            <div>
-              <span class="pill">Pytanie <span id="qIndex">0</span>/<span id="qTotal">0</span></span>
-              <span class="pill tag" id="qTag">KATEGORIA</span>
-            </div>
-            <div style="min-width: 180px;">
-              <div class="progress" aria-hidden="true"><div id="bar" class="bar"></div></div>
-            </div>
-          </div>
+    <section class="panel" id="quiz" style="display:none;">
+      <div id="timer">Czas: 03:00</div>
+      <div class="dots" id="dots"></div>
+      <div class="pill">Pytanie <span id="qIndex">0</span>/<span id="qTotal">0</span></div>
+      <div class="bar" id="bar"></div>
+      <h3 id="qText"></h3>
+      <div id="answers" class="answers"></div>
+      <div id="explanation" style="color:var(--muted); font-size:14px; margin-top:6px;"></div>
+      <div class="row">
+        <button id="prevBtn">Wstecz</button>
+        <button id="nextBtn" class="primary">Dalej</button>
+      </div>
+    </section>
 
-          <!-- Obrazek pytania (placeholder) -->
-          <figure class="q-img" id="qImageBox">
-            <img id="qImage" alt="Obraz ilustrujący pytanie" />
-            <figcaption id="qImageCap">Miejsce na grafikę (opcjonalnie)</figcaption>
-          </figure>
+    <section class="panel" id="result" style="display:none;">
+      <h2>Wynik</h2>
+      <div id="score"></div>
+      <button id="retryBtn" class="primary">Zagraj ponownie</button>
+    </section>
 
-          <!-- Treść pytania -->
-          <div id="qText" class="q-text">Kliknij „Rozpocznij quiz”, aby zacząć.</div>
-
-          <!-- Odpowiedzi -->
-          <div id="answers" class="answers"></div>
-
-          <!-- Sterowanie -->
-          <div class="controls">
-            <button id="prevBtn" class="btn ghost" disabled>Wstecz</button>
-            <button id="nextBtn" class="btn">Dalej</button>
-            <button id="finishBtn" class="btn" style="margin-left:auto;">Zakończ</button>
-          </div>
-        </div>
-
-        <!-- WIDOK WYNIKÓW -->
-        <div id="resultsView" class="results hidden">
-          <div class="score" id="scoreText">Wynik: 0/0</div>
-          <div class="row" style="gap:8px; flex-wrap:wrap;">
-            <button id="retryBtn" class="btn">Zagraj ponownie</button>
-            <button id="exportBtn" class="btn ghost">Eksport do CSV</button>
-          </div>
-          <h3 style="margin-top:16px;">Przegląd pytań</h3>
-          <div id="review" class="review"></div>
-        </div>
-      </section>
-    </div>
+    <button id="aboutBtn" class="primary" style="margin-top:20px;">O projekcie</button>
   </main>
 
-  <footer>
-    <p>© <span id="year"></span> SecCoach. Szablon quizu – gotowy na podmianę treści i grafik.</p>
-  </footer>
+  <!-- Modal -->
+  <div id="aboutModal" class="modal">
+    <div class="modal-content">
+      <h2>O projekcie</h2>
+      <p><strong>SecCoach</strong> to projekt edukacyjny mający na celu podniesienie świadomości cyberbezpieczeństwa pracowników.</p>
+      <p>Stworzony w ramach przedmiotu <em>Technologie aplikacji mobilnych</em> na Uniwersytecie WSB Merito w Toruniu.</p>
+      <p>Autorzy: zespół studentów kierunku Informatyka w Biznesie.</p>
+      <button id="closeAbout" class="primary">Zamknij</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
 
   <script>
-    // ====== DANE PRZYKŁADOWE (LOREM IPSUM) ======
-    // Każde pytanie może opcjonalnie mieć: image: "ścieżka/do/obrazu.jpg" oraz imageAlt.
-    const BANK = {
-      magazyn: [
-        {
-          id: 'm1',
-          tag: 'Łatwe',
-          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
-          image: '',
-          imageAlt: 'Opis obrazu do dostępności',
-          options: ['Lorem', 'Ipsum', 'Dolor', 'Sit amet'],
-          correct: 1,
-          why: 'Wyjaśnienie: lorem ipsum – przykładowy opis dlaczego odpowiedź B jest poprawna.'
-        },
-        { id: 'm2', tag: 'Łatwe', text: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?', image: '', options: ['Tempor', 'Incididunt', 'Ut', 'Labore'], correct: 3, why: 'Wyjaśnienie: lorem ipsum – wskazówka do zadania.' },
-        { id: 'm3', tag: 'Łatwe', text: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco?', image: '', options: ['Ut enim', 'Ad minim', 'Veniam', 'Nostrud'], correct: 0, why: 'Wyjaśnienie: lorem ipsum – uzasadnienie poprawnej odpowiedzi.' },
-      ],
-      sprzedaz: [
-        { id:'s1', tag:'Średnie', text:'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum?', image:'', options:['Duis','Aute','Irure','Dolor'], correct:2, why: 'Wyjaśnienie: lorem ipsum.' },
-        { id:'s2', tag:'Średnie', text:'Excepteur sint occaecat cupidatat non proident?', image:'', options:['Excepteur','Sint','Occaecat','Cupidatat'], correct:0, why: 'Wyjaśnienie: lorem ipsum.' },
-        { id:'s3', tag:'Średnie', text:'Sunt in culpa qui officia deserunt mollit anim id est laborum?', image:'', options:['Sunt','In culpa','Qui officia','Deserunt'], correct:1, why: 'Wyjaśnienie: lorem ipsum.' },
-      ],
-      kadra: [
-        { id:'k1', tag:'Zaawansowane', text:'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus?', image:'', options:['Curabitur','Non nulla','Sit amet','Nisl'], correct:3, why: 'Wyjaśnienie: lorem ipsum.' },
-        { id:'k2', tag:'Zaawansowane', text:'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi?', image:'', options:['Praesent','Sapien','Massa','Convallis'], correct:1, why: 'Wyjaśnienie: lorem ipsum.' },
-        { id:'k3', tag:'Zaawansowane', text:'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui?', image:'', options:['Vestibulum','Ac diam','Sit amet','Quam'], correct:0, why: 'Wyjaśnienie: lorem ipsum.' },
-      ]
-    };
-
-    // ====== STAN APLIKACJI ======
-    const state = {
-      pool: [],
-      current: 0,
-      answers: [], // { choice, correct }
-      started: false,
-    };
-
-    // ====== ELEMENTY DOM ======
+    let questions = [];
+    let state = { pool: [], current: 0, answers: [], timer: 180 };
     const els = {
-      themeToggle: document.getElementById('themeToggle'),
       category: document.getElementById('category'),
       count: document.getElementById('count'),
-      shuffle: document.getElementById('shuffle'),
       startBtn: document.getElementById('startBtn'),
-
-      quizView: document.getElementById('quizView'),
-      resultsView: document.getElementById('resultsView'),
-
-      qIndex: document.getElementById('qIndex'),
-      qTotal: document.getElementById('qTotal'),
-      qTag: document.getElementById('qTag'),
+      quiz: document.getElementById('quiz'),
+      settings: document.getElementById('settings'),
+      result: document.getElementById('result'),
       qText: document.getElementById('qText'),
       answers: document.getElementById('answers'),
-      qImage: document.getElementById('qImage'),
-      qImageBox: document.getElementById('qImageBox'),
-      qImageCap: document.getElementById('qImageCap'),
-
+      qIndex: document.getElementById('qIndex'),
+      qTotal: document.getElementById('qTotal'),
       bar: document.getElementById('bar'),
-
-      prevBtn: document.getElementById('prevBtn'),
       nextBtn: document.getElementById('nextBtn'),
-      finishBtn: document.getElementById('finishBtn'),
-
-      scoreText: document.getElementById('scoreText'),
-      review: document.getElementById('review'),
+      prevBtn: document.getElementById('prevBtn'),
+      explanation: document.getElementById('explanation'),
+      score: document.getElementById('score'),
       retryBtn: document.getElementById('retryBtn'),
-      exportBtn: document.getElementById('exportBtn'),
+      timer: document.getElementById('timer'),
+      dots: document.getElementById('dots'),
+      toast: document.getElementById('toast'),
+      accessibilityBtn: document.getElementById('accessibilityBtn'),
+      aboutBtn: document.getElementById('aboutBtn'),
+      aboutModal: document.getElementById('aboutModal'),
+      closeAbout: document.getElementById('closeAbout')
     };
 
-    // ====== POMOCNICZE ======
-    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-    function shuffleArray(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+    // Toast
+    function toast(msg){ els.toast.textContent = msg; els.toast.classList.add('show'); setTimeout(()=>els.toast.classList.remove('show'),2000); }
 
-    function buildPool(category, count, doShuffle){
-      let pool = [];
-      const LIMIT = 10; // max 10 na poziom
-      if(category === 'mix'){
-        // do 10 z każdej kategorii
-        const m = [...BANK.magazyn];
-        const s = [...BANK.sprzedaz];
-        const k = [...BANK.kadra];
-        if(doShuffle){ shuffleArray(m); shuffleArray(s); shuffleArray(k); }
-        pool = [...m.slice(0, Math.min(LIMIT, m.length)),
-                ...s.slice(0, Math.min(LIMIT, s.length)),
-                ...k.slice(0, Math.min(LIMIT, k.length))];
-        // Jeśli użytkownik poda mniejszą liczbę – przytnij do count; w każdym razie nie więcej niż 30
-        const maxMix = Math.min(pool.length, LIMIT*3);
-        pool = pool.slice(0, Math.min(count || maxMix, maxMix));
-      } else {
-        pool = [...BANK[category]];
-        if(doShuffle) shuffleArray(pool);
-        // nie więcej niż 10 w danej kategorii
-        pool = pool.slice(0, Math.min(count, Math.min(LIMIT, pool.length)));
-      }
-      return pool;
+    // Zegar
+    let timerInterval;
+    function startTimer(){
+      clearInterval(timerInterval);
+      state.timer = 180;
+      updateTimer();
+      timerInterval = setInterval(()=>{
+        state.timer--;
+        updateTimer();
+        if(state.timer<=0){ clearInterval(timerInterval); finishQuiz(); toast('Czas minął!'); }
+      },1000);
+    }
+    function updateTimer(){
+      const m = Math.floor(state.timer/60);
+      const s = state.timer%60;
+      els.timer.textContent = `Czas: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }
 
+    // Renderowanie pytania
     function renderQuestion(){
       const q = state.pool[state.current];
-      els.qIndex.textContent = state.current + 1;
-      els.qTotal.textContent = state.pool.length;
-      els.qTag.textContent = q.tag || '';
-
       els.qText.textContent = q.text;
-
-      if(q.image){
-        els.qImage.src = q.image;
-        els.qImage.alt = q.imageAlt || 'Grafika do pytania';
-        els.qImage.style.display = 'block';
-        els.qImageCap.textContent = q.imageAlt || '';
-      } else {
-        els.qImage.removeAttribute('src');
-        els.qImage.style.display = 'none';
-        els.qImageCap.textContent = 'Miejsce na grafikę (opcjonalnie)';
-      }
-
       els.answers.innerHTML = '';
-      q.options.forEach((opt, idx)=>{
-        const btn = document.createElement('button');
-        btn.className = 'option';
-        btn.setAttribute('role','radio');
-        btn.setAttribute('aria-checked','false');
-        btn.innerHTML = `<strong>${String.fromCharCode(65+idx)}.</strong> ${opt}`;
-        btn.addEventListener('click', ()=>selectAnswer(idx));
-        const saved = state.answers[state.current];
-        if(saved){
-          const checked = saved.choice === idx;
-          btn.setAttribute('aria-checked', checked ? 'true':'false');
-          if(saved.reveal){
-            btn.classList.toggle('correct', idx === q.correct);
-            btn.classList.toggle('wrong', checked && idx !== q.correct);
-          }
-        }
-        els.answers.appendChild(btn);
+      els.explanation.textContent = '';
+      els.qIndex.textContent = state.current+1;
+      els.qTotal.textContent = state.pool.length;
+      const progress = (state.current/state.pool.length)*100;
+      els.bar.style.width = progress+'%';
+
+      els.dots.innerHTML = '';
+      state.pool.forEach((_,i)=>{
+        const d = document.createElement('div');
+        d.className = 'dot'+(i===state.current?' active':'');
+        d.onclick=()=>{state.current=i; renderQuestion();};
+        els.dots.appendChild(d);
       });
 
-      const progress = ((state.current) / state.pool.length) * 100;
-      els.bar.style.width = `${progress}%`;
-
-      updateControls();
-    } else {
-        els.qImage.removeAttribute('src');
-        els.qImage.style.display = 'none';
-        els.qImageCap.textContent = 'Miejsce na grafikę (opcjonalnie)';
-      }
-
-      // Odpowiedzi
-      els.answers.innerHTML = '';
-      q.options.forEach((opt, idx)=>{
-        const btn = document.createElement('button');
-        btn.className = 'option';
-        btn.setAttribute('role','radio');
-        btn.setAttribute('aria-checked','false');
-        btn.innerHTML = `<strong>${String.fromCharCode(65+idx)}.</strong> ${opt}`;
-        btn.addEventListener('click', ()=>selectAnswer(idx));
-        // Jeśli już zaznaczono wcześniej, odtwórz stan
-        const saved = state.answers[state.current];
-        if(saved){
-          const checked = saved.choice === idx;
-          btn.setAttribute('aria-checked', checked ? 'true':'false');
-          if(saved.reveal){
-            btn.classList.toggle('correct', idx === q.correct);
-            btn.classList.toggle('wrong', checked && idx !== q.correct);
-          }
-        }
+      q.options.forEach((opt,idx)=>{
+        const btn=document.createElement('button');
+        btn.className='option';
+        btn.textContent=opt;
+        btn.onclick=()=>selectAnswer(idx);
         els.answers.appendChild(btn);
       });
-
-      // Postęp
-      const progress = ((state.current) / state.pool.length) * 100;
-      els.bar.style.width = `${progress}%`;
-
-      // Przyciski
-      els.prevBtn.disabled = state.current === 0;
-      els.nextBtn.disabled = state.current >= state.pool.length - 1;
     }
 
+    // Odpowiedź
     function selectAnswer(idx){
       const q = state.pool[state.current];
-      state.answers[state.current] = { choice: idx, correct: idx === q.correct };
-      // ARIA / zaznaczenie
-      [...els.answers.children].forEach((el, i)=>{
-        el.setAttribute('aria-checked', i===idx ? 'true' : 'false');
+      const correct = idx===q.correct;
+      state.answers[state.current]={choice:idx,correct};
+      [...els.answers.children].forEach((b,i)=>{
+        b.disabled=true;
+        if(i===q.correct)b.classList.add('correct');
+        if(i===idx&&!correct)b.classList.add('wrong');
       });
-    }
-
-    function finishQuiz(){
-      state.answers = state.answers.map((a, i)=> a ? {...a, reveal:true} : { choice:null, correct:false, reveal:true });
-      const q = state.pool[state.current];
-      [...els.answers.children].forEach((el, i)=>{
-        el.classList.toggle('correct', i===q.correct);
-        if(state.answers[state.current]?.choice === i && i!==q.correct) el.classList.add('wrong');
-      });
-
-      const good = state.answers.filter(a=>a && a.correct).length;
-      els.scoreText.textContent = `Wynik: ${good}/${state.pool.length}`;
-
-      els.review.innerHTML = '';
-      state.pool.forEach((qq, i)=>{
-        const a = state.answers[i];
-        const item = document.createElement('div');
-        item.className = 'card';
-        item.innerHTML = `
-          <div class=\"meta\">
-            <span class=\"pill\">#${i+1}</span>
-            <span class=\"pill ${a?.correct ? 'tag' : ''}\">${a?.correct ? 'POPRAWNIE' : 'BŁĄD'}</span>
-          </div>
-          <div style=\"font-weight:600; margin-bottom:6px;\">${qq.text}</div>
-          <div style=\"font-size:14px; color:var(--muted);\">Poprawna: <strong>${String.fromCharCode(65+qq.correct)}</strong> – ${qq.options[qq.correct]}</div>
-          ${a && a.choice!=null ? `<div style=\"font-size:13px; color:${a.correct ? 'var(--accent-2)' : 'var(--danger)'};\">Twoja odpowiedź: <strong>${String.fromCharCode(65+a.choice)}</strong> – ${qq.options[a.choice]}</div>` : '<div style=\"font-size:13px; color:var(--warn);\">Brak odpowiedzi</div>'}
-          ${qq.why ? `<div style=\"margin-top:6px; font-size:13px; color:var(--muted);\"><em>${qq.why}</em></div>` : ''}
-        `;
-        els.review.appendChild(item);
-      });
-
-      els.quizView.classList.add('hidden');
-      els.resultsView.classList.remove('hidden');
-      toast('Test zakończony. Zobacz podsumowanie.');
-    } : { choice:null, correct:false, reveal:true });
-      const q = state.pool[state.current];
-      [...els.answers.children].forEach((el, i)=>{
-        el.classList.toggle('correct', i===q.correct);
-        if(state.answers[state.current]?.choice === i && i!==q.correct) el.classList.add('wrong');
-      });
-
-      // Wynik
-      const good = state.answers.filter(a=>a && a.correct).length;
-      els.scoreText.textContent = `Wynik: ${good}/${state.pool.length}`;
-
-      // Przegląd
-      els.review.innerHTML = '';
-      state.pool.forEach((qq, i)=>{
-        const a = state.answers[i];
-        const item = document.createElement('div');
-        item.className = 'card';
-        item.innerHTML = `
-          <div class="meta">
-            <span class="pill">#${i+1}</span>
-            <span class="pill ${a?.correct ? 'tag' : ''}">${a?.correct ? 'POPRAWNIE' : 'BŁĄD'}</span>
-          </div>
-          <div style="font-weight:600; margin-bottom:6px;">${qq.text}</div>
-          <div style="font-size:14px; color:var(--muted);">Poprawna: <strong>${String.fromCharCode(65+qq.correct)}</strong> – ${qq.options[qq.correct]}</div>
-          ${a && a.choice!=null ? `<div style="font-size:13px; color:${a.correct ? 'var(--accent-2)' : 'var(--danger)'};">Twoja odpowiedź: <strong>${String.fromCharCode(65+a.choice)}</strong> – ${qq.options[a.choice]}</div>` : '<div style="font-size:13px; color:var(--warn);">Brak odpowiedzi</div>'}
-        `;
-        els.review.appendChild(item);
-      });
-
-      els.quizView.classList.add('hidden');
-      els.resultsView.classList.remove('hidden');
-    }
-
-    function exportCSV(){
-      const rows = [['#','Kategoria','Pytanie','Poprawna (litera)','Poprawna (treść)','Twoja (litera)','Twoja (treść)','Wynik']];
-      state.pool.forEach((q, i)=>{
-        const a = state.answers[i];
-        const correctL = String.fromCharCode(65 + q.correct);
-        const yourL = a && a.choice!=null ? String.fromCharCode(65+a.choice) : '';
-        rows.push([
-          i+1,
-          q.tag || '',
-          q.text.replaceAll('\n',' '),
-          correctL,
-          q.options[q.correct],
-          yourL,
-          a && a.choice!=null ? q.options[a.choice] : '',
-          a && a.correct ? '1' : '0'
-        ]);
-      });
-      const csv = rows.map(r=> r.map(cell=>`"${String(cell).replaceAll('"','""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'wyniki_quizu.csv'; a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    // ====== ZDARZENIA / LOGIKA APLIKACJI ======
-    function startQuiz(){
-      const cat = els.category.value;
-      // Ustal limit zgodnie z kategorią (10 na poziom; 30 w miksie)
-      const limitPerLevel = 10;
-      const maxForCat = cat === 'mix' ? Math.min(limitPerLevel*3, BANK.magazyn.length + BANK.sprzedaz.length + BANK.kadra.length) : Math.min(limitPerLevel, BANK[cat].length);
-      // Dopasuj UI (max) i bieżącą wartość
-      els.count.max = String(maxForCat);
-      if(parseInt(els.count.value, 10) > maxForCat) els.count.value = String(maxForCat);
-
-      const cnt = parseInt(els.count.value, 10) || Math.min(10, maxForCat);
-      const pool = buildPool(cat, cnt, els.shuffle.checked);
-      state.pool = pool;
-      state.current = 0;
-      state.answers = new Array(pool.length);
-      state.started = true;
-      els.resultsView.classList.add('hidden');
-      els.quizView.classList.remove('hidden');
-      renderQuestion();
+      els.explanation.textContent=q.why;
+      saveProgress();
     }
 
     function next(){
-      if(state.current < state.pool.length - 1){
-        state.current++;
-        renderQuestion();
-      } else {
-        finishQuiz();
+      if(state.current<state.pool.length-1){state.current++;renderQuestion();}
+      else finishQuiz();
+    }
+    function prev(){ if(state.current>0){state.current--;renderQuestion();} }
+
+    function finishQuiz(){
+      clearInterval(timerInterval);
+      const good=state.answers.filter(a=>a&&a.correct).length;
+      els.quiz.style.display='none';
+      els.result.style.display='block';
+      els.score.textContent=`Wynik: ${good}/${state.pool.length}`;
+      localStorage.removeItem('quizProgress');
+    }
+
+    function startQuiz(){
+      const cat=els.category.value; const cnt=parseInt(els.count.value)||10;
+      let pool=[];
+      if(cat==='mix'){
+        pool=[...questions.latwe,...questions.srednie,...questions.trudne];
+      } else pool=[...questions[cat]];
+      pool=pool.slice(0,cnt);
+      state={pool,current:0,answers:new Array(pool.length),timer:180};
+      els.settings.style.display='none'; els.quiz.style.display='block'; els.result.style.display='none';
+      renderQuestion(); startTimer(); saveProgress();
+    }
+
+    // Zapisywanie postępu
+    function saveProgress(){
+      localStorage.setItem('quizProgress',JSON.stringify({state}));
+    }
+    function loadProgress(){
+      const data=localStorage.getItem('quizProgress');
+      if(data){
+        const saved=JSON.parse(data).state;
+        if(saved){state=saved; els.settings.style.display='none'; els.quiz.style.display='block'; renderQuestion(); startTimer();}
       }
     }
-    function updateControls(){
-      els.prevBtn.disabled = state.current === 0;
-      const last = state.current >= state.pool.length - 1;
-      els.nextBtn.textContent = last ? 'Zakończ' : 'Dalej';
-      els.finishBtn.disabled = false;
-    } }
-    function prev(){ if(state.current > 0){ state.current--; renderQuestion(); } }
 
-    // Motyw (prosty toggle – w razie potrzeby można dodać jasną paletę)
-    els.themeToggle.addEventListener('change', ()=>{
-      document.body.style.filter = els.themeToggle.checked ? 'invert(1) hue-rotate(180deg)' : 'none';
-    });
+    // Dostępność
+    els.accessibilityBtn.onclick=()=>{
+      document.body.classList.toggle('large-font');
+      document.body.classList.toggle('high-contrast');
+    };
 
-    // Hooki UI
-    els.startBtn.addEventListener('click', startQuiz);
-    els.nextBtn.addEventListener('click', next);
-    els.prevBtn.addEventListener('click', prev);
-    els.finishBtn.addEventListener('click', finishQuiz);
-    els.retryBtn.addEventListener('click', ()=>{
-      els.resultsView.classList.add('hidden');
-      els.quizView.classList.remove('hidden');
-      startQuiz();
-    });
-    els.exportBtn.addEventListener('click', exportCSV);
-    els.category.addEventListener('change', ()=>{
-      const cat = els.category.value;
-      const limitPerLevel = 10;
-      const maxForCat = cat === 'mix' ? Math.min(limitPerLevel*3, BANK.magazyn.length + BANK.sprzedaz.length + BANK.kadra.length) : Math.min(limitPerLevel, BANK[cat].length);
-      els.count.max = String(maxForCat);
-      if(parseInt(els.count.value, 10) > maxForCat) els.count.value = String(maxForCat);
-    });
+    // Modal
+    els.aboutBtn.onclick=()=>els.aboutModal.classList.add('show');
+    els.closeAbout.onclick=()=>els.aboutModal.classList.remove('show');
 
-    function toast(msg){
-      let t = document.querySelector('.toast');
-      if(!t){ t = document.createElement('div'); t.className='toast'; document.body.appendChild(t); }
-      t.textContent = msg; t.classList.add('show');
-      setTimeout(()=> t.classList.remove('show'), 2000);
-    }
+    // Ładowanie pytań
+    fetch('assets/questions.json').then(r=>r.json()).then(d=>{questions=d;loadProgress();});
 
-    // Init
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // Eventy
+    els.startBtn.onclick=startQuiz;
+    els.nextBtn.onclick=next;
+    els.prevBtn.onclick=prev;
+    els.retryBtn.onclick=()=>{localStorage.removeItem('quizProgress');location.reload();};
   </script>
 </body>
 </html>
