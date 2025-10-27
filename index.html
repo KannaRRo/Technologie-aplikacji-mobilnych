@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>SecCoach – Quiz szkoleniowy</title>
+
+  <!-- META / favicon -->
+  <meta name="description" content="SecCoach – interaktywny quiz z cyberbezpieczeństwa dla pracowników.">
+  <meta property="og:title" content="SecCoach – Quiz szkoleniowy">
+  <meta property="og:description" content="Szybki quiz z cyberbezpieczeństwa dla pracowników.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/logo-seccoach.png">
+  <link rel="icon" type="image/png" href="assets/logo-seccoach.png">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root{
       --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb;
@@ -11,53 +23,82 @@
       --card:#0b1220; --border:#1f2937; --shadow:0 10px 25px rgba(0,0,0,.35);
       --radius:16px;
     }
-    *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,sans-serif}
-    header{max-width:1100px;margin:24px auto 0;padding:16px 20px;text-align:center}
-    .container{max-width:900px;margin:0 auto;padding:0 20px 40px}
+    /* Motyw jasny */
+    .light{--bg:#f8fafc;--panel:#ffffff;--text:#0b1220;--muted:#475569;--border:#e2e8f0;--card:#ffffff; background:#f8fafc;color:#0b1220}
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:rgba(15,23,42,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .light .site-header{background:rgba(255,255,255,.8)}
+    .site-logo img{display:block;height:clamp(32px,6vw,66px)}
+    .site-actions{display:flex;gap:8px}
+    .btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:10px;padding:8px 10px;font-weight:600;cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b1220;border:none}
+    .container{max-width:960px;margin:0 auto;padding:0 20px 40px}
     .panel{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-top:20px}
     .row{margin:10px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    label{min-width:180px;color:var(--muted)}
     select,input,button{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:10px;padding:10px 12px;font-size:15px}
-    button{cursor:pointer}
-    .primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b1220;font-weight:700;border:none}
+    input:invalid{border-color:var(--danger)} input:valid{border-color:#334155}
+    button, .option, input, select{transition: background .2s, border-color .2s, transform .1s}
+    button:active{transform:scale(.98)} button:disabled{opacity:.5;cursor:not-allowed}
     .pill{padding:3px 10px;border-radius:999px;background:#0b1220;border:1px solid var(--border);font-size:13px;color:var(--muted)}
-    .bar{height:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:.3s;border-radius:8px}
+    .bar-wrap{display:flex;gap:10px;align-items:center}
+    .bar{flex:1;height:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:.3s;border-radius:8px}
+    .percent{min-width:46px;text-align:right;color:var(--muted);font-weight:700}
     .answers{display:grid;gap:8px;margin:10px 0}
     .option{padding:12px;border:1px solid var(--border);border-radius:12px;background:#0e1627;text-align:left}
+    .light .option{background:#f1f5f9}
     .option.correct{border-color:var(--accent-2);background:rgba(52,211,153,.1)}
     .option.wrong{border-color:var(--danger);background:rgba(244,63,94,.1)}
     .dots{display:flex;justify-content:center;gap:6px;margin-bottom:8px;flex-wrap:wrap}
     .dot{width:10px;height:10px;border-radius:50%;background:#1f2937;cursor:pointer}
     .dot.active{background:var(--accent)}
     #timer{font-weight:700;color:var(--accent);text-align:center;margin-top:5px}
-    #accessibilityBtn{margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--text)}
     .toast{position:fixed;left:50%;bottom:15px;transform:translateX(-50%);background:#0b1220;border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:12px;opacity:0;transition:.3s}
     .toast.show{opacity:1}
     .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center}
     .modal-content{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:600px;width:90%;color:var(--text)}
     .modal.show{display:flex}
-    .large-font{font-size:18px}
-    .high-contrast{background:#000 !important;color:#fff !important}
-
-    /* blok obrazka pytania */
-    .q-img{
-      width:100%;height:clamp(160px,28vw,260px);border:1px dashed var(--border);
-      border-radius:14px;display:grid;place-items:center;color:var(--muted);
-      background:#0b1220;overflow:hidden;margin:10px 0 14px;
-    }
+    .site-footer{max-width:960px;margin:24px auto;padding:0 20px;color:var(--muted);text-align:center}
+    .q-img{width:100%;height:clamp(160px,28vw,260px);border:1px dashed var(--border);border-radius:14px;display:grid;place-items:center;color:var(--muted);background:#0b1220;overflow:hidden;margin:10px 0 14px}
+    .light .q-img{background:#f1f5f9}
     .q-img img{width:100%;height:100%;object-fit:cover;display:none}
     .q-img figcaption{font-size:13px;color:var(--muted);padding:6px}
+    /* Tabela / KPI / charts */
+    .kpi{display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px solid var(--border);background:rgba(255,255,255,.02);border-radius:12px;min-width:160px}
+    .kpi .kpi-label{color:var(--muted);font-size:13px}
+    .kpi .kpi-value{font-size:20px;font-weight:800}
+    .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
+    table{width:100%;border-collapse:collapse;min-width:640px}
+    th,td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left}
+    thead th{position:sticky;top:0;background:#0b1220}
+    .light thead th{background:#e2e8f0}
+    tbody tr:hover{background:#0e1627}
+    .light tbody tr:hover{background:#f8fafc}
+    .admin-badge{margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid var(--border);font-size:12px}
   </style>
 </head>
 <body>
-  <header><h1>SecCoach – interaktywny quiz szkoleniowy</h1></header>
+  <!-- HEADER -->
+  <header class="site-header">
+    <a href="login.html" class="site-logo" aria-label="Strona główna SecCoach">
+      <img src="assets/logo-seccoach.png" alt="SecCoach – logo"/>
+    </a>
+    <div class="site-actions">
+      <span id="userEmail" class="pill" aria-live="polite">Użytkownik</span>
+      <span id="adminBadge" class="admin-badge" style="display:none;">ADMIN</span>
+      <button id="themeToggle" class="btn" title="Przełącz motyw">🌓</button>
+      <button id="logoutBtn" class="btn">Wyloguj</button>
+    </div>
+  </header>
 
-  <main class="container">
-    <section class="panel" id="settings">
-      <h2>Ustawienia</h2>
+  <main class="container" id="main">
+    <!-- USTAWIENIA -->
+    <section class="panel" id="settings" aria-labelledby="ustawieniaTitle">
+      <h2 id="ustawieniaTitle">Ustawienia</h2>
       <div class="row">
         <label for="category">Kategoria:</label>
-        <select id="category">
+        <select id="category" aria-label="Wybierz kategorię pytań">
           <option value="latwe">Łatwe</option>
           <option value="srednie">Średnie</option>
           <option value="trudne">Zaawansowane</option>
@@ -66,172 +107,247 @@
       </div>
       <div class="row">
         <label for="count">Liczba pytań:</label>
-        <input id="count" type="number" min="1" max="10" value="10">
+        <input id="count" type="number" min="1" max="10" value="10" aria-label="Liczba pytań">
       </div>
       <div class="row">
-        <button id="startBtn" class="primary">Rozpocznij quiz</button>
-        <button id="accessibilityBtn">Tryb dostępności</button>
+        <button id="startBtn" class="btn primary">Rozpocznij quiz</button>
+        <button id="accessibilityBtn" class="btn">Tryb dostępności</button>
+        <button id="demoBtn" class="btn" title="Wygeneruj 50 przykładowych wyników">Symulacja (50 wyników)</button>
+        <button id="statsBtn" class="btn" title="Pokaż statystyki i historię wyników">Statystyki</button>
       </div>
     </section>
 
+    <!-- QUIZ -->
     <section class="panel" id="quiz" style="display:none;">
       <div id="timer">Czas: 03:00</div>
-      <div class="dots" id="dots"></div>
-      <div class="pill">Pytanie <span id="qIndex">0</span>/<span id="qTotal">0</span></div>
-      <div class="bar" id="bar"></div>
+      <div class="dots" id="dots" aria-label="Nawigacja po pytaniach"></div>
+      <div class="row" style="justify-content:space-between;">
+        <div class="pill">Pytanie <span id="qIndex">0</span>/<span id="qTotal">0</span></div>
+        <div class="bar-wrap" style="flex:1; margin-left:10px;">
+          <div class="bar" id="bar" aria-hidden="true"></div>
+          <div class="percent" id="percent">0%</div>
+        </div>
+      </div>
 
       <!-- obrazek pytania -->
       <figure class="q-img" id="qImageBox">
-        <img id="qImage" alt="Obraz ilustrujący pytanie" />
+        <img id="qImage" alt="Obraz ilustrujący pytanie"/>
         <figcaption id="qImageCap">Miejsce na grafikę (opcjonalnie)</figcaption>
       </figure>
 
-      <h3 id="qText"></h3>
-      <div id="answers" class="answers"></div>
+      <h3 id="qText" tabindex="0" aria-live="polite"></h3>
+      <div id="answers" class="answers" role="radiogroup" aria-label="Odpowiedzi"></div>
       <div id="explanation" style="color:var(--muted);font-size:14px;margin-top:6px;"></div>
+
       <div class="row">
-        <button id="prevBtn">Wstecz</button>
-        <button id="nextBtn" class="primary">Dalej</button>
+        <button id="prevBtn" class="btn" aria-label="Poprzednie pytanie">Wstecz</button>
+        <button id="nextBtn" class="btn primary" aria-label="Następne pytanie">Dalej</button>
       </div>
     </section>
 
+    <!-- WYNIK -->
     <section class="panel" id="result" style="display:none;">
       <h2>Wynik</h2>
       <div id="score"></div>
-      <button id="retryBtn" class="primary">Zagraj ponownie</button>
+      <div class="row" style="gap:8px;flex-wrap:wrap;">
+        <button id="retryBtn" class="btn primary">Zagraj ponownie</button>
+        <button id="downloadCsv" class="btn primary">Pobierz historię (CSV)</button>
+      </div>
     </section>
 
-    <button id="aboutBtn" class="primary" style="margin-top:20px;">O projekcie</button>
+    <!-- STATYSTYKI + RANKING + TABELA + WYKRESY -->
+    <section class="panel" id="stats" style="display:none;">
+      <h2>Statystyki</h2>
+      <div class="row" id="statsSummary"></div>
+
+      <div class="row">
+        <div class="panel" style="flex:1; padding:16px;">
+          <h3 style="margin-top:0;">Ranking TOP 5</h3>
+          <ol id="leaderboard" style="margin:0; padding-left:18px;"></ol>
+        </div>
+      </div>
+
+      <div class="row" style="display:grid;grid-template-columns:1fr;gap:16px">
+        <canvas id="chartScores" height="160" aria-label="Rozkład wyników" role="img"></canvas>
+        <canvas id="chartLevels" height="160" aria-label="Udział poziomów" role="img"></canvas>
+        <canvas id="chartTimeline" height="160" aria-label="Próby w czasie" role="img"></canvas>
+      </div>
+
+      <div class="row" style="justify-content:space-between; margin-top:10px;">
+        <div>
+          <button id="refreshStats" class="btn">Odśwież</button>
+          <button id="clearHistory" class="btn">Wyczyść historię</button>
+          <button id="exportJson" class="btn">Eksport JSON</button>
+        </div>
+        <button id="downloadCsv2" class="btn primary">Pobierz historię (CSV)</button>
+      </div>
+
+      <div class="table-wrap" style="margin-top:10px;">
+        <table class="table" id="historyTable">
+          <thead><tr><th>#</th><th>E-mail</th><th>Wynik</th><th>Pyt.</th><th>Czas (s)</th><th>Data</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Przyciski pod quizem -->
+    <button id="aboutBtn" class="btn primary" style="margin-top:20px;">O projekcie</button>
   </main>
 
-  <!-- Modal -->
-  <div id="aboutModal" class="modal">
+  <!-- Modal O projekcie -->
+  <div id="aboutModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="aboutTitle">
     <div class="modal-content">
-      <h2>O projekcie</h2>
-      <p><strong>SecCoach</strong> to projekt edukacyjny zwiększający świadomość cyberbezpieczeństwa pracowników poprzez szybkie quizy.</p>
-      <p>Wykonany w ramach przedmiotu <em>Technologie aplikacji mobilnych</em> (WSB Merito Toruń). Stack: HTML, CSS, JS, GitHub Pages.</p>
-      <p>Autorzy: zespół studentów — role: frontend, pytania/treści, grafika, testy.</p>
-      <button id="closeAbout" class="primary">Zamknij</button>
+      <h2 id="aboutTitle">O projekcie</h2>
+      <p><strong>SecCoach</strong> – interaktywny quiz zwiększający świadomość cyberbezpieczeństwa pracowników.</p>
+      <p>Wykonany w ramach <em>Technologie aplikacji mobilnych</em> (WSB Merito Toruń). Stack: HTML, CSS, JS, GitHub Pages.</p>
+      <p>Autorzy: Damian Król, Angelika Adamczewska.</p>
+      <button id="closeAbout" class="btn primary">Zamknij</button>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <footer class="site-footer">
+    <small>© <span id="year"></span> SecCoach • Wersja 1.1</small>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ===== ZMIENNE I ELEMENTY =====
+    // ===== STAN I ELEMENTY =====
     let questions = { latwe:[], srednie:[], trudne:[] };
     let state = { pool: [], current: 0, answers: [], timer: 180 };
-    let timerInterval;
+    let timerInterval, charts = {};
+    let isAdmin = localStorage.getItem('isAdmin') === '1';
 
+    const $ = (id)=>document.getElementById(id);
     const els = {
-      category: document.getElementById('category'),
-      count: document.getElementById('count'),
-      startBtn: document.getElementById('startBtn'),
-      settings: document.getElementById('settings'),
-      quiz: document.getElementById('quiz'),
-      result: document.getElementById('result'),
-      qText: document.getElementById('qText'),
-      answers: document.getElementById('answers'),
-      qIndex: document.getElementById('qIndex'),
-      qTotal: document.getElementById('qTotal'),
-      bar: document.getElementById('bar'),
-      nextBtn: document.getElementById('nextBtn'),
-      prevBtn: document.getElementById('prevBtn'),
-      explanation: document.getElementById('explanation'),
-      score: document.getElementById('score'),
-      retryBtn: document.getElementById('retryBtn'),
-      timer: document.getElementById('timer'),
-      dots: document.getElementById('dots'),
-      toast: document.getElementById('toast'),
-      accessibilityBtn: document.getElementById('accessibilityBtn'),
-      aboutBtn: document.getElementById('aboutBtn'),
-      aboutModal: document.getElementById('aboutModal'),
-      closeAbout: document.getElementById('closeAbout'),
-      qImage: document.getElementById('qImage'),
-      qImageBox: document.getElementById('qImageBox'),
-      qImageCap: document.getElementById('qImageCap')
+      themeToggle: $('themeToggle'),
+      logoutBtn: $('logoutBtn'),
+      userEmail: $('userEmail'),
+      adminBadge: $('adminBadge'),
+      category: $('category'),
+      count: $('count'),
+      startBtn: $('startBtn'),
+      settings: $('settings'),
+      quiz: $('quiz'),
+      result: $('result'),
+      qText: $('qText'),
+      answers: $('answers'),
+      qIndex: $('qIndex'),
+      qTotal: $('qTotal'),
+      bar: $('bar'),
+      percent: $('percent'),
+      nextBtn: $('nextBtn'),
+      prevBtn: $('prevBtn'),
+      explanation: $('explanation'),
+      score: $('score'),
+      retryBtn: $('retryBtn'),
+      timer: $('timer'),
+      dots: $('dots'),
+      toast: $('toast'),
+      accessibilityBtn: $('accessibilityBtn'),
+      aboutBtn: $('aboutBtn'),
+      aboutModal: $('aboutModal'),
+      closeAbout: $('closeAbout'),
+      qImage: $('qImage'),
+      qImageCap: $('qImageCap'),
+      // Stats
+      statsBtn: $('statsBtn'),
+      stats: $('stats'),
+      statsSummary: $('statsSummary'),
+      leaderboard: $('leaderboard'),
+      refreshStats: $('refreshStats'),
+      clearHistory: $('clearHistory'),
+      downloadCsv: $('downloadCsv'),
+      downloadCsv2: $('downloadCsv2'),
+      exportJson: $('exportJson'),
+      historyTableBody: document.querySelector('#historyTable tbody'),
+      demoBtn: $('demoBtn')
     };
 
-    // ===== POMOCNICZE =====
+    // ===== THEME =====
+    const savedTheme = localStorage.getItem('seccoach_theme') || 'dark';
+    if(savedTheme==='light') document.body.classList.add('light');
+    els.themeToggle.onclick = ()=>{
+      document.body.classList.toggle('light');
+      localStorage.setItem('seccoach_theme', document.body.classList.contains('light') ? 'light' : 'dark');
+    };
+
+    // ===== AUTH =====
+    const email = localStorage.getItem('quizUserEmail') || '';
+    if(!email){ location.href = 'login.html'; }
+    els.userEmail.textContent = email;
+    if(isAdmin){ els.adminBadge.style.display = 'inline-flex'; }
+
+    // ===== TOAST =====
     function toast(msg){ els.toast.textContent = msg; els.toast.classList.add('show'); setTimeout(()=>els.toast.classList.remove('show'),2000); }
+
+    // ===== POMOCNICZE =====
     function clampCount(max){
       const raw = String(els.count.value || '').replace(/[^0-9]/g,'');
       let n = parseInt(raw,10); if(isNaN(n)||n<1) n=1; if(max) n=Math.min(n,max);
       els.count.value = String(n); return n;
     }
+    function percent(score,total){ return total>0 ? Math.round((score/total)*100) : 0; }
 
     // ===== TIMER =====
-    function startTimer(){
-      clearInterval(timerInterval); state.timer = 180; updateTimer();
-      timerInterval = setInterval(()=>{
-        state.timer--; updateTimer();
-        if(state.timer<=0){ clearInterval(timerInterval); finishQuiz(); toast('Czas minął!'); }
-      },1000);
+    function startTimer(){ clearInterval(timerInterval); state.timer = 180; updateTimer();
+      timerInterval = setInterval(()=>{ state.timer--; updateTimer(); if(state.timer<=0){ clearInterval(timerInterval); finishQuiz(); toast('Czas minął!'); } },1000);
     }
-    function updateTimer(){
-      const m = Math.floor(state.timer/60), s = state.timer%60;
-      els.timer.textContent = `Czas: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    }
+    function updateTimer(){ const m=Math.floor(state.timer/60), s=state.timer%60; els.timer.textContent = `Czas: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 
     // ===== RENDER PYTANIA =====
+    let focusIndex = 0; // dla klawiatury
     function renderQuestion(){
       const q = state.pool[state.current];
       els.qText.textContent = q.text;
-      els.answers.innerHTML = '';
-      els.explanation.textContent = '';
-      els.qIndex.textContent = state.current+1;
-      els.qTotal.textContent = state.pool.length;
-      els.bar.style.width = ((state.current/state.pool.length)*100)+'%';
+      els.answers.innerHTML = ''; els.explanation.textContent = '';
+      els.qIndex.textContent = state.current+1; els.qTotal.textContent = state.pool.length;
+      const pct = Math.round((state.current/state.pool.length)*100); els.bar.style.width = pct+'%'; els.percent.textContent = pct+'%';
 
       // kropki
       els.dots.innerHTML = '';
-      state.pool.forEach((_,i)=>{
-        const d=document.createElement('div'); d.className='dot'+(i===state.current?' active':'');
-        d.onclick=()=>{state.current=i; renderQuestion();};
-        els.dots.appendChild(d);
-      });
+      state.pool.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===state.current?' active':''); d.onclick=()=>{state.current=i; renderQuestion();}; els.dots.appendChild(d); });
 
       // obrazek (opcjonalny)
-      if(q.image){
-        els.qImage.style.display='block';
-        els.qImage.src=q.image;
-        els.qImage.alt=q.imageAlt||'Grafika do pytania';
-        els.qImageCap.textContent=q.imageAlt||'';
-        els.qImage.onerror=()=>{ els.qImage.removeAttribute('src'); els.qImage.style.display='none'; els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)'; };
-      } else {
-        els.qImage.removeAttribute('src'); els.qImage.style.display='none';
-        els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)';
-      }
+      if(q.image){ els.qImage.style.display='block'; els.qImage.src=q.image; els.qImage.alt=q.imageAlt||'Grafika do pytania'; els.qImageCap.textContent=q.imageAlt||''; els.qImage.onerror=()=>{ els.qImage.removeAttribute('src'); els.qImage.style.display='none'; els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)'; }; }
+      else { els.qImage.removeAttribute('src'); els.qImage.style.display='none'; els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)'; }
 
-      // odpowiedzi
+      // odpowiedzi + ARIA + TAB
       q.options.forEach((opt,idx)=>{
-        const btn=document.createElement('button'); btn.className='option'; btn.textContent=opt;
+        const btn=document.createElement('button');
+        btn.className='option';
+        btn.setAttribute('role','radio');
+        btn.setAttribute('aria-checked','false');
+        btn.setAttribute('tabindex','0');
+        btn.textContent=opt;
         btn.onclick=()=>selectAnswer(idx);
         els.answers.appendChild(btn);
       });
+      focusIndex = 0;
+      els.answers.children[0]?.focus();
 
-      // jeżeli było coś zaznaczone wcześniej – odtwórz stan
+      // jeśli była wcześniejsza odpowiedź – odtwórz
       const prev = state.answers[state.current];
       if(prev){
-        [...els.answers.children].forEach((b,i)=>{
-          if(i===q.correct) b.classList.add('correct');
-          if(prev.choice===i && !prev.correct) b.classList.add('wrong');
-          b.disabled = true;
-        });
+        [...els.answers.children].forEach((b,i)=>{ if(i===q.correct) b.classList.add('correct'); if(prev.choice===i && !prev.correct) b.classList.add('wrong'); b.disabled = true; });
         els.explanation.textContent = q.why || '';
       }
     }
 
+    // ===== DOSTĘPNOŚĆ: klawiatura (strzałki / Enter) =====
+    document.addEventListener('keydown', (e)=>{
+      if(els.quiz.style.display==='none') return;
+      const total = els.answers.children.length;
+      if(e.key==='ArrowDown' || e.key==='ArrowRight'){ e.preventDefault(); focusIndex = (focusIndex+1)%total; els.answers.children[focusIndex]?.focus(); }
+      if(e.key==='ArrowUp' || e.key==='ArrowLeft'){ e.preventDefault(); focusIndex = (focusIndex-1+total)%total; els.answers.children[focusIndex]?.focus(); }
+      if(e.key==='Enter' || e.key===' '){ const focused = document.activeElement; const idx = [...els.answers.children].indexOf(focused); if(idx>=0) selectAnswer(idx); }
+    });
+
     // ===== ODP. I WYJAŚNIENIE =====
     function selectAnswer(idx){
-      const q = state.pool[state.current];
-      const correct = idx===q.correct;
+      const q = state.pool[state.current]; const correct = idx===q.correct;
       state.answers[state.current] = { choice: idx, correct };
-      [...els.answers.children].forEach((b,i)=>{
-        b.disabled=true;
-        if(i===q.correct) b.classList.add('correct');
-        if(i===idx && !correct) b.classList.add('wrong');
-      });
+      [...els.answers.children].forEach((b,i)=>{ b.disabled=true; if(i===q.correct) b.classList.add('correct'); if(i===idx && !correct) b.classList.add('wrong'); b.setAttribute('aria-checked', i===idx ? 'true':'false'); });
       els.explanation.textContent = q.why || '';
       saveProgress();
     }
@@ -243,77 +359,182 @@
       clearInterval(timerInterval);
       const good = state.answers.filter(a=>a&&a.correct).length;
       els.quiz.style.display='none'; els.result.style.display='block';
-      els.score.textContent = `Wynik: ${good}/${state.pool.length}`;
+      els.score.textContent = `Wynik: ${good}/${state.pool.length} (${percent(good,state.pool.length)}%)`;
+
+      // zapis historii
+      const elapsed = 180 - state.timer;
+      const resultObj = { email, score: good, total: state.pool.length, seconds: elapsed, date: new Date().toLocaleString() };
+      const hist = JSON.parse(localStorage.getItem('quizHistory') || '[]'); hist.push(resultObj);
+      localStorage.setItem('quizHistory', JSON.stringify(hist));
       localStorage.removeItem('quizProgress');
+      // (opcjonalnie) pokaż statystyki od razu
+      showStats();
     }
 
     // ===== START QUIZU =====
     function startQuiz(){
-      const cat = els.category.value;
-      const limitPerLevel = 10;
+      const cat = els.category.value; const limitPerLevel = 10;
       const maxForCat = cat==='mix'
         ? Math.min(limitPerLevel*3, questions.latwe.length + questions.srednie.length + questions.trudne.length)
         : Math.min(limitPerLevel, questions[cat].length);
-      els.count.max = String(maxForCat);
-      const cnt = clampCount(maxForCat);
+      els.count.max = String(maxForCat || 10);
+      const cnt = clampCount(maxForCat || 10);
 
       let pool=[];
-      if(cat==='mix'){
-        pool=[...questions.latwe.slice(0,limitPerLevel),
-              ...questions.srednie.slice(0,limitPerLevel),
-              ...questions.trudne.slice(0,limitPerLevel)];
-        pool = pool.slice(0,cnt); // pozwól wybrać mniej niż 30
-      } else {
-        pool=[...questions[cat]].slice(0,cnt);
-      }
+      if(cat==='mix'){ pool=[...questions.latwe.slice(0,limitPerLevel), ...questions.srednie.slice(0,limitPerLevel), ...questions.trudne.slice(0,limitPerLevel)]; pool = pool.slice(0,cnt); }
+      else { pool=[...questions[cat]].slice(0,cnt); }
 
       state={pool,current:0,answers:new Array(pool.length),timer:180};
       els.settings.style.display='none'; els.quiz.style.display='block'; els.result.style.display='none';
       renderQuestion(); startTimer(); saveProgress();
     }
 
-    // ===== ZAPIS POSTĘPÓW =====
+    // ===== ZAPIS/WZNOWIENIE SESJI =====
     function saveProgress(){ localStorage.setItem('quizProgress', JSON.stringify({state})); }
     function loadProgress(){
       const data=localStorage.getItem('quizProgress');
-      if(data){
-        try{
-          const saved=JSON.parse(data).state;
-          if(saved && saved.pool && saved.pool.length){
-            state=saved; els.settings.style.display='none'; els.quiz.style.display='block';
-            renderQuestion(); startTimer();
-          }
-        }catch{ /* ign */ }
-      }
+      if(data){ try{ const saved=JSON.parse(data).state; if(saved&&saved.pool&&saved.pool.length){ state=saved; els.settings.style.display='none'; els.quiz.style.display='block'; renderQuestion(); startTimer(); } }catch{} }
     }
 
-    // ===== DOSTĘPNOŚĆ / MODAL =====
-    els.accessibilityBtn.onclick=()=>{ document.body.classList.toggle('large-font'); document.body.classList.toggle('high-contrast'); };
-    els.aboutBtn.onclick=()=>els.aboutModal.classList.add('show');
-    els.closeAbout.onclick=()=>els.aboutModal.classList.remove('show');
+    // ===== DEMO 50 WYNIKÓW =====
+    function generateDemoData(){
+      const domains=['twojafirma.pl','firma.pl','example.com']; const now=new Date();
+      const hist=JSON.parse(localStorage.getItem('quizHistory')||'[]');
+      for(let i=1;i<=50;i++){
+        const total=Math.random()<0.65?10:30;
+        const score=Math.max(0,Math.min(total,Math.round(total*(0.45+Math.random()*0.4))));
+        const seconds=35+Math.floor(Math.random()*145);
+        const pastDays=Math.floor(Math.random()*30);
+        const date=new Date(now.getTime()-pastDays*24*60*60*1000);
+        const uid=String(i).padStart(2,'0'); const e=`demo${uid}@${domains[Math.floor(Math.random()*domains.length)]}`;
+        hist.push({email:e,score,total,seconds,date:date.toLocaleString()});
+      }
+      localStorage.setItem('quizHistory', JSON.stringify(hist));
+      toast('Dodano 50 wyników demo.');
+      renderStats();
+    }
 
-    // ===== ŁADOWANIE PYTAŃ Z JSON (z obsługą błędu) =====
+    // ===== STATYSTYKI / TABELA / WYKRESY =====
+    function getHistory(){ try{return JSON.parse(localStorage.getItem('quizHistory')||'[]');}catch{return[];} }
+    function avg(arr){ return !arr.length ? 0 : arr.reduce((a,b)=>a+b,0)/arr.length; }
+
+    function renderStats(){
+      const hist=getHistory();
+      // KPI
+      const count=hist.length;
+      const avgScore=Math.round(avg(hist.map(h=>h.score)));
+      const avgTotal=Math.round(avg(hist.map(h=>h.total)));
+      const avgPct=Math.round(avg(hist.map(h=>percent(h.score,h.total))));
+      const avgTime=Math.round(avg(hist.map(h=>h.seconds)));
+      els.statsSummary.innerHTML = `
+        <div class="kpi"><div class="kpi-label">Liczba wyników</div><div class="kpi-value">${count}</div></div>
+        <div class="kpi"><div class="kpi-label">Średni wynik</div><div class="kpi-value">${isNaN(avgScore)?0:avgScore}/${isNaN(avgTotal)?0:avgTotal}</div></div>
+        <div class="kpi"><div class="kpi-label">Średnio %</div><div class="kpi-value">${isNaN(avgPct)?0:avgPct}%</div></div>
+        <div class="kpi"><div class="kpi-label">Średni czas</div><div class="kpi-value">${isNaN(avgTime)?0:avgTime}s</div></div>
+      `;
+
+      // Ranking TOP 5
+      const top=[...hist].sort((a,b)=>{ const pa=percent(a.score,a.total), pb=percent(b.score,b.total); if(pb!==pa) return pb-pa; return a.seconds-b.seconds; }).slice(0,5);
+      els.leaderboard.innerHTML = top.length ? top.map(r=>`<li><strong>${r.email||'—'}</strong> — ${r.score}/${r.total} (${percent(r.score,r.total)}%), ${r.seconds}s</li>`).join('') : '<li>Brak danych</li>';
+
+      // Tabela (najnowsze na górze)
+      const rows=[...hist].reverse().map((r,i)=>`<tr><td>${i+1}</td><td>${r.email||'—'}</td><td>${r.score}</td><td>${r.total}</td><td>${r.seconds}</td><td>${r.date}</td></tr>`).join('');
+      els.historyTableBody.innerHTML = rows || '<tr><td colspan="6" style="color:var(--muted)">Brak wyników</td></tr>';
+
+      // WYKRES 1: rozkład wyników (0–100% w koszykach 10%)
+      const buckets=new Array(10).fill(0);
+      hist.forEach(h=>{ const p=percent(h.score,h.total); const b=Math.min(9,Math.floor(p/10)); buckets[b]++; });
+      drawChart('chartScores','bar',{labels:['0-9%','10-19%','20-29%','30-39%','40-49%','50-59%','60-69%','70-79%','80-89%','90-100%'], datasets:[{label:'Liczba osób', data:buckets}]});
+
+      // WYKRES 2: udział poziomów (na podstawie total=10 vs 30 – przy braku szczegółów)
+      const lvl = { 'Poziom (10 pytań)': hist.filter(h=>h.total===10).length, 'Miks (30 pytań)': hist.filter(h=>h.total===30).length };
+      drawChart('chartLevels','pie',{labels:Object.keys(lvl), datasets:[{data:Object.values(lvl)}]});
+
+      // WYKRES 3: linia – liczba prób per dzień
+      const byDay = {};
+      hist.forEach(h=>{ const d = new Date(h.date); const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; byDay[key]=(byDay[key]||0)+1; });
+      const days = Object.keys(byDay).sort();
+      drawChart('chartTimeline','line',{labels:days, datasets:[{label:'Próby', data:days.map(d=>byDay[d])}]});
+    }
+
+    function drawChart(id,type,dataCfg){
+      const ctx = document.getElementById(id).getContext('2d');
+      if(charts[id]){ charts[id].destroy(); }
+      charts[id] = new Chart(ctx, {
+        type,
+        data: dataCfg,
+        options: {
+          responsive:true,
+          plugins:{ legend:{labels:{color:getComputedStyle(document.body).getPropertyValue('--text')}}, tooltip:{} },
+          scales: type==='pie' ? {} : {
+            x:{ ticks:{ color:getComputedStyle(document.body).getPropertyValue('--muted') }, grid:{ color:'rgba(148,163,184,.2)'} },
+            y:{ ticks:{ color:getComputedStyle(document.body).getPropertyValue('--muted') }, grid:{ color:'rgba(148,163,184,.2)'} }
+          }
+        }
+      });
+    }
+
+    function showStats(){ els.stats.style.display='block'; renderStats(); }
+
+    // ===== EXPORT =====
+    function downloadCsvCommon(){
+      const hist=getHistory(); if(!hist.length){ toast('Brak zapisanych wyników'); return; }
+      const header=['E-mail','Wynik','Liczba pytań','Czas (s)','Data'];
+      const rows=hist.map(r=>[r.email||'',r.score,r.total,r.seconds,r.date]);
+      const csv=[header,...rows].map(e=>e.join(',')).join('\n');
+      const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
+      a.href=url; a.download='historia_quiz.csv'; a.click(); URL.revokeObjectURL(url);
+    }
+    function exportJson(){
+      const hist=getHistory(); const blob=new Blob([JSON.stringify(hist,null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='historia_quiz.json'; a.click(); URL.revokeObjectURL(url);
+    }
+
+    // ===== MODAL / AKCJE / ADMIN =====
+    $('aboutBtn').onclick=()=>$('aboutModal').classList.add('show');
+    $('closeAbout').onclick=()=>$('aboutModal').classList.remove('show');
+    $('logoutBtn').onclick=()=>{ localStorage.removeItem('quizUserEmail'); location.href='login.html'; };
+
+    // Sekretny przełącznik ADMIN: 5x klik w logo w 3 sekundy
+    (function adminSecret(){
+      let clicks=0, t=null;
+      document.querySelector('.site-logo').addEventListener('click', ()=>{
+        clicks++; if(!t) t=setTimeout(()=>{clicks=0; t=null;}, 3000);
+        if(clicks>=5){ isAdmin = !isAdmin; localStorage.setItem('isAdmin', isAdmin?'1':'0'); els.adminBadge.style.display=isAdmin?'inline-flex':'none'; toast(isAdmin?'Tryb ADMIN włączony':'Tryb ADMIN wyłączony'); }
+      });
+    })();
+
+    // ===== ZDARZENIA =====
+    $('startBtn').onclick=startQuiz;
+    $('nextBtn').onclick=next;
+    $('prevBtn').onclick=prev;
+    $('retryBtn').onclick=()=>{ localStorage.removeItem('quizProgress'); location.reload(); };
+    $('statsBtn').onclick=showStats;
+    $('refreshStats').onclick=renderStats;
+    $('clearHistory').onclick=()=>{ localStorage.removeItem('quizHistory'); renderStats(); toast('Wyczyszczono lokalną historię.'); };
+    $('downloadCsv').onclick=downloadCsvCommon;
+    $('downloadCsv2').onclick=downloadCsvCommon;
+    $('exportJson').onclick=exportJson;
+    $('demoBtn').onclick=generateDemoData;
+
+    // ===== ŁADOWANIE PYTAŃ =====
     fetch('assets/questions.json')
       .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
       .then(d=>{ questions=d; loadProgress(); })
-      .catch(err=>{ console.error(err); toast('Nie udało się załadować pytań. Sprawdź plik assets/questions.json'); });
-
-    // ===== EVENTY =====
-    els.startBtn.onclick=startQuiz;
-    els.nextBtn.onclick=next;
-    els.prevBtn.onclick=prev;
-    els.retryBtn.onclick=()=>{ localStorage.removeItem('quizProgress'); location.reload(); };
+      .catch(err=>{ console.error(err); toast('Nie udało się załadować pytań (assets/questions.json)'); });
 
     // dopasuj max count przy zmianie kategorii
     els.category.addEventListener('change', ()=>{
       const cat=els.category.value, limit=10;
       const maxForCat = cat==='mix'
-        ? Math.min(limit*3, questions.latwe.length + questions.srednie.length + questions.trudne.length)
+        ? Math.min(limit*3, (questions.latwe?.length||0)+(questions.srednie?.length||0)+(questions.trudne?.length||0))
         : Math.min(limit, (questions[cat]||[]).length);
-      els.count.max = String(maxForCat||10);
-      clampCount(maxForCat||10);
+      els.count.max = String(maxForCat||10); clampCount(maxForCat||10);
     });
     els.count.addEventListener('input', ()=> clampCount(parseInt(els.count.max,10)||10) );
+
+    // Rok w stopce
+    $('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
