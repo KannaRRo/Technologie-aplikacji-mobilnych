@@ -44,7 +44,11 @@
     .panel { background: rgba(255,255,255,.02); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
     .panel h2 { margin:0 0 14px; font-size: 18px; color: var(--text); }
 
-    .settings { padding: 18px; position: sticky; top: 16px; }
+    .settings { padding: 18px; }
+/* Sticky tylko na desktopie, aby na telefonach nic się nie nakładało */
+@media (min-width: 961px) {
+  .settings { position: sticky; top: 16px; }
+}
     .row { display:flex; gap:12px; align-items:center; margin: 10px 0; }
     label { color: var(--muted); font-size: 14px; }
     select, input[type="number"], button, .btn {
