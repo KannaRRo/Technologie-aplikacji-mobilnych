@@ -9,98 +9,406 @@
     :root{
       --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb;
       --accent:#38bdf8; --accent-2:#34d399; --danger:#f43f5e; --border:#1f2937;
+      --card:#0b1220;
+      --shadow:0 10px 30px rgba(2,6,23,.45);
     }
+    *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,sans-serif}
     .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
-    .card{width:min(520px,92vw);background:#0b1220;border:1px solid var(--border); border-radius:16px; padding:22px}
-.logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 10px 0;
-}
-
-.logo img {
-  width: clamp(180px, 40vw, 260px);
-  height: auto;
-  filter: drop-shadow(0 0 8px rgba(56,189,248,0.6));
-  transition: transform 0.3s ease, filter 0.3s ease;
-  border-radius: 10px;
-}
-
-.logo img:hover {
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 12px rgba(52,211,153,0.8));
-}
-
-    h1{margin:.2rem 0 1rem;text-align:center}
+    .card{width:min(560px,92vw);background:var(--card);border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:var(--shadow)}
+    .logo{display:flex;justify-content:center;align-items:center;margin-bottom:16px;padding:10px 0;user-select:none;cursor:pointer}
+    .logo img{width: clamp(180px, 40vw, 260px);height: auto;filter: drop-shadow(0 0 8px rgba(56,189,248,0.6));transition: transform .25s ease, filter .25s ease;border-radius: 10px}
+    .logo img:active{transform: scale(.98)}
+    h1{margin:.2rem 0 1rem;text-align:center;font-size:22px}
     label{display:block;color:var(--muted);margin-bottom:6px}
     input,button{width:100%;border:1px solid var(--border);background:#0e1627;color:var(--text);border-radius:12px;padding:12px 14px;font-size:16px}
     input:invalid{border-color:var(--danger)}
     .row{display:grid;gap:10px;margin:12px 0}
     .primary{background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b1220;border:none;font-weight:800;cursor:pointer}
     .muted{color:var(--muted);font-size:13px;text-align:center;margin-top:6px}
-    .controls{display:flex;gap:8px}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .btn{cursor:pointer}
     .ghost{background:#0e1627}
     .theme{position:fixed;top:10px;right:10px}
-    .light{--bg:#f8fafc;--panel:#ffffff;--text:#0b1220;--muted:#475569;--border:#e2e8f0; background:#f8fafc;color:#0b1220}
+    .light{--bg:#f8fafc;--panel:#ffffff;--text:#0b1220;--muted:#475569;--border:#e2e8f0; --card:#ffffff; background:#f8fafc;color:#0b1220}
+    .links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+    .links a{color:var(--accent);text-decoration:none;font-size:13px}
+    .links a:hover{text-decoration:underline}
+
+    /* Info line + cooldown */
+    .info{margin-top:8px;text-align:center;font-size:13px;color:var(--muted)}
+    .info strong{color:#fff}
+    .error{color:#ffd1d8}
+    .ok{color:#bfffe8}
+
+    /* Modal (admin) */
+    .backdrop{position:fixed;inset:0;background:rgba(2,6,23,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+    .backdrop.show{display:flex}
+    .modal{background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:min(720px,92vw);width:100%;box-shadow:var(--shadow)}
+    .modal header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border)}
+    .modal header h2{margin:0;font-size:18px}
+    .modal header button{width:auto}
+    .modal .body{padding:14px 16px}
+    .pin{display:grid;gap:10px;grid-template-columns:1fr auto}
+    .pin input{letter-spacing:6px;text-align:center}
+    .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 14px}
+    .tabs button{width:auto;background:#0e1627}
+    .tabs button.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b1220;border:none}
+    .grid{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+    @media (max-width:720px){.grid{grid-template-columns:1fr}}
+    .small{font-size:13px;color:var(--muted)}
+    textarea{width:100%;min-height:180px;border-radius:12px;border:1px solid var(--border);background:#0e1627;color:var(--text);padding:10px;resize:vertical}
+    .row.inline{display:flex;gap:8px;align-items:center}
+    .row.inline > * {width:auto}
+    .footer{max-width:920px;margin:16px auto 24px;padding:12px 18px;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:13px}
+    .footer b{color:var(--text)}
   </style>
 </head>
 <body>
-  <button id="themeToggle" class="btn theme">🌓</button>
+  <button id="themeToggle" class="btn theme" aria-label="Przełącz motyw">🌓</button>
+
   <div class="wrap">
-    <div class="card" role="form" aria-labelledby="title">
-      <div class="logo"><img src="assets/logo-seccoach.png" alt="SecCoach – logo"></div>
+    <div class="card" role="form" aria-labelledby="title" aria-describedby="formInfo">
+      <div class="logo" id="logoTap"><img src="assets/logo-seccoach.png" alt="SecCoach – logo"></div>
       <h1 id="title">Zaloguj się do SecCoach</h1>
+
       <div class="row">
         <label for="email">E-mail firmowy</label>
-        <input id="email" type="email" placeholder="imie.nazwisko@firma.pl" required aria-required="true" aria-label="E-mail firmowy">
+        <input id="email" type="email" placeholder="imie.nazwisko@firma.pl" required aria-required="true" aria-label="E-mail firmowy" autocomplete="username">
       </div>
+
       <div class="row controls">
         <button id="loginBtn" class="primary" aria-label="Zaloguj">Zaloguj</button>
         <button id="demoBtn" class="ghost" aria-label="Wypełnij przykładowym adresem">Użyj demo</button>
       </div>
-      <p class="muted">E-mail jest używany tylko lokalnie, nie jest nigdzie wysyłany.</p>
+
+      <div id="formInfo" class="info" aria-live="polite">E-mail używany <strong>tylko lokalnie</strong> — nic nie jest wysyłane (symulacja).</div>
+      <div class="links">
+        <a href="#" id="linkSafe">Zasady bezpiecznego logowania (symulacja)</a>
+        <a href="#" id="linkPrivacy">Polityka prywatności (symulacja)</a>
+      </div>
     </div>
   </div>
+
+  <!-- Admin modal -->
+  <div class="backdrop" id="adminBackdrop" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <div class="modal" role="document">
+      <header>
+        <h2 id="adminTitle">Panel administratora</h2>
+        <button class="btn ghost" id="adminClose">Zamknij</button>
+      </header>
+      <div class="body">
+        <!-- PIN -->
+        <div class="pin" id="pinBox">
+          <input type="password" id="pinInput" maxlength="4" inputmode="numeric" placeholder="PIN (4 cyfry)" aria-label="PIN administratora">
+          <button class="btn primary" id="pinOk">Wejdź</button>
+        </div>
+        <div id="pinMsg" class="small" aria-live="polite"></div>
+
+        <!-- Tabs -->
+        <div class="tabs" id="tabs" style="display:none">
+          <button class="btn active" data-tab="stats">Statystyki</button>
+          <button class="btn" data-tab="logs">Logi</button>
+          <button class="btn" data-tab="settings">Ustawienia</button>
+        </div>
+
+        <!-- Content -->
+        <div id="tabStats" class="tab" style="display:none">
+          <div class="grid">
+            <div>
+              <h3>Podsumowanie</h3>
+              <div class="small" id="statsSummary"></div>
+            </div>
+            <div>
+              <h3>Akcje</h3>
+              <div class="row inline">
+                <button class="btn" id="exportCsv">Eksport CSV</button>
+                <button class="btn" id="resetLogs">Wyczyść logi</button>
+                <button class="btn" id="resetAll">Reset demo</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tabLogs" class="tab" style="display:none">
+          <h3>Logi (lokalne)</h3>
+          <textarea id="logsArea" readonly></textarea>
+        </div>
+
+        <div id="tabSettings" class="tab" style="display:none">
+          <h3>Polityka domeny (opcjonalna)</h3>
+          <div class="row inline">
+            <label for="domToggle">Wymuszaj domenę:</label>
+            <input type="checkbox" id="domToggle">
+            <label for="domValue">Domena:</label>
+            <input type="text" id="domValue" placeholder="firma.pl" style="min-width:180px">
+            <button class="btn primary" id="domSave">Zapisz</button>
+          </div>
+          <div class="small">Gdy włączone — dozwolone tylko adresy w formacie <code>*@domena</code> (np. <code>@firma.pl</code>).</div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+          <h3>PIN administratora</h3>
+          <div class="row inline">
+            <input type="password" id="pinNew" maxlength="4" inputmode="numeric" placeholder="Nowy PIN (4 cyfry)">
+            <button class="btn" id="pinChange">Zmień PIN</button>
+          </div>
+          <div class="small">Domyślny PIN: <code>1234</code>. PIN jest przechowywany lokalnie w tej przeglądarce.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <b>Projekt inżynierski</b> — Uniwersytet WSB Merito w Bydgoszczy © 2025
+  </div>
+
   <script>
+    /* ====== Keys & Helpers ====== */
+    const LS = localStorage;
+    const KEY_THEME='seccoach_theme';
+    const KEY_EMAIL='quizUserEmail';
+    const KEY_ISADMIN='isAdmin';
+    const KEY_LOG='login_logs';
+    const KEY_FAILS='login_fail_count';
+    const KEY_COOLDOWN='login_cooldown_until';
+    const KEY_DOM_EN='domain_policy_enabled';
+    const KEY_DOM_VAL='domain_policy_value';
+    const KEY_PIN='admin_pin';
+
+    function log(type, detail){
+      const arr = JSON.parse(LS.getItem(KEY_LOG)||'[]');
+      arr.push({type, detail: detail||'', when: new Date().toISOString()});
+      LS.setItem(KEY_LOG, JSON.stringify(arr));
+    }
+    function emailOK(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v||'').trim()); }
+    function domainOK(email){
+      const en = LS.getItem(KEY_DOM_EN)==='1';
+      if(!en) return true;
+      const dom = (LS.getItem(KEY_DOM_VAL)||'').trim().toLowerCase();
+      if(!dom) return true;
+      return email.endsWith('@'+dom);
+    }
+    function now(){ return Date.now(); }
+
+    /* ====== Theme ====== */
+    const themeBtn = document.getElementById('themeToggle');
+    (function(){
+      const t = LS.getItem(KEY_THEME)||'dark';
+      if(t==='light') document.body.classList.add('light');
+      themeBtn.onclick=()=>{document.body.classList.toggle('light');LS.setItem(KEY_THEME, document.body.classList.contains('light')?'light':'dark');};
+    }());
+
+    /* ====== DOM refs ====== */
     const emailEl = document.getElementById('email');
     const loginBtn = document.getElementById('loginBtn');
     const demoBtn  = document.getElementById('demoBtn');
-    const themeBtn = document.getElementById('themeToggle');
+    const infoLine = document.getElementById('formInfo');
 
-    // Motyw
-    const savedTheme = localStorage.getItem('seccoach_theme') || 'dark';
-    if(savedTheme==='light') document.body.classList.add('light');
-    themeBtn.onclick = () => {
-      document.body.classList.toggle('light');
-      localStorage.setItem('seccoach_theme', document.body.classList.contains('light') ? 'light' : 'dark');
-    };
+    /* ====== Demo ====== */
+    demoBtn.onclick = () => { emailEl.value = (LS.getItem(KEY_DOM_VAL)? 'demo@'+LS.getItem(KEY_DOM_VAL) : 'demo@firma.pl'); emailEl.reportValidity(); log('demo_fill'); };
 
-    // Demo
-    demoBtn.onclick = () => { emailEl.value = 'demo@firma.pl'; emailEl.reportValidity(); };
+    /* ====== Cooldown handling ====== */
+    const MAX_FAILS = 5;
+    const COOLDOWN_MS = 15000; // 15 s
+    let cooldownTimer=null;
+    function startCooldown(){
+      const until = now() + COOLDOWN_MS;
+      LS.setItem(KEY_COOLDOWN, String(until));
+      updateCooldownUI();
+      cooldownTimer = setInterval(updateCooldownUI, 200);
+    }
+    function updateCooldownUI(){
+      const until = parseInt(LS.getItem(KEY_COOLDOWN)||'0',10);
+      const remain = Math.max(0, until - now());
+      if(remain>0){
+        loginBtn.disabled = true;
+        infoLine.innerHTML = `Zbyt wiele nieudanych prób. Poczekaj <strong class="error">${Math.ceil(remain/1000)} s</strong>…`;
+      }else{
+        if(cooldownTimer){ clearInterval(cooldownTimer); cooldownTimer=null; }
+        loginBtn.disabled = false;
+        if(LS.getItem(KEY_COOLDOWN)) LS.removeItem(KEY_COOLDOWN);
+        infoLine.textContent = 'E-mail używany tylko lokalnie — nic nie jest wysyłane (symulacja).';
+      }
+    }
+    // On load: maybe still in cooldown
+    if(LS.getItem(KEY_COOLDOWN)) updateCooldownUI();
 
-    function emailOK(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v||'').trim()); }
+    /* ====== Login ====== */
+    function doLogin(){
+      // cooldown?
+      const until = parseInt(LS.getItem(KEY_COOLDOWN)||'0',10);
+      if(until && until>now()){ updateCooldownUI(); log('login_blocked_cooldown'); return; }
+
+      const email = emailEl.value.trim().toLowerCase();
+      if(!emailOK(email)){
+        infoLine.innerHTML = '<span class="error">Niepoprawny format e-mail.</span>';
+        emailEl.reportValidity(); incrFail(); log('login_invalid_email', email); return;
+      }
+      if(!domainOK(email)){
+        const dom = LS.getItem(KEY_DOM_VAL)||'firma.pl';
+        infoLine.innerHTML = `<span class="error">Dozwolone tylko adresy w domenie <strong>@${dom}</strong>.</span>`;
+        incrFail(); log('login_domain_block', email); return;
+      }
+      // success
+      LS.setItem(KEY_EMAIL, email);
+      LS.setItem(KEY_ISADMIN, (email==='admin@seccoach' || email==='admin@firma.pl') ? '1':'0');
+      infoLine.innerHTML = '<span class="ok">Zalogowano pomyślnie. Przenoszę…</span>';
+      LS.removeItem(KEY_FAILS);
+      log('login_success', email);
+      // redirect
+      setTimeout(()=>location.href='index.html', 300);
+    }
+    function incrFail(){
+      let f = parseInt(LS.getItem(KEY_FAILS)||'0',10) || 0;
+      f++; LS.setItem(KEY_FAILS, String(f));
+      if(f>=MAX_FAILS){ log('cooldown_start', String(COOLDOWN_MS)); startCooldown(); }
+    }
 
     // Enter = logowanie
     emailEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ loginBtn.click(); } });
+    loginBtn.onclick = doLogin;
 
-    loginBtn.onclick = () => {
-      const email = emailEl.value.trim().toLowerCase();
-      if(!emailOK(email)){ emailEl.reportValidity(); return; }
-      localStorage.setItem('quizUserEmail', email);
-      // flaga admina: jeśli e-mail jest na „białej liście”
-      const ADMIN_EMAILS = ['admin@seccoach', 'admin@firma.pl'];
-      localStorage.setItem('isAdmin', ADMIN_EMAILS.includes(email) ? '1' : '0');
-      // przeniesienie do quizu
-      location.href = 'index.html';
+    // Prefill previous
+    (function(){ const saved = LS.getItem(KEY_EMAIL); if(saved){ emailEl.value=saved; } }());
+
+    /* ====== Info Links ====== */
+    document.getElementById('linkSafe').onclick=(e)=>{e.preventDefault(); alert('Zasady bezpiecznego logowania (symulacja):\n• Sprawdzaj nadawcę i domenę.\n• Nie klikaj podejrzanych linków.\n• Nie podawaj haseł w formularzach z e-maila.\n• Instaluj aktualizacje tylko z oficjalnych źródeł.'); log('info_safe');};
+    document.getElementById('linkPrivacy').onclick=(e)=>{e.preventDefault(); alert('Polityka prywatności (symulacja):\n• Dane nie są nigdzie wysyłane.\n• E-mail przechowywany lokalnie na potrzeby ćwiczeń.\n• Możesz wyczyścić dane w panelu administracyjnym.'); log('info_privacy');};
+
+    /* ====== Hidden Admin: 5x taps in <=1.2s ====== */
+    const logo = document.getElementById('logoTap');
+    let tapCount=0, tapTimer=null;
+    logo.addEventListener('click', ()=>{
+      tapCount++;
+      clearTimeout(tapTimer);
+      tapTimer=setTimeout(()=>tapCount=0, 1200);
+      if(tapCount>=5){ tapCount=0; openAdmin(); log('admin_tap'); }
+    });
+
+    /* ====== Admin Modal ====== */
+    const adminBackdrop = document.getElementById('adminBackdrop');
+    const adminClose = document.getElementById('adminClose');
+    const pinInput = document.getElementById('pinInput');
+    const pinOk = document.getElementById('pinOk');
+    const pinMsg = document.getElementById('pinMsg');
+    const tabsWrap = document.getElementById('tabs');
+    const tabBtns = tabsWrap.querySelectorAll('button');
+    const tabStats = document.getElementById('tabStats');
+    const tabLogs = document.getElementById('tabLogs');
+    const tabSettings = document.getElementById('tabSettings');
+    const logsArea = document.getElementById('logsArea');
+
+    function openAdmin(){
+      adminBackdrop.classList.add('show');
+      pinInput.value=''; pinMsg.textContent='';
+      tabsWrap.style.display='none';
+      tabStats.style.display='none'; tabLogs.style.display='none'; tabSettings.style.display='none';
+      pinInput.focus();
+    }
+    function closeAdmin(){ adminBackdrop.classList.remove('show'); }
+
+    adminClose.onclick=closeAdmin;
+    adminBackdrop.addEventListener('click',(e)=>{ if(e.target===adminBackdrop) closeAdmin(); });
+    document.addEventListener('keydown',(e)=>{ if(e.key==='Escape' && adminBackdrop.classList.contains('show')) closeAdmin(); });
+
+    function getPin(){ return LS.getItem(KEY_PIN) || '1234'; }
+    function setPin(v){ LS.setItem(KEY_PIN, v); }
+
+    function showTabs(){
+      tabsWrap.style.display='flex';
+      switchTab('stats');
+      refreshStats();
+      refreshLogs();
+      loadSettings();
+    }
+    function switchTab(name){
+      tabBtns.forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+      tabStats.style.display = name==='stats'?'block':'none';
+      tabLogs.style.display = name==='logs'?'block':'none';
+      tabSettings.style.display = name==='settings'?'block':'none';
+    }
+    tabBtns.forEach(b=>b.addEventListener('click', ()=>switchTab(b.dataset.tab)));
+
+    pinOk.onclick=()=>{
+      const v = pinInput.value.trim();
+      if(v===getPin()){
+        pinMsg.innerHTML='<span class="ok">Dostęp przyznany.</span>';
+        showTabs(); log('admin_login_ok');
+      }else{
+        pinMsg.innerHTML='<span class="error">Błędny PIN.</span>';
+        log('admin_login_fail');
+      }
     };
 
-    // Jeśli pamiętamy e-mail, wpisz i pozwól kliknąć od razu
-    const saved = localStorage.getItem('quizUserEmail'); if(saved){ emailEl.value=saved; }
+    /* ====== Stats / Logs / Settings ====== */
+    const exportCsv = document.getElementById('exportCsv');
+    const resetLogs = document.getElementById('resetLogs');
+    const resetAll = document.getElementById('resetAll');
+    const statsSummary = document.getElementById('statsSummary');
+
+    function refreshStats(){
+      const logs = JSON.parse(LS.getItem(KEY_LOG)||'[]');
+      const fails = parseInt(LS.getItem(KEY_FAILS)||'0',10)||0;
+      const domEn = LS.getItem(KEY_DOM_EN)==='1';
+      const domVal = LS.getItem(KEY_DOM_VAL)||'(brak)';
+      const last = logs.length ? new Date(logs[logs.length-1].when).toLocaleString('pl-PL') : '—';
+      const success = logs.filter(x=>x.type==='login_success').length;
+      const invalid = logs.filter(x=>x.type==='login_invalid_email').length;
+      const domBlock = logs.filter(x=>x.type==='login_domain_block').length;
+      statsSummary.innerHTML = `
+        <div>Logowań udanych: <b>${success}</b></div>
+        <div>Nieudane (format e-mail): <b>${invalid}</b></div>
+        <div>Zablokowane przez politykę domen: <b>${domBlock}</b></div>
+        <div>Aktualna liczba nieudanych prób: <b>${fails}</b></div>
+        <div>Polityka domen: <b>${domEn?'włączona':'wyłączona'}</b> (${domVal})</div>
+        <div>Ostatnie zdarzenie: <b>${last}</b></div>
+      `;
+    }
+    function refreshLogs(){
+      const logs = JSON.parse(LS.getItem(KEY_LOG)||'[]');
+      logsArea.value = logs.map(l=>`${l.when} | ${l.type} | ${l.detail||''}`).join('\n');
+    }
+    exportCsv.onclick=()=>{
+      const logs = JSON.parse(LS.getItem(KEY_LOG)||'[]');
+      if(!logs.length){ alert('Brak logów.'); return; }
+      const heads=['when','type','detail'];
+      const rows = logs.map(r=> heads.map(h=>`"${String(r[h]??'').replace(/"/g,'""')}"`).join(','));
+      const csv = [heads.join(','), ...rows].join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = Object.assign(document.createElement('a'), {href:url, download:'seccoach-login-logs.csv'});
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    };
+    resetLogs.onclick=()=>{ if(confirm('Wyczyścić logi?')){ LS.removeItem(KEY_LOG); refreshLogs(); refreshStats(); } };
+    resetAll.onclick=()=>{ if(confirm('Wyczyścić logi, cooldown i próby?')){ LS.removeItem(KEY_LOG); LS.removeItem(KEY_FAILS); LS.removeItem(KEY_COOLDOWN); alert('Wyczyszczono.'); refreshLogs(); refreshStats(); } };
+
+    // Settings
+    const domToggle = document.getElementById('domToggle');
+    const domValue  = document.getElementById('domValue');
+    const domSave   = document.getElementById('domSave');
+    const pinNew    = document.getElementById('pinNew');
+    const pinChange = document.getElementById('pinChange');
+
+    function loadSettings(){
+      domToggle.checked = LS.getItem(KEY_DOM_EN)==='1';
+      domValue.value = LS.getItem(KEY_DOM_VAL)||'';
+    }
+    domSave.onclick=()=>{
+      LS.setItem(KEY_DOM_EN, domToggle.checked ? '1':'0');
+      LS.setItem(KEY_DOM_VAL, (domValue.value||'').trim().toLowerCase());
+      alert('Zapisano ustawienia domeny.');
+      log('admin_domain_save', (domToggle.checked?'on ':'off ')+domValue.value);
+      refreshStats();
+    };
+    pinChange.onclick=()=>{
+      const v = (pinNew.value||'').trim();
+      if(!/^\d{4}$/.test(v)){ alert('PIN musi mieć 4 cyfry.'); return; }
+      setPin(v); pinNew.value='';
+      alert('PIN zmieniony.'); log('admin_pin_change');
+    };
+
+    /* ====== Initial logs ====== */
+    log('page_open');
+
   </script>
 </body>
 </html>
-
