@@ -322,7 +322,7 @@
   function toast(msg){
     els.toast.textContent = msg;
     els.toast.classList.add('show');
-    setTimeout(()=>els.toast.classList.remove('show'),2000);
+    setTimeout(()=>els.toast.classList.remove('show'),2200);
   }
 
   /* ===== POMOCNICZE ===== */
@@ -536,7 +536,7 @@
     }catch{}
   }
 
-  /* ===== EXPORT / STATYSTYKI ===== */
+  /* ===== STATYSTYKI / WYKRESY ===== */
   function getHistory(){ try{return JSON.parse(localStorage.getItem('quizHistory')||'[]');}catch{return[];} }
   function avg(arr){ return !arr.length ? 0 : arr.reduce((a,b)=>a+b,0)/arr.length; }
   function renderStats(){
@@ -566,7 +566,7 @@
     const buckets=new Array(10).fill(0);
     hist.forEach(h=>{ const p=percent(h.score,h.total); const b=Math.min(9,Math.floor(p/10)); buckets[b]++; });
     drawChart('chartScores','bar',{labels:['0-9%','10-19%','20-29%','30-39%','40-49%','50-59%','60-69%','70-79%','80-89%','90-100%'], datasets:[{label:'Liczba osób', data:buckets}]});
-    const lvl = { 'Poziom (10 pytan)': hist.filter(h=>h.total===10).length, 'Miks (30 pytan)': hist.filter(h=>h.total===30).length };
+    const lvl = { 'Poziom (10 pytań)': hist.filter(h=>h.total===10).length, 'Miks (30 pytań)': hist.filter(h=>h.total===30).length };
     drawChart('chartLevels','pie',{labels:Object.keys(lvl), datasets:[{data:Object.values(lvl)}]});
     const byDay = {};
     hist.forEach(h=>{
@@ -575,7 +575,7 @@
       byDay[key]=(byDay[key]||0)+1;
     });
     const days = Object.keys(byDay).sort();
-    drawChart('chartTimeline','line',{labels:days, datasets:[{label:'Proby', data:days.map(d=>byDay[d])}]});
+    drawChart('chartTimeline','line',{labels:days, datasets:[{label:'Próby', data:days.map(d=>byDay[d])}]});
   }
   function drawChart(id,type,dataCfg){
     const ctx = document.getElementById(id).getContext('2d');
@@ -606,46 +606,98 @@
   els.exportJson.onclick=exportJson;
   els.demoBtn.onclick=generateDemoData;
 
-  /* ===== ŁADOWANIE PYTAŃ (robust) ===== */
+  /* ===== ŁADOWANIE PYTAŃ — ROBUST DIAGNOSTICS + FALLBACK ===== */
+  // przycisk Start zablokowany do czasu wczytania
+  els.startBtn.disabled = true;
+  els.startBtn.textContent = 'Ładowanie pytań...';
+
   const FALLBACK_QUESTIONS = {
     latwe: [
-      { text:"Awaryjne pytanie testowe - czy widzisz to pytanie?", options:["Tak","Nie","Nie wiem","Pomiń"], correct:0, why:"To fallback. Jeśli to widzisz, fetch do assets/questions.json nie zadziałał.", image:"", imageAlt:"" }
+      { text:"Awaryjne pytanie testowe — jeśli to widzisz, plik pytań nie dojechał.",
+        options:["OK","Rozumiem","Dalej","—"], correct:0, why:"Sprawdź ścieżkę / serwer / JSON", image:"", imageAlt:"" }
     ],
     srednie:[], trudne:[]
   };
-  function enableStart(total){
+
+  function enableStart(total, note){
     els.startBtn.disabled = false;
     els.startBtn.textContent = 'Rozpocznij quiz';
-    toast(`Pytania załadowane (${total})`);
+    if(note) toast(`${note} (${total})`);
   }
-  fetch('assets/questions.json?ts=' + Date.now())
-    .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(d=>{
-      if(!d || !Array.isArray(d.latwe) || !Array.isArray(d.srednie) || !Array.isArray(d.trudne)){
-        throw new Error('Zła struktura questions.json (oczekuję latwe/srednie/trudne jako tablice)');
+  function showFatal(msg){
+    els.startBtn.disabled = true;
+    els.startBtn.textContent = 'Błąd ładowania pytań';
+    toast(msg);
+    console.error('[QUESTIONS][FATAL]', msg);
+  }
+
+  // Właściwy fetch z anty-cache i diagnostyką
+  fetch('assets/questions.json?ts=' + Date.now(), { cache:'no-store' })
+    .then(async r=>{
+      console.log('[QUESTIONS] HTTP', r.status, r.statusText);
+      if(!r.ok){
+        showFatal('HTTP ' + r.status + ' — sprawdź, czy plik jest pod /assets/questions.json');
+        questions = FALLBACK_QUESTIONS; questionsLoaded = true;
+        enableStart(1, 'Fallback');
+        return null;
       }
-      questions = d; questionsLoaded = true;
-      const total = d.latwe.length + d.srednie.length + d.trudne.length;
+      const text = await r.text();
+      console.log('[QUESTIONS] first 120 chars:\n', text.slice(0,120));
+      try{
+        const clean = text.replace(/^\uFEFF/, ''); // usuń BOM, jeśli jest
+        const d = JSON.parse(clean);
 
-      const cat=els.category.value, limit=10;
-      const maxForCat = cat==='mix'
-        ? Math.min(limit*3, total)
-        : Math.min(limit, (questions[cat]||[]).length);
-      els.count.max = String(Math.max(1, maxForCat));
-      clampCount(Math.max(1, maxForCat));
+        if(!d || !Array.isArray(d.latwe) || !Array.isArray(d.srednie) || !Array.isArray(d.trudne)){
+          showFatal('Zła struktura JSON (oczekuję latwe/srednie/trudne = tablice)');
+          questions = FALLBACK_QUESTIONS; questionsLoaded = true;
+          enableStart(1, 'Fallback');
+          return null;
+        }
 
-      enableStart(total);
-      // loadProgress(); // odkomentuj, jeśli chcesz auto-wznawianie
+        questions = d; questionsLoaded = true;
+        const total = d.latwe.length + d.srednie.length + d.trudne.length;
+
+        const cat = els.category.value, limit = 10;
+        const maxForCat = cat==='mix'
+          ? Math.min(limit*3, total)
+          : Math.min(limit, (questions[cat]||[]).length);
+        els.count.max = String(Math.max(1, maxForCat));
+        clampCount(Math.max(1, maxForCat));
+
+        enableStart(total, 'Załadowano pytań');
+        return d;
+      }catch(parseErr){
+        console.error('[QUESTIONS] JSON parse error:', parseErr);
+        showFatal('Błąd parsowania JSON (sprawdź przecinki/cudzysłowy/BOM).');
+        questions = FALLBACK_QUESTIONS; questionsLoaded = true;
+        enableStart(1, 'Fallback');
+        return null;
+      }
     })
     .catch(err=>{
-      console.error('[QUESTIONS] Fetch/parse error:', err);
+      console.error('[QUESTIONS] Fetch error:', err);
+      showFatal('Fetch error (często przy uruchomieniu przez file://). Uruchom przez http (Live Server / python -m http.server).');
       questions = FALLBACK_QUESTIONS; questionsLoaded = true;
-      enableStart(questions.latwe.length + questions.srednie.length + questions.trudne.length);
-      toast('Nie udało się załadować assets/questions.json - używam pytań awaryjnych.');
+      enableStart(1, 'Fallback');
     });
 
-  /* ===== EXPORT ===== */
-  function getHistory(){ try{return JSON.parse(localStorage.getItem('quizHistory')||'[]');}catch{return[];} }
+  /* ===== DEMO / EXPORT ===== */
+  function generateDemoData(){
+    const domains=['twojafirma.pl','firma.pl','example.com']; const now=new Date();
+    const hist=JSON.parse(localStorage.getItem('quizHistory')||'[]');
+    for(let i=1;i<=50;i++){
+      const total=Math.random()<0.65?10:30;
+      const score=Math.max(0,Math.min(total,Math.round(total*(0.45+Math.random()*0.4))));
+      const seconds=35+Math.floor(Math.random()*145);
+      const pastDays=Math.floor(Math.random()*30);
+      const date=new Date(now.getTime()-pastDays*24*60*60*1000);
+      const uid=String(i).padStart(2,'0'); const e=`demo${uid}@${domains[Math.floor(Math.random()*domains.length)]}`;
+      hist.push({email:e,score,total,seconds,date:date.toLocaleString()});
+    }
+    localStorage.setItem('quizHistory', JSON.stringify(hist));
+    toast('Dodano 50 wyników demo.');
+    renderStats();
+  }
   function downloadCsvCommon(){
     const hist=getHistory(); if(!hist.length){ toast('Brak zapisanych wyników'); return; }
     const header=['E-mail','Wynik','Liczba pytań','Czas (s)','Data'];
@@ -678,5 +730,7 @@
     });
   })();
 </script>
+
 </body>
 </html>
+
