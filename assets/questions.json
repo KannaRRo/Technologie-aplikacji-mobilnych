@@ -5,116 +5,328 @@
       "options": ["Klikasz w link, by się zalogować", "Weryfikujesz nadawcę i adres URL, zgłaszasz do banku lub IT", "Odpowiadasz z pytaniem o szczegóły", "Przekazujesz dalej znajomym"],
       "correct": 1,
       "why": "Fałszywe wiadomości bankowe to klasyczny phishing. Nigdy nie klikaj linków z e-maili – zawsze sprawdzaj źródło.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "E-mail phishingowy z linkiem"
+      "image": "assets/img/pytanie_latwe_1.png",
+      "imageAlt": "Szkic: podejrzany e-mail z linkiem"
     },
     {
       "text": "Które hasło jest bezpieczne?",
       "options": ["haslo123", "Kotek2024", "R@ndom-Lemon_45!", "12345678"],
       "correct": 2,
       "why": "Bezpieczne hasło powinno mieć min. 12 znaków, wielkie litery, cyfry i symbole.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Silne hasło na ekranie"
+      "image": "assets/img/pytanie_latwe_2.png",
+      "imageAlt": "Szkic: pole hasła z wskaźnikiem siły"
     },
     {
       "text": "Co zrobisz, gdy komputer prosi o instalację nieznanej aplikacji?",
       "options": ["Klikniesz 'Tak'", "Zainstalujesz, żeby sprawdzić", "Zgłosisz do IT lub administratora", "Pobierzesz jeszcze raz z innego źródła"],
       "correct": 2,
       "why": "Nie instaluj nieznanych aplikacji – mogą zawierać złośliwy kod. Najpierw skonsultuj z IT.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Ekran z instalatorem programu"
+      "image": "assets/img/pytanie_latwe_3.png",
+      "imageAlt": "Szkic: okno instalatora z ostrzeżeniem"
     },
     {
       "text": "Jak rozpoznasz bezpieczną stronę internetową?",
       "options": ["Adres zaczyna się od http://", "Adres zaczyna się od https:// i widoczna jest kłódka", "Strona ma kolorowe logo", "Ma dużo reklam"],
       "correct": 1,
       "why": "Certyfikat SSL (https://) i ikona kłódki oznaczają szyfrowane połączenie.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Adres strony z ikoną kłódki"
+      "image": "assets/img/pytanie_latwe_4.png",
+      "imageAlt": "Szkic: pasek adresu z kłódką"
     },
     {
       "text": "Co należy zrobić po odejściu od komputera w biurze?",
       "options": ["Zostawić ekran włączony", "Zablokować komputer (Win+L)", "Wyłączyć monitor", "Wylogować się z poczty"],
       "correct": 1,
       "why": "Blokowanie komputera zapobiega nieautoryzowanemu dostępowi do danych.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Blokada ekranu komputera"
+      "image": "assets/img/pytanie_latwe_5.png",
+      "imageAlt": "Szkic: zablokowany ekran z kłódką"
     },
     {
       "text": "Dostałeś załącznik .zip od nieznanego nadawcy. Co robisz?",
       "options": ["Otwierasz, żeby sprawdzić", "Wysyłasz dalej", "Usuwasz i zgłaszasz do IT", "Przechowujesz na pulpicie"],
       "correct": 2,
       "why": "Załączniki od nieznanych nadawców mogą zawierać malware. Usuń i zgłoś.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "E-mail z załącznikiem zip"
+      "image": "assets/img/pytanie_latwe_6.png",
+      "imageAlt": "Szkic: e-mail z ikoną ZIP i ostrzeżeniem"
     },
     {
       "text": "Co oznacza skrót VPN?",
       "options": ["Virtual Private Network", "Very Personal Number", "Video Password Node", "Verified Protection Net"],
       "correct": 0,
       "why": "VPN szyfruje połączenie z Internetem i chroni Twoje dane przed podsłuchem.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Ikona VPN na komputerze"
+      "image": "assets/img/pytanie_latwe_7.png",
+      "imageAlt": "Szkic: tarcza/połączenie sieciowe (VPN)"
     },
     {
       "text": "Dlaczego warto używać menedżera haseł?",
       "options": ["Zapamiętuje silne hasła i generuje unikalne", "Dzieli hasła między znajomych", "Zapisuje hasła w pliku TXT", "Nie ma żadnych korzyści"],
       "correct": 0,
       "why": "Menedżer generuje i przechowuje silne hasła, redukując ryzyko powtarzania ich w wielu serwisach.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Menedżer haseł w przeglądarce"
+      "image": "assets/img/pytanie_latwe_8.png",
+      "imageAlt": "Szkic: interfejs menedżera haseł"
     },
     {
       "text": "Czym jest phishing?",
       "options": ["Ochroną przed spamem", "Sposobem ataku polegającym na podszywaniu się pod znane instytucje", "Oprogramowaniem antywirusowym", "Rodzajem kopii zapasowej"],
       "correct": 1,
       "why": "Phishing to próba wyłudzenia danych przez e-mail, SMS lub telefon.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Fałszywy e-mail phishingowy"
+      "image": "assets/img/pytanie_latwe_9.png",
+      "imageAlt": "Szkic: haczyk łowiący kopertę e-mail"
     },
     {
       "text": "Dlaczego aktualizacje są ważne?",
       "options": ["Dodają reklamy", "Poprawiają wygląd", "Łatają luki bezpieczeństwa", "Zwiększają zużycie baterii"],
       "correct": 2,
       "why": "Aktualizacje systemu i aplikacji eliminują znane błędy bezpieczeństwa.",
-      "image": "assets/img/test1.png",
-      "imageAlt": "Ekran aktualizacji systemu"
+      "image": "assets/img/pytanie_latwe_10.png",
+      "imageAlt": "Szkic: ekran aktualizacji / kółko postępu"
+    },
+    {
+      "text": "Jak zachować się, gdy ktoś prosi o Twoje hasło?",
+      "options": ["Podaj je tylko przełożonemu", "Nigdy nie podawaj swojego hasła nikomu", "Podaj przez telefon", "Wyślij w wiadomości e-mail"],
+      "correct": 1,
+      "why": "Hasła są indywidualne. Nie przekazuj ich nawet administratorom.",
+      "image": "assets/img/pytanie_latwe_11.png",
+      "imageAlt": "Szkic: prośba o hasło – zachowaj ostrożność"
+    },
+    {
+      "text": "Publiczne Wi-Fi i praca z danymi firmowymi – co robisz?",
+      "options": ["Łączysz się bez obaw", "Używasz VPN i ograniczasz logowanie do systemów firmowych", "Udostępniasz Wi-Fi znajomym", "Wysyłasz pliki służbowe mailem"],
+      "correct": 1,
+      "why": "Publiczne sieci mogą być monitorowane – używaj VPN i unikaj pracy z danymi wrażliwymi.",
+      "image": "assets/img/pytanie_latwe_12.png",
+      "imageAlt": "Szkic: laptop w kawiarni, ikony Wi-Fi i tarczy"
+    },
+    {
+      "text": "Co to jest MFA?",
+      "options": ["Multi-Factor Authentication – wieloskładnikowe logowanie", "Makro File Access", "Mobile File App", "Main Firewall Access"],
+      "correct": 0,
+      "why": "MFA dodaje drugi składnik logowania (np. kod z aplikacji), utrudniając przejęcie konta.",
+      "image": "assets/img/pytanie_latwe_13.png",
+      "imageAlt": "Szkic: telefon z kodem obok laptopa (MFA)"
+    },
+    {
+      "text": "Czym jest kopia zapasowa?",
+      "options": ["Dodatkowa kopia danych na innym nośniku", "Program do kompresji", "Antywirus", "Folder ze zdjęciami"],
+      "correct": 0,
+      "why": "Kopia zapasowa chroni dane przed utratą w razie awarii lub ataku.",
+      "image": "assets/img/pytanie_latwe_14.png",
+      "imageAlt": "Szkic: strzałki kopiowania, chmura/dysk zewnętrzny"
+    },
+    {
+      "text": "Po pracy w biurze zostawiasz dokumenty na biurku. Co powinieneś zrobić?",
+      "options": ["Nic – to nie problem", "Schować dokumenty do szafki lub niszczarki", "Zrobić zdjęcie na pamiątkę", "Zostawić do jutra"],
+      "correct": 1,
+      "why": "Zasada czystego biurka (Clean Desk) chroni dane przed nieautoryzowanym dostępem.",
+      "image": "assets/img/pytanie_latwe_15.png",
+      "imageAlt": "Szkic: biurko, szafka/niszczarka i ikona kłódki"
+    },
+    {
+      "text": "Jak reagować, gdy znajdziesz pendrive’a w korytarzu?",
+      "options": ["Podłączysz, by sprawdzić", "Oddasz do działu IT", "Weźmiesz do domu", "Zignorujesz"],
+      "correct": 1,
+      "why": "Nie podłączaj nieznanych nośników. Oddaj je do IT – mogą być zainfekowane.",
+      "image": "assets/img/pytanie_latwe_16.png",
+      "imageAlt": "Szkic: pendrive na podłodze, ikonka ostrzeżenia"
+    },
+    {
+      "text": "Które z zachowań jest bezpieczne?",
+      "options": ["Klikanie każdego linku", "Używanie różnych haseł w serwisach", "Udostępnianie danych logowania", "Zanotowanie hasła na karteczce"],
+      "correct": 1,
+      "why": "Każdy serwis powinien mieć unikalne hasło – minimalizuje to ryzyko wycieku.",
+      "image": "assets/img/pytanie_latwe_17.png",
+      "imageAlt": "Szkic: kontrast złych i dobrych nawyków"
+    },
+    {
+      "text": "Masz wątpliwość co do e-maila od szefa z prośbą o przelew. Co robisz?",
+      "options": ["Wykonujesz polecenie natychmiast", "Weryfikujesz osobiście lub telefonicznie", "Przesyłasz dalej", "Odpowiadasz z danymi konta"],
+      "correct": 1,
+      "why": "To może być spear-phishing. Zawsze potwierdzaj takie prośby innym kanałem.",
+      "image": "assets/img/pytanie_latwe_18.png",
+      "imageAlt": "Szkic: e-mail z symbolem przelewu i ostrzeżeniem"
+    },
+    {
+      "text": "Dlaczego nie powinieneś używać prywatnego maila do spraw firmowych?",
+      "options": ["Nie ma takiego zakazu", "Bo utrudnia to ochronę danych i archiwizację", "Bo prywatny mail jest szybszy", "Bo nie działa VPN"],
+      "correct": 1,
+      "why": "Firmowe sprawy należy prowadzić przez zabezpieczone konta służbowe.",
+      "image": "assets/img/pytanie_latwe_19.png",
+      "imageAlt": "Szkic: ekran firmowy (tarcza) vs prywatny (koperta + alert)"
+    },
+    {
+      "text": "Jak postąpić, gdy ktoś prosi Cię o zdjęcie identyfikatora firmowego?",
+      "options": ["Wyślesz – to tylko identyfikator", "Nie wysyłasz – może być użyty do podszycia się", "Udostępnisz w mediach społecznościowych", "Zrobisz selfie z kartą"],
+      "correct": 1,
+      "why": "Identyfikator zawiera dane i logo firmy – jego zdjęcie może posłużyć oszustowi.",
+      "image": "assets/img/pytanie_latwe_20.png",
+      "imageAlt": "Szkic: identyfikator i telefon, ostrzeżenie"
     }
-  ],
+  ]
+}
+
+  {
   "srednie": [
     {
       "text": "Otrzymujesz e-mail od działu HR z prośbą o zalogowanie się w celu aktualizacji danych, ale adres domeny to hr-company.support. Co robisz?",
       "options": ["Logujesz się natychmiast", "Ignorujesz wiadomość i zgłaszasz do IT", "Wpisujesz dane tylko raz", "Odpowiadasz z pytaniem o szczegóły"],
       "correct": 1,
       "why": "Fałszywe domeny często podszywają się pod firmowe. Zawsze zgłaszaj takie przypadki do działu IT.",
-      "image": "assets/img/test2.png",
-      "imageAlt": "E-mail HR z fałszywą domeną"
+      "image": "assets/img/pytanie_srednie_1.png",
+      "imageAlt": "Podejrzany e-mail z nietypową domeną"
     },
     {
       "text": "Menedżer haseł w firmie – jakie jest jego główne zadanie?",
       "options": ["Udostępnia hasła wszystkim pracownikom", "Tworzy i przechowuje unikalne hasła dla usług", "Przechowuje tylko jedno hasło", "Zastępuje logowanie MFA"],
       "correct": 1,
       "why": "Menedżer generuje i przechowuje unikalne hasła, ale nie zastępuje MFA.",
-      "image": "assets/img/test2.png",
-      "imageAlt": "Interfejs menedżera haseł"
+      "image": "assets/img/pytanie_srednie_2.png",
+      "imageAlt": "Interfejs menedżera haseł z ikonami kłódek"
     },
     {
       "text": "Plik Office prosi o włączenie makr, aby zobaczyć treść. Co robisz?",
       "options": ["Włączasz makra bez weryfikacji", "Weryfikujesz źródło i otwierasz w trybie tylko do odczytu", "Przesyłasz plik dalej", "Otwierasz i uruchamiasz makra"],
       "correct": 1,
       "why": "Makra mogą zawierać złośliwy kod. Nigdy nie włączaj ich bez potwierdzenia źródła.",
-      "image": "assets/img/test2.png",
-      "imageAlt": "Okno Office z komunikatem o makrach"
+      "image": "assets/img/pytanie_srednie_3.png",
+      "imageAlt": "Okno dokumentu z prośbą o włączenie makr"
     },
     {
       "text": "Jakie działanie należy wykonać po wykryciu podejrzanej aktywności na koncie?",
       "options": ["Czekać, aż problem sam zniknie", "Zgłosić incydent do działu IT i zmienić hasło", "Zignorować alert", "Napisać do znajomych, że konto jest zhakowane"],
       "correct": 1,
       "why": "Szybka reakcja i zmiana hasła ogranicza dalsze ryzyko. Zawsze powiadom IT.",
-      "image": "assets/img/test2.png",
-      "imageAlt": "Alert bezpieczeństwa na ekranie"
+      "image": "assets/img/pytanie_srednie_4.png",
+      "imageAlt": "Alert bezpieczeństwa i zmiana hasła"
+    },
+    {
+      "text": "Podczas spotkania online udostępniasz ekran. Co powinieneś zrobić przed?",
+      "options": ["Udostępnić cały pulpit", "Zamknąć niepotrzebne aplikacje i powiadomienia", "Udostępnić również prywatne czaty", "Nie przygotowywać się"],
+      "correct": 1,
+      "why": "Zawsze zamknij prywatne okna i powiadomienia – unikniesz ujawnienia danych.",
+      "image": "assets/img/pytanie_srednie_5.png",
+      "imageAlt": "Przygotowanie do udostępniania ekranu"
+    },
+    {
+      "text": "Czym jest spear-phishing?",
+      "options": ["Masowy spam", "Atak ukierunkowany z użyciem personalnych danych", "Złośliwy załącznik PDF", "Wiadomość SMS o paczce"],
+      "correct": 1,
+      "why": "Spear-phishing to atak personalizowany, często udający wiadomość od przełożonego lub działu finansowego.",
+      "image": "assets/img/pytanie_srednie_6.png",
+      "imageAlt": "Ukierunkowany e-mail phishingowy"
+    },
+    {
+      "text": "Co powinieneś zrobić, jeśli otrzymasz telefon od kogoś, kto podaje się za dział IT i prosi o Twój login?",
+      "options": ["Podaj dane, jeśli zna Twoje imię", "Nigdy nie podawaj danych i zgłoś sytuację", "Zadzwoń z powrotem na ten sam numer", "Podaj, ale zmień później hasło"],
+      "correct": 1,
+      "why": "Pracownicy IT nigdy nie proszą o dane logowania przez telefon. Zgłoś incydent.",
+      "image": "assets/img/pytanie_srednie_7.png",
+      "imageAlt": "Podejrzane połączenie telefoniczne z 'IT'"
+    },
+    {
+      "text": "Czym jest VPN w kontekście pracy zdalnej?",
+      "options": ["Narzędziem do udostępniania internetu", "Szyfrowanym połączeniem do sieci firmowej", "Programem do czatu", "Serwerem gier"],
+      "correct": 1,
+      "why": "VPN szyfruje połączenie między Twoim komputerem a firmą, zapewniając prywatność danych.",
+      "image": "assets/img/pytanie_srednie_8.png",
+      "imageAlt": "Połączenie VPN do sieci firmowej"
+    },
+    {
+      "text": "Kto odpowiada za zgłaszanie incydentów bezpieczeństwa?",
+      "options": ["Tylko dział IT", "Każdy pracownik natychmiast po wykryciu", "Tylko menedżer projektu", "Zewnętrzna firma"],
+      "correct": 1,
+      "why": "Każdy pracownik ma obowiązek zgłaszać incydenty. Czas reakcji ma kluczowe znaczenie.",
+      "image": "assets/img/pytanie_srednie_9.png",
+      "imageAlt": "Pracownicy zgłaszający incydent bezpieczeństwa"
+    },
+    {
+      "text": "Dlaczego nie wolno używać prywatnych chmur do przechowywania danych firmowych?",
+      "options": ["Bo są zbyt szybkie", "Nie gwarantują zgodności z RODO i polityką bezpieczeństwa", "Nie mają limitu miejsca", "Bo są darmowe"],
+      "correct": 1,
+      "why": "Prywatne chmury nie spełniają firmowych wymagań bezpieczeństwa. Korzystaj tylko z zatwierdzonych systemów.",
+      "image": "assets/img/pytanie_srednie_10.png",
+      "imageAlt": "Wybór: chmura prywatna vs chmura firmowa"
+    },
+    {
+      "text": "Pracując zdalnie, jak najlepiej chronić swoje urządzenie?",
+      "options": ["Nie używać hasła", "Aktualizować system i korzystać z VPN", "Wyłączać antywirusa", "Zostawiać komputer włączony"],
+      "correct": 1,
+      "why": "Aktualizacje i VPN to podstawowa ochrona przed atakami w pracy zdalnej.",
+      "image": "assets/img/pytanie_srednie_11.png",
+      "imageAlt": "Laptop z ikoną tarczy i aktualizacji"
+    },
+    {
+      "text": "Kto może mieć dostęp do Twojego służbowego komputera?",
+      "options": ["Rodzina", "Tylko Ty i dział IT (zgodnie z polityką firmy)", "Znajomi", "Każdy, kto zna hasło"],
+      "correct": 1,
+      "why": "Komputer służbowy jest przypisany do konkretnego użytkownika i objęty polityką bezpieczeństwa.",
+      "image": "assets/img/pytanie_srednie_12.png",
+      "imageAlt": "Ekran logowania z kłódką"
+    },
+    {
+      "text": "Jak reagować na podejrzane ogłoszenie o pracę proszące o kopię dowodu?",
+      "options": ["Wysłać dane, jeśli ogłoszenie wygląda poważnie", "Nigdy nie udostępniać dokumentów przed podpisaniem umowy", "Zamazać dane i wysłać", "Odpisać z pytaniami"],
+      "correct": 1,
+      "why": "Żądanie skanu dowodu w ogłoszeniu to sygnał oszustwa. Nie wysyłaj danych osobowych.",
+      "image": "assets/img/pytanie_srednie_13.png",
+      "imageAlt": "Ogłoszenie o pracę i ikona dowodu z kłódką"
+    },
+    {
+      "text": "Co oznacza termin 'spoofing'?",
+      "options": ["Podszywanie się pod numer lub adres e-mail", "Ochronę przed spamem", "Filtrowanie danych", "Szyfrowanie plików"],
+      "correct": 0,
+      "why": "Spoofing polega na podszywaniu się pod znany numer lub adres w celu oszustwa.",
+      "image": "assets/img/pytanie_srednie_14.png",
+      "imageAlt": "Fałszywy nadawca: telefon i e-mail"
+    },
+    {
+      "text": "Jak zachować się, gdy zauważysz osobę nieuprawnioną w strefie z ograniczonym dostępem?",
+      "options": ["Zignorować", "Powiadomić ochronę lub przełożonego", "Pomóc się dostać", "Zrobić zdjęcie i wrzucić w media społecznościowe"],
+      "correct": 1,
+      "why": "Bezpieczeństwo fizyczne to część cyberbezpieczeństwa. Zgłaszaj nieuprawnione osoby.",
+      "image": "assets/img/pytanie_srednie_15.png",
+      "imageAlt": "Strefa z kontrolą dostępu i osoba bez identyfikatora"
+    },
+    {
+      "text": "Dlaczego polityka 'czystego ekranu' jest ważna?",
+      "options": ["Chroni prywatność podczas przerw", "Zapobiega podglądaniu danych przez osoby postronne", "Zwiększa wydajność", "Zmniejsza zużycie energii"],
+      "correct": 1,
+      "why": "Zablokowany ekran chroni dane, gdy odchodzisz od stanowiska pracy.",
+      "image": "assets/img/pytanie_srednie_16.png",
+      "imageAlt": "Zablokowany ekran i uporządkowane biurko"
+    },
+    {
+      "text": "Jak reagować, gdy dostaniesz wiadomość SMS z prośbą o dopłatę do paczki?",
+      "options": ["Klikasz link", "Ignorujesz i usuwasz wiadomość", "Wpisujesz dane karty", "Przesyłasz znajomym"],
+      "correct": 1,
+      "why": "To klasyczny phishing SMS (smishing). Nie klikaj linków z takich wiadomości.",
+      "image": "assets/img/pytanie_srednie_17.png",
+      "imageAlt": "Podejrzany SMS z linkiem i ostrzeżeniem"
+    },
+    {
+      "text": "Dlaczego ważne jest tworzenie kopii zapasowych?",
+      "options": ["Bo zwiększają zużycie dysku", "Chronią dane przed utratą w wyniku awarii lub ataku", "Ułatwiają pracę z plikami", "Nie mają znaczenia"],
+      "correct": 1,
+      "why": "Backup to podstawa bezpieczeństwa – pozwala odzyskać dane po awarii lub ataku ransomware.",
+      "image": "assets/img/pytanie_srednie_18.png",
+      "imageAlt": "Strzałki backupu: komputer–chmura–dysk"
+    },
+    {
+      "text": "Dlaczego nie powinieneś instalować rozszerzeń przeglądarki z nieznanych źródeł?",
+      "options": ["Bo spowalniają komputer", "Mogą kraść dane i śledzić aktywność", "Nie mają tłumaczenia", "Są darmowe"],
+      "correct": 1,
+      "why": "Złośliwe rozszerzenia mogą śledzić wpisywane dane lub modyfikować strony.",
+      "image": "assets/img/pytanie_srednie_19.png",
+      "imageAlt": "Lista rozszerzeń – niebezpieczne oznaczone ostrzeżeniem"
+    },
+    {
+      "text": "Co oznacza termin 'socjotechnika'?",
+      "options": ["Ataki fizyczne na serwer", "Manipulację ludźmi w celu uzyskania dostępu", "Wirus komputerowy", "Rodzaj zapory sieciowej"],
+      "correct": 1,
+      "why": "Socjotechnika to wykorzystywanie zaufania i emocji ludzi do zdobycia informacji.",
+      "image": "assets/img/pytanie_srednie_20.png",
+      "imageAlt": "Manipulacja rozmową – ofiara przy komputerze"
     }
-  ],
+  ]
+}
   "trudne": [
     {
       "text": "Czym jest atak typu 'Man-in-the-Middle'?",
@@ -142,3 +354,4 @@
     }
   ]
 }
+
