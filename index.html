@@ -351,7 +351,7 @@
   }
 
   function startQuiz(){
-    const cat = els.category.value, limitPerLevel = 10, DEFAULT_TIME = 180;
+    const cat = els.category.value, limitPerLevel = 10, DEFAULT_TIME = 300;
     const maxForCat = cat==='mix'
       ? Math.min(limitPerLevel*3, (questions.latwe?.length||0)+(questions.srednie?.length||0)+(questions.trudne?.length||0))
       : Math.min(limitPerLevel, (questions[cat]||[]).length);
@@ -501,3 +501,4 @@
 </script>
 </body>
 </html>
+
