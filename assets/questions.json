@@ -323,30 +323,166 @@
       "imageAlt": "Manipulacja rozmową – ofiara przy komputerze"
     }
   ],
-  "trudne": [
+   "trudne": [
     {
-      "text": "Czym jest atak typu 'Man-in-the-Middle'?",
-      "options": ["Bezpiecznym połączeniem między dwiema stronami", "Przechwyceniem komunikacji między ofiarą a serwerem", "Legalnym audytem bezpieczeństwa", "Błędem systemu DNS"],
+      "text": "Czym jest atak typu Man-in-the-Middle?",
+      "options": ["Bezpieczne połączenie między dwiema stronami", "Przechwycenie komunikacji między ofiarą a serwerem", "Legalny audyt bezpieczeństwa", "Błąd systemu DNS"],
       "correct": 1,
-      "why": "Atakujący przechwytuje dane przesyłane między dwiema stronami, np. loginy i hasła.",
-      "image": "assets/img/test3.png",
-      "imageAlt": "Schemat ataku Man-in-the-Middle"
+      "why": "Napastnik wchodzi w środek komunikacji i podsłuchuje lub modyfikuje dane.",
+      "image": "assets/img/pytanie_trudne_1.png",
+      "imageAlt": "Schemat: użytkownik - napastnik - serwer"
     },
     {
       "text": "Na czym polega zasada najmniejszych uprawnień (PoLP)?",
-      "options": ["Każdy użytkownik ma dostęp do wszystkiego", "Daje się minimalne uprawnienia potrzebne do pracy", "Uprawnienia są zawsze maksymalne", "Dotyczy tylko administratorów"],
+      "options": ["Każdy ma dostęp do wszystkiego", "Nadaje się minimalne uprawnienia potrzebne do pracy", "Uprawnienia są zawsze maksymalne", "Dotyczy tylko administratorów"],
       "correct": 1,
-      "why": "Użytkownicy powinni mieć tylko dostęp niezbędny do wykonania swoich zadań – nic więcej.",
-      "image": "assets/img/test3.png",
-      "imageAlt": "Schemat uprawnień użytkownika"
+      "why": "Użytkownik dostaje tylko takie prawa, jakie są niezbędne do zadań.",
+      "image": "assets/img/pytanie_trudne_2.png",
+      "imageAlt": "Pracownik z ograniczonym dostępem do folderów"
     },
     {
       "text": "Co oznacza skrót SOC w kontekście bezpieczeństwa IT?",
       "options": ["System Operation Console", "Security Operations Center", "Secure Office Connection", "Server Optimization Control"],
       "correct": 1,
-      "why": "SOC to zespół i system monitorujący incydenty bezpieczeństwa w organizacji.",
-      "image": "assets/img/test3.png",
-      "imageAlt": "Zespół SOC przy monitorach"
+      "why": "SOC monitoruje, wykrywa i koordynuje reakcję na incydenty.",
+      "image": "assets/img/pytanie_trudne_3.png",
+      "imageAlt": "Zespół SOC przy ścianie monitorów"
+    },
+    {
+      "text": "Jakie działanie jest najskuteczniejsze po ataku ransomware?",
+      "options": ["Zapłacić okup", "Przywrócić dane z kopii zapasowej", "Usunąć zaszyfrowane pliki", "Zrestartować komputer"],
+      "correct": 1,
+      "why": "Odzysk z kopii to najpewniejsza i bezpieczna metoda powrotu do pracy.",
+      "image": "assets/img/pytanie_trudne_4.png",
+      "imageAlt": "Ekran ransomware i przywracanie z backupu"
+    },
+    {
+      "text": "Czym jest atak homograficzny?",
+      "options": ["Podszywanie się pod domeny przy użyciu podobnych znaków", "Atak na fizyczne serwery", "Atak na DNS w firmie", "Zainfekowanie makr w plikach Office"],
+      "correct": 0,
+      "why": "Adres wygląda prawie tak samo, ale zawiera inne znaki, np. cyrylicę.",
+      "image": "assets/img/pytanie_trudne_5.png",
+      "imageAlt": "Dwa podobne adresy w pasku przeglądarki"
+    },
+    {
+      "text": "Czym są protokoły SPF, DKIM i DMARC?",
+      "options": ["Sposoby szyfrowania plików", "Mechanizmy uwierzytelniania poczty e-mail", "Filtr antyspamowy po stronie użytkownika", "Polityki retencji wiadomości"],
+      "correct": 1,
+      "why": "Weryfikują nadawcę i integralność e-maili, utrudniając spoofing.",
+      "image": "assets/img/pytanie_trudne_6.png",
+      "imageAlt": "Ikony SPF, DKIM, DMARC przy wiadomościach e-mail"
+    },
+    {
+      "text": "Jakie jest najlepsze zabezpieczenie przed atakiem brute force?",
+      "options": ["Proste hasła", "Limit prób logowania i MFA", "Częste zmiany przeglądarki", "Wyłączenie zapory"],
+      "correct": 1,
+      "why": "Limit prób i MFA skutecznie blokują zgadywanie haseł.",
+      "image": "assets/img/pytanie_trudne_7.png",
+      "imageAlt": "Ekran logowania z blokadą i tarczą"
+    },
+    {
+      "text": "Strategia kopii zapasowych 3-2-1 oznacza:",
+      "options": ["3 kopie, 2 różne nośniki, 1 poza siedzibą", "3 kopie na tym samym dysku", "2 kopie w chmurze i 1 lokalna", "3 kopie raz w tygodniu"],
+      "correct": 0,
+      "why": "To standard minimalizujący ryzyko utraty danych.",
+      "image": "assets/img/pytanie_trudne_8.png",
+      "imageAlt": "Komputer, dysk zewnętrzny i chmura połączone strzałkami"
+    },
+    {
+      "text": "Czym jest segmentacja sieci?",
+      "options": ["Podział sieci na strefy bezpieczeństwa", "Połączenie wszystkich urządzeń w jedną sieć", "Wyłączenie firewalli", "Zmiana hasła do Wi-Fi"],
+      "correct": 0,
+      "why": "Ogranicza rozprzestrzenianie zagrożeń między segmentami.",
+      "image": "assets/img/pytanie_trudne_9.png",
+      "imageAlt": "Segmenty sieci rozdzielone zaporami"
+    },
+    {
+      "text": "Co oznacza skrót IDS/IPS?",
+      "options": ["System wykrywania i zapobiegania włamaniom", "System kopiowania plików", "Aplikacja szyfrująca", "Moduł do drukarek sieciowych"],
+      "correct": 0,
+      "why": "IDS wykrywa, a IPS blokuje podejrzaną aktywność.",
+      "image": "assets/img/pytanie_trudne_10.png",
+      "imageAlt": "Panel monitoringu z alertami i blokadami"
+    },
+    {
+      "text": "Jakie dane są chronione przez RODO?",
+      "options": ["Tylko dane firmowe", "Dane osobowe identyfikujące osobę fizyczną", "Pliki systemowe", "Logi serwera"],
+      "correct": 1,
+      "why": "RODO dotyczy danych pozwalających zidentyfikować osobę.",
+      "image": "assets/img/pytanie_trudne_11.png",
+      "imageAlt": "Dokumenty i pliki pod tarczą GDPR"
+    },
+    {
+      "text": "Co to jest Shadow IT?",
+      "options": ["Nieautoryzowane aplikacje używane w firmie", "System do kopii zapasowych", "Oficjalne oprogramowanie IT", "Chmura dla gości"],
+      "correct": 0,
+      "why": "Oprogramowanie poza kontrolą IT zwiększa ryzyko wycieku.",
+      "image": "assets/img/pytanie_trudne_12.png",
+      "imageAlt": "Pracownik instalujący niezatwierdzony program"
+    },
+    {
+      "text": "Co oznacza skrót BYOD?",
+      "options": ["Bring Your Own Device", "Backup Your Original Data", "Block Your Office Device", "Basic Yearly Online Defense"],
+      "correct": 0,
+      "why": "Polityka używania prywatnych urządzeń do celów służbowych.",
+      "image": "assets/img/pytanie_trudne_13.png",
+      "imageAlt": "Pracownik z telefonem i laptopem służbowym"
+    },
+    {
+      "text": "Co należy zrobić po podejrzeniu wycieku konta firmowego?",
+      "options": ["Poczekać na potwierdzenie", "Zmienić hasło, włączyć MFA, poinformować zespół bezpieczeństwa", "Zignorować", "Odpisać napastnikowi"],
+      "correct": 1,
+      "why": "Szybka rotacja poświadczeń i zgłoszenie ogranicza skutki.",
+      "image": "assets/img/pytanie_trudne_14.png",
+      "imageAlt": "Alert włamania i zmiana hasła"
+    },
+    {
+      "text": "Czym różni się szyfrowanie danych w spoczynku od w tranzycie?",
+      "options": ["W spoczynku - na nośniku, w tranzycie - podczas przesyłu", "To to samo", "W tranzycie - na dysku, w spoczynku - w sieci", "Dotyczy tylko kopii zapasowych"],
+      "correct": 0,
+      "why": "At-rest to dane zapisane, in-transit to dane przesyłane siecią.",
+      "image": "assets/img/pytanie_trudne_15.png",
+      "imageAlt": "Porównanie szyfrowania: dysk vs transmisja"
+    },
+    {
+      "text": "Co oznacza skrót DLP w bezpieczeństwie danych?",
+      "options": ["Data Loss Prevention", "Data Link Protocol", "Drive Lock Password", "Digital License Policy"],
+      "correct": 0,
+      "why": "DLP zapobiega nieautoryzowanemu wyciekowi danych.",
+      "image": "assets/img/pytanie_trudne_16.png",
+      "imageAlt": "Blokada wysyłki wrażliwych plików"
+    },
+    {
+      "text": "Jakie narzędzie służy do analizy logów i wykrywania anomalii?",
+      "options": ["SIEM", "VPN", "HTTP", "BIOS"],
+      "correct": 0,
+      "why": "SIEM zbiera logi z wielu źródeł i wykrywa wzorce ataków.",
+      "image": "assets/img/pytanie_trudne_17.png",
+      "imageAlt": "Dashboard SIEM z alertami"
+    },
+    {
+      "text": "Jakie są etapy reagowania na incydent bezpieczeństwa?",
+      "options": ["Identyfikacja, analiza, reakcja, odtworzenie", "Reakcja, analiza, ukrycie, zapomnienie", "Identyfikacja, testy, wdrożenie", "Backup, restart, raport"],
+      "correct": 0,
+      "why": "Standard IR: wykrycie, analiza, działania, powrót i wnioski.",
+      "image": "assets/img/pytanie_trudne_18.png",
+      "imageAlt": "Cykliczny schemat etapów IR"
+    },
+    {
+      "text": "Czym jest pentest?",
+      "options": ["Test penetracyjny symulujący atak", "Aktualizacja systemu", "Kopiowanie plików", "Badanie socjologiczne"],
+      "correct": 0,
+      "why": "Kontrolowany atak w celu sprawdzenia odporności systemu.",
+      "image": "assets/img/pytanie_trudne_19.png",
+      "imageAlt": "Specjalista testujący zabezpieczenia"
+    },
+    {
+      "text": "Na czym polega polityka Zero Trust?",
+      "options": ["Zasada nieufności - każda próba dostępu wymaga weryfikacji", "Pełne zaufanie w sieci firmowej", "Wyłączenie zapór", "Otwarty dostęp do plików"],
+      "correct": 0,
+      "why": "Nie ufaj z góry żadnej tożsamości ani strefie sieciowej.",
+      "image": "assets/img/pytanie_trudne_20.png",
+      "imageAlt": "Kilka urządzeń z weryfikacją dostępu"
     }
   ]
 }
