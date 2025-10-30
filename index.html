@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>SecCoach – Quiz szkoleniowy</title>
+  <title>SecCoach - Quiz szkoleniowy</title>
 
   <!-- META / favicon -->
-  <meta name="description" content="SecCoach – interaktywny quiz z cyberbezpieczeństwa dla pracowników.">
-  <meta property="og:title" content="SecCoach – Quiz szkoleniowy">
+  <meta name="description" content="SecCoach - interaktywny quiz z cyberbezpieczeństwa dla pracowników.">
+  <meta property="og:title" content="SecCoach - Quiz szkoleniowy">
   <meta property="og:description" content="Szybki quiz z cyberbezpieczeństwa dla pracowników.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="assets/logo-seccoach.png">
@@ -26,11 +26,30 @@
     body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,sans-serif}
     body.no-scroll{overflow:hidden}
 
+    /* Motyw jasny */
     .light{
       --bg:#f8fafc;--panel:#ffffff;--text:#0b1220;--muted:#475569;--border:#e2e8f0;--card:#ffffff;
       background:#f8fafc;color:#0b1220
     }
 
+    /* Tryb dostępności (większa czcionka, kontrast, focus) */
+    body.accessible{ font-size:18px; line-height:1.7; }
+    body.accessible .panel{ background:#111827; }
+    body.accessible .option{ 
+      background:#ffffff; color:#000; border:2px solid #111827;
+    }
+    body.accessible .btn{ 
+      background:#ffffff; color:#000; border:2px solid #111827; 
+      padding:12px 14px; font-weight:700;
+    }
+    body.accessible .btn.primary{
+      background:linear-gradient(135deg,#fff,#e5e7eb); color:#000; border:2px solid #111827;
+    }
+    body.accessible .pill{ background:#fff; color:#000; border:2px solid #111827; }
+    body.accessible :focus{ outline:3px solid #ffbf47; outline-offset:3px; }
+    body.accessible #timer{ color:#ffbf47; }
+
+    /* Header */
     .site-header{
       position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:12px;
       padding:10px 16px;background:rgba(15,23,42,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)
@@ -66,6 +85,7 @@
     .toast{position:fixed;left:50%;bottom:15px;transform:translateX(-50%);background:#0b1220;border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:12px;opacity:0;transition:.3s}
     .toast.show{opacity:1}
 
+    /* Modal */
     .modal{
       position:fixed; inset:0; z-index:5000;
       background:rgba(0,0,0,.7);
@@ -85,11 +105,7 @@
     @keyframes pop {from{transform:translateY(8px); opacity:0} to{transform:none;opacity:1}}
 
     .site-footer{max-width:960px;margin:24px auto;padding:0 20px;color:var(--muted);text-align:center}
-
-    .q-img{
-      width:100%; min-height:180px; display:flex; align-items:center; justify-content:center; flex-direction:column;
-      border-radius:18px; border:1px solid var(--border); background:transparent; overflow:hidden; margin:10px 0 14px; transition:all .3s ease;
-    }
+    .q-img{ width:100%; min-height:180px; display:flex; align-items:center; justify-content:center; flex-direction:column; border-radius:18px; border:1px solid var(--border); background:transparent; overflow:hidden; margin:10px 0 14px; transition:all .3s ease; }
     .q-img img{ max-width:100%; max-height:260px; object-fit:contain; display:block; border-radius:16px; background:transparent; box-shadow:0 4px 10px rgba(0,0,0,.3); }
     .q-img figcaption{ font-size:13px; color:var(--muted); text-align:center; margin-top:6px; }
 
@@ -110,7 +126,7 @@
   <!-- HEADER -->
   <header class="site-header">
     <a href="login.html" class="site-logo" aria-label="Strona główna SecCoach">
-      <img src="assets/logo-seccoach.png" alt="SecCoach – logo"/>
+      <img src="assets/logo-seccoach.png" alt="SecCoach - logo"/>
     </a>
     <div class="site-actions">
       <span id="userEmail" class="pill" aria-live="polite">Użytkownik</span>
@@ -138,7 +154,7 @@
         <input id="count" type="number" min="1" max="10" value="10" aria-label="Liczba pytań">
       </div>
       <div class="row">
-        <button id="startBtn" class="btn primary">Rozpocznij quiz</button>
+        <button id="startBtn" class="btn primary" disabled>Ładowanie pytań...</button>
         <button id="accessibilityBtn" class="btn">Tryb dostępności</button>
         <button id="demoBtn" class="btn" title="Wygeneruj 50 przykładowych wyników">Symulacja (50 wyników)</button>
         <button id="statsBtn" class="btn" title="Pokaż statystyki i historię wyników">Statystyki</button>
@@ -157,7 +173,6 @@
         </div>
       </div>
 
-      <!-- obrazek pytania -->
       <figure class="q-img" id="qImageBox">
         <img id="qImage" alt="Obraz ilustrujący pytanie"/>
         <figcaption id="qImageCap">Miejsce na grafikę (opcjonalnie)</figcaption>
@@ -224,7 +239,7 @@
   <div id="aboutModal" class="modal" aria-modal="true" role="dialog" aria-labelledby="aboutTitle">
     <div class="modal-content">
       <h2 id="aboutTitle">O projekcie</h2>
-      <p><strong>SecCoach</strong> – interaktywny quiz zwiększający świadomość cyberbezpieczeństwa pracowników.</p>
+      <p><strong>SecCoach</strong> - interaktywny quiz zwiększający świadomość cyberbezpieczeństwa pracowników.</p>
       <p>Wykonany w ramach <em>Technologie aplikacji mobilnych</em>. Projekt wykonany na <strong>Uniwersytecie WSB Merito w Bydgoszczy</strong>. Stack: HTML, CSS, JS, GitHub Pages.</p>
       <p>Autorzy: Damian Król, Angelika Adamczewska.</p>
       <button id="closeAbout" class="btn primary">Zamknij</button>
@@ -232,7 +247,7 @@
   </div>
 
   <footer class="site-footer">
-    <small>© 2025 SecCoach • Wersja 2.33 • Projekt wykonany na Uniwersytecie WSB Merito w Bydgoszczy</small>
+    <small>© 2025 SecCoach • Wersja 2.34 • Projekt wykonany na Uniwersytecie WSB Merito w Bydgoszczy</small>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -310,7 +325,7 @@
     setTimeout(()=>els.toast.classList.remove('show'),2000);
   }
 
-  /* ===== UTYLITARNE ===== */
+  /* ===== POMOCNICZE ===== */
   function clampCount(max){
     const raw = String(els.count.value || '').replace(/[^0-9]/g,'');
     let n = parseInt(raw,10); if(isNaN(n)||n<1) n=1; if(max) n=Math.min(n,max);
@@ -324,6 +339,13 @@
     }
     return arr;
   }
+
+  /* ===== TRYB DOSTĘPNOŚCI ===== */
+  els.accessibilityBtn.onclick = ()=>{
+    document.body.classList.toggle('accessible');
+    const on = document.body.classList.contains('accessible');
+    toast(on ? 'Tryb dostępności włączony (większa czcionka i kontrast)' : 'Tryb dostępności wyłączony');
+  };
 
   /* ===== TIMER ===== */
   function startTimer(){
@@ -354,7 +376,6 @@
       els.bar.style.width = '0%'; els.percent.textContent = '0%';
       return;
     }
-
     const q = state.pool[state.current];
     els.qText.textContent = q.text;
     els.answers.innerHTML = ''; els.explanation.textContent = '';
@@ -362,7 +383,6 @@
     const pct = Math.round((state.current/state.pool.length)*100);
     els.bar.style.width = pct+'%'; els.percent.textContent = pct+'%';
 
-    // kropki
     els.dots.innerHTML = '';
     state.pool.forEach((_,i)=>{
       const d=document.createElement('div');
@@ -371,7 +391,6 @@
       els.dots.appendChild(d);
     });
 
-    // obrazek (opcjonalny)
     if(q.image){
       els.qImage.style.display='block';
       els.qImage.src=q.image;
@@ -388,7 +407,6 @@
       els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)';
     }
 
-    // odpowiedzi + ARIA + TAB
     q.options.forEach((opt,idx)=>{
       const btn=document.createElement('button');
       btn.className='option';
@@ -402,7 +420,6 @@
     focusIndex = 0;
     els.answers.children[0]?.focus();
 
-    // jeśli była wcześniejsza odpowiedź – odtwórz
     const prev = state.answers[state.current];
     if(prev){
       [...els.answers.children].forEach((b,i)=>{
@@ -427,7 +444,7 @@
     }
   });
 
-  /* ===== ODP. I WYJAŚNIENIE ===== */
+  /* ===== ODP. / WYJAŚNIENIE ===== */
   function selectAnswer(idx){
     const q = state.pool[state.current];
     const correct = idx===q.correct;
@@ -463,10 +480,9 @@
   /* ===== START QUIZU ===== */
   function startQuiz(){
     if(!questionsLoaded){
-      toast('Pytania jeszcze się ładują… spróbuj za chwilę.');
+      toast('Pytania jeszcze się ładują... spróbuj za chwilę.');
       return;
     }
-
     const cat = els.category.value;
     const limitPerLevel = 10;
     const DEFAULT_TIME = 180; // <--- zmień globalny czas quizu (sekundy)
@@ -494,11 +510,9 @@
     }
 
     state = { pool, current: 0, answers: new Array(pool.length), timer: DEFAULT_TIME, initialTimer: DEFAULT_TIME };
-
     els.settings.style.display='none';
     els.quiz.style.display='block';
     els.result.style.display='none';
-
     renderQuestion();
     startTimer();
     saveProgress();
@@ -522,28 +536,9 @@
     }catch{}
   }
 
-  /* ===== DEMO 50 WYNIKÓW ===== */
-  function generateDemoData(){
-    const domains=['twojafirma.pl','firma.pl','example.com']; const now=new Date();
-    const hist=JSON.parse(localStorage.getItem('quizHistory')||'[]');
-    for(let i=1;i<=50;i++){
-      const total=Math.random()<0.65?10:30;
-      const score=Math.max(0,Math.min(total,Math.round(total*(0.45+Math.random()*0.4))));
-      const seconds=35+Math.floor(Math.random()*145);
-      const pastDays=Math.floor(Math.random()*30);
-      const date=new Date(now.getTime()-pastDays*24*60*60*1000);
-      const uid=String(i).padStart(2,'0'); const e=`demo${uid}@${domains[Math.floor(Math.random()*domains.length)]}`;
-      hist.push({email:e,score,total,seconds,date:date.toLocaleString()});
-    }
-    localStorage.setItem('quizHistory', JSON.stringify(hist));
-    toast('Dodano 50 wyników demo.');
-    renderStats();
-  }
-
-  /* ===== STATYSTYKI / TABELA / WYKRESY ===== */
+  /* ===== EXPORT / STATYSTYKI ===== */
   function getHistory(){ try{return JSON.parse(localStorage.getItem('quizHistory')||'[]');}catch{return[];} }
   function avg(arr){ return !arr.length ? 0 : arr.reduce((a,b)=>a+b,0)/arr.length; }
-
   function renderStats(){
     const hist=getHistory();
     const count=hist.length;
@@ -557,11 +552,9 @@
       <div class="kpi"><div class="kpi-label">Średnio %</div><div class="kpi-value">${isNaN(avgPct)?0:avgPct}%</div></div>
       <div class="kpi"><div class="kpi-label">Średni czas</div><div class="kpi-value">${isNaN(avgTime)?0:avgTime}s</div></div>
     `;
-
     const top=[...hist].sort((a,b)=>{
       const pa=percent(a.score,a.total), pb=percent(b.score,b.total);
-      if(pb!==pa) return pb-pa;
-      return a.seconds-b.seconds;
+      if(pb!==pa) return pb-pa; return a.seconds-b.seconds;
     }).slice(0,5);
     els.leaderboard.innerHTML = top.length
       ? top.map(r=>`<li><strong>${r.email||'—'}</strong> - ${r.score}/${r.total} (${percent(r.score,r.total)}%), ${r.seconds}s</li>`).join('')
@@ -573,10 +566,8 @@
     const buckets=new Array(10).fill(0);
     hist.forEach(h=>{ const p=percent(h.score,h.total); const b=Math.min(9,Math.floor(p/10)); buckets[b]++; });
     drawChart('chartScores','bar',{labels:['0-9%','10-19%','20-29%','30-39%','40-49%','50-59%','60-69%','70-79%','80-89%','90-100%'], datasets:[{label:'Liczba osób', data:buckets}]});
-
-    const lvl = { 'Poziom (10 pytań)': hist.filter(h=>h.total===10).length, 'Miks (30 pytań)': hist.filter(h=>h.total===30).length };
+    const lvl = { 'Poziom (10 pytan)': hist.filter(h=>h.total===10).length, 'Miks (30 pytan)': hist.filter(h=>h.total===30).length };
     drawChart('chartLevels','pie',{labels:Object.keys(lvl), datasets:[{data:Object.values(lvl)}]});
-
     const byDay = {};
     hist.forEach(h=>{
       const d = new Date(h.date);
@@ -584,16 +575,13 @@
       byDay[key]=(byDay[key]||0)+1;
     });
     const days = Object.keys(byDay).sort();
-    drawChart('chartTimeline','line',{labels:days, datasets:[{label:'Próby', data:days.map(d=>byDay[d])}]});
+    drawChart('chartTimeline','line',{labels:days, datasets:[{label:'Proby', data:days.map(d=>byDay[d])}]});
   }
-
   function drawChart(id,type,dataCfg){
     const ctx = document.getElementById(id).getContext('2d');
     if(charts[id]){ charts[id].destroy(); }
     charts[id] = new Chart(ctx, {
-      type,
-      data: dataCfg,
-      options: {
+      type, data: dataCfg, options: {
         responsive:true,
         plugins:{ legend:{labels:{color:getComputedStyle(document.body).getPropertyValue('--text')}}, tooltip:{} },
         scales: type==='pie' ? {} : {
@@ -603,8 +591,58 @@
       }
     });
   }
-
   function showStats(){ els.stats.style.display='block'; renderStats(); }
+
+  /* ===== ZDARZENIA ===== */
+  els.startBtn.onclick=startQuiz;
+  els.nextBtn.onclick=next;
+  els.prevBtn.onclick=prev;
+  els.retryBtn.onclick=()=>{ localStorage.removeItem('quizProgress'); location.reload(); };
+  els.statsBtn.onclick=showStats;
+  els.refreshStats.onclick=renderStats;
+  els.clearHistory.onclick=()=>{ localStorage.removeItem('quizHistory'); renderStats(); toast('Wyczyszczono lokalną historię.'); };
+  els.downloadCsv.onclick=downloadCsvCommon;
+  els.downloadCsv2.onclick=downloadCsvCommon;
+  els.exportJson.onclick=exportJson;
+  els.demoBtn.onclick=generateDemoData;
+
+  /* ===== ŁADOWANIE PYTAŃ (robust) ===== */
+  const FALLBACK_QUESTIONS = {
+    latwe: [
+      { text:"Awaryjne pytanie testowe - czy widzisz to pytanie?", options:["Tak","Nie","Nie wiem","Pomiń"], correct:0, why:"To fallback. Jeśli to widzisz, fetch do assets/questions.json nie zadziałał.", image:"", imageAlt:"" }
+    ],
+    srednie:[], trudne:[]
+  };
+  function enableStart(total){
+    els.startBtn.disabled = false;
+    els.startBtn.textContent = 'Rozpocznij quiz';
+    toast(`Pytania załadowane (${total})`);
+  }
+  fetch('assets/questions.json?ts=' + Date.now())
+    .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(d=>{
+      if(!d || !Array.isArray(d.latwe) || !Array.isArray(d.srednie) || !Array.isArray(d.trudne)){
+        throw new Error('Zła struktura questions.json (oczekuję latwe/srednie/trudne jako tablice)');
+      }
+      questions = d; questionsLoaded = true;
+      const total = d.latwe.length + d.srednie.length + d.trudne.length;
+
+      const cat=els.category.value, limit=10;
+      const maxForCat = cat==='mix'
+        ? Math.min(limit*3, total)
+        : Math.min(limit, (questions[cat]||[]).length);
+      els.count.max = String(Math.max(1, maxForCat));
+      clampCount(Math.max(1, maxForCat));
+
+      enableStart(total);
+      // loadProgress(); // odkomentuj, jeśli chcesz auto-wznawianie
+    })
+    .catch(err=>{
+      console.error('[QUESTIONS] Fetch/parse error:', err);
+      questions = FALLBACK_QUESTIONS; questionsLoaded = true;
+      enableStart(questions.latwe.length + questions.srednie.length + questions.trudne.length);
+      toast('Nie udało się załadować assets/questions.json - używam pytań awaryjnych.');
+    });
 
   /* ===== EXPORT ===== */
   function getHistory(){ try{return JSON.parse(localStorage.getItem('quizHistory')||'[]');}catch{return[];} }
@@ -618,23 +656,10 @@
     const a=document.createElement('a'); a.href=url; a.download='historia_quiz.csv'; a.click();
     URL.revokeObjectURL(url);
   }
-  function exportJson(){
-    const hist=getHistory();
-    const blob=new Blob([JSON.stringify(hist,null,2)],{type:'application/json'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='historia_quiz.json'; a.click();
-    URL.revokeObjectURL(url);
-  }
 
   /* ===== MODAL ===== */
-  els.aboutBtn.onclick=()=>{
-    document.body.classList.add('no-scroll');
-    els.aboutModal.classList.add('show');
-  };
-  els.closeAbout.onclick=()=>{
-    els.aboutModal.classList.remove('show');
-    document.body.classList.remove('no-scroll');
-  };
+  els.aboutBtn.onclick=()=>{ document.body.classList.add('no-scroll'); els.aboutModal.classList.add('show'); };
+  els.closeAbout.onclick=()=>{ els.aboutModal.classList.remove('show'); document.body.classList.remove('no-scroll'); };
 
   /* ===== LOGOUT ===== */
   els.logoutBtn.onclick=()=>{ localStorage.removeItem('quizUserEmail'); location.href='login.html'; };
@@ -652,39 +677,6 @@
       }
     });
   })();
-
-  /* ===== ZDARZENIA ===== */
-  els.startBtn.onclick=startQuiz;
-  els.nextBtn.onclick=next;
-  els.prevBtn.onclick=prev;
-  els.retryBtn.onclick=()=>{ localStorage.removeItem('quizProgress'); location.reload(); };
-  els.statsBtn.onclick=showStats;
-  els.refreshStats.onclick=renderStats;
-  els.clearHistory.onclick=()=>{ localStorage.removeItem('quizHistory'); renderStats(); toast('Wyczyszczono lokalną historię.'); };
-  els.downloadCsv.onclick=downloadCsvCommon;
-  els.downloadCsv2.onclick=downloadCsvCommon;
-  els.exportJson.onclick=exportJson;
-  els.demoBtn.onclick=generateDemoData;
-
-  /* ===== ŁADOWANIE PYTAŃ ===== */
-  fetch('assets/questions.json?ts=' + Date.now())
-    .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-    .then(d=>{
-      if(!d || !Array.isArray(d.latwe) || !Array.isArray(d.srednie) || !Array.isArray(d.trudne)){
-        throw new Error('Zła struktura questions.json (oczekuję latwe/srednie/trudne jako tablice)');
-      }
-      questions = d;
-      questionsLoaded = true;
-
-      const cat=els.category.value, limit=10;
-      const maxForCat = cat==='mix'
-        ? Math.min(limit*3, questions.latwe.length + questions.srednie.length + questions.trudne.length)
-        : Math.min(limit, (questions[cat]||[]).length);
-      els.count.max = String(Math.max(1, maxForCat));
-      clampCount(Math.max(1, maxForCat));
-      // loadProgress(); // włącz jeśli chcesz auto-wznawianie przerwanego quizu
-    })
-    .catch(err=>{ console.error(err); toast('Nie udało się załadować pytań (assets/questions.json). Uruchom przez http i sprawdź ścieżkę.'); });
 </script>
 </body>
 </html>
