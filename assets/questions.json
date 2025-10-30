@@ -337,7 +337,7 @@
       "options": ["Każdy ma dostęp do wszystkiego", "Nadaje się minimalne uprawnienia potrzebne do pracy", "Uprawnienia są zawsze maksymalne", "Dotyczy tylko administratorów"],
       "correct": 1,
       "why": "Użytkownik dostaje tylko takie prawa, jakie są niezbędne do zadań.",
-      "image": "assets/img/pytanie_trudne_2.png",
+      "image": "assets/img/pytania_trudne_2.png",
       "imageAlt": "Pracownik z ograniczonym dostępem do folderów"
     },
     {
@@ -353,7 +353,7 @@
       "options": ["Zapłacić okup", "Przywrócić dane z kopii zapasowej", "Usunąć zaszyfrowane pliki", "Zrestartować komputer"],
       "correct": 1,
       "why": "Odzysk z kopii to najpewniejsza i bezpieczna metoda powrotu do pracy.",
-      "image": "assets/img/pytanie_trudne_4.png",
+      "image": "assets/img/pytania_trudne_4.png",
       "imageAlt": "Ekran ransomware i przywracanie z backupu"
     },
     {
@@ -385,7 +385,7 @@
       "options": ["3 kopie, 2 różne nośniki, 1 poza siedzibą", "3 kopie na tym samym dysku", "2 kopie w chmurze i 1 lokalna", "3 kopie raz w tygodniu"],
       "correct": 0,
       "why": "To standard minimalizujący ryzyko utraty danych.",
-      "image": "assets/img/pytanie_trudne_8.png",
+      "image": "assets/img/pytania_trudne_8.png",
       "imageAlt": "Komputer, dysk zewnętrzny i chmura połączone strzałkami"
     },
     {
@@ -393,7 +393,7 @@
       "options": ["Podział sieci na strefy bezpieczeństwa", "Połączenie wszystkich urządzeń w jedną sieć", "Wyłączenie firewalli", "Zmiana hasła do Wi-Fi"],
       "correct": 0,
       "why": "Ogranicza rozprzestrzenianie zagrożeń między segmentami.",
-      "image": "assets/img/pytanie_trudne_9.png",
+      "image": "assets/img/pytania_trudne_9.png",
       "imageAlt": "Segmenty sieci rozdzielone zaporami"
     },
     {
@@ -417,7 +417,7 @@
       "options": ["Nieautoryzowane aplikacje używane w firmie", "System do kopii zapasowych", "Oficjalne oprogramowanie IT", "Chmura dla gości"],
       "correct": 0,
       "why": "Oprogramowanie poza kontrolą IT zwiększa ryzyko wycieku.",
-      "image": "assets/img/pytanie_trudne_12.png",
+      "image": "assets/img/pytania_trudne_12.png",
       "imageAlt": "Pracownik instalujący niezatwierdzony program"
     },
     {
@@ -433,7 +433,7 @@
       "options": ["Poczekać na potwierdzenie", "Zmienić hasło, włączyć MFA, poinformować zespół bezpieczeństwa", "Zignorować", "Odpisać napastnikowi"],
       "correct": 1,
       "why": "Szybka rotacja poświadczeń i zgłoszenie ogranicza skutki.",
-      "image": "assets/img/pytanie_trudne_14.png",
+      "image": "assets/img/pytania_trudne_14.png",
       "imageAlt": "Alert włamania i zmiana hasła"
     },
     {
@@ -441,7 +441,7 @@
       "options": ["W spoczynku - na nośniku, w tranzycie - podczas przesyłu", "To to samo", "W tranzycie - na dysku, w spoczynku - w sieci", "Dotyczy tylko kopii zapasowych"],
       "correct": 0,
       "why": "At-rest to dane zapisane, in-transit to dane przesyłane siecią.",
-      "image": "assets/img/pytanie_trudne_15.png",
+      "image": "assets/img/pytania_trudne_15.png",
       "imageAlt": "Porównanie szyfrowania: dysk vs transmisja"
     },
     {
@@ -449,7 +449,7 @@
       "options": ["Data Loss Prevention", "Data Link Protocol", "Drive Lock Password", "Digital License Policy"],
       "correct": 0,
       "why": "DLP zapobiega nieautoryzowanemu wyciekowi danych.",
-      "image": "assets/img/pytanie_trudne_16.png",
+      "image": "assets/img/pytania_trudne_16.png",
       "imageAlt": "Blokada wysyłki wrażliwych plików"
     },
     {
@@ -486,3 +486,4 @@
     }
   ]
 }
+
