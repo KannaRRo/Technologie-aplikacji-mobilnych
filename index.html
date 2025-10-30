@@ -173,7 +173,7 @@
 
     <!-- QUIZ -->
     <section class="panel" id="quiz" style="display:none;">
-      <div id="timer">Czas: 03:00</div>
+      <div id="timer">Czas: 05:00</div>
       <div class="dots" id="dots" aria-label="Nawigacja po pytaniach"></div>
       <div class="row" style="justify-content:space-between;">
         <div class="pill">Pytanie <span id="qIndex">0</span>/<span id="qTotal">0</span></div>
@@ -268,7 +268,7 @@
   <script>
     /* ===== STAN / ELEMENTY ===== */
     let questions = { latwe:[], srednie:[], trudne:[] };
-    let state = { pool: [], current: 0, answers: [], timer: 180 };
+    let state = { pool: [], current: 0, answers: [], timer: 300 };
     let timerInterval, charts = {};
     let isAdmin = localStorage.getItem('isAdmin') === '1';
 
@@ -597,3 +597,4 @@
   </script>
 </body>
 </html>
+
