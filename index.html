@@ -268,6 +268,7 @@
   <script>
     /* ===== STAN / ELEMENTY ===== */
     let questions = { latwe:[], srednie:[], trudne:[] };
+    questions = questions.sort(() => Math.random() - 0.5);
     let state = { pool: [], current: 0, answers: [], timer: 300 };
     let timerInterval, charts = {};
     let isAdmin = localStorage.getItem('isAdmin') === '1';
@@ -597,4 +598,5 @@
   </script>
 </body>
 </html>
+
 
