@@ -265,338 +265,454 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script>
-    /* ===== STAN / ELEMENTY ===== */
-    let questions = { latwe:[], srednie:[], trudne:[] };
-    questions = questions.sort(() => Math.random() - 0.5);
-    let state = { pool: [], current: 0, answers: [], timer: 300 };
-    let timerInterval, charts = {};
-    let isAdmin = localStorage.getItem('isAdmin') === '1';
+<script>
+  /* ===== STAN / ELEMENTY ===== */
+  let questions = { latwe:[], srednie:[], trudne:[] };
+  let state = { pool: [], current: 0, answers: [], timer: 300, initialTimer: 300 };
+  let timerInterval, charts = {};
+  let isAdmin = localStorage.getItem('isAdmin') === '1';
 
-    const $ = (id)=>document.getElementById(id);
-    const els = {
-      themeToggle: $('themeToggle'),
-      logoutBtn: $('logoutBtn'),
-      userEmail: $('userEmail'),
-      adminBadge: $('adminBadge'),
-      category: $('category'),
-      count: $('count'),
-      startBtn: $('startBtn'),
-      settings: $('settings'),
-      quiz: $('quiz'),
-      result: $('result'),
-      qText: $('qText'),
-      answers: $('answers'),
-      qIndex: $('qIndex'),
-      qTotal: $('qTotal'),
-      bar: $('bar'),
-      percent: $('percent'),
-      nextBtn: $('nextBtn'),
-      prevBtn: $('prevBtn'),
-      explanation: $('explanation'),
-      score: $('score'),
-      retryBtn: $('retryBtn'),
-      timer: $('timer'),
-      dots: $('dots'),
-      toast: $('toast'),
-      accessibilityBtn: $('accessibilityBtn'),
-      aboutBtn: $('aboutBtn'),
-      aboutModal: $('aboutModal'),
-      closeAbout: $('closeAbout'),
-      qImage: $('qImage'),
-      qImageCap: $('qImageCap'),
-      // Stats
-      statsBtn: $('statsBtn'),
-      stats: $('stats'),
-      statsSummary: $('statsSummary'),
-      leaderboard: $('leaderboard'),
-      refreshStats: $('refreshStats'),
-      clearHistory: $('clearHistory'),
-      downloadCsv: $('downloadCsv'),
-      downloadCsv2: $('downloadCsv2'),
-      exportJson: $('exportJson'),
-      historyTableBody: document.querySelector('#historyTable tbody'),
-      demoBtn: $('demoBtn')
-    };
+  const $ = (id)=>document.getElementById(id);
+  const els = {
+    themeToggle: $('themeToggle'),
+    logoutBtn: $('logoutBtn'),
+    userEmail: $('userEmail'),
+    adminBadge: $('adminBadge'),
+    category: $('category'),
+    count: $('count'),
+    startBtn: $('startBtn'),
+    settings: $('settings'),
+    quiz: $('quiz'),
+    result: $('result'),
+    qText: $('qText'),
+    answers: $('answers'),
+    qIndex: $('qIndex'),
+    qTotal: $('qTotal'),
+    bar: $('bar'),
+    percent: $('percent'),
+    nextBtn: $('nextBtn'),
+    prevBtn: $('prevBtn'),
+    explanation: $('explanation'),
+    score: $('score'),
+    retryBtn: $('retryBtn'),
+    timer: $('timer'),
+    dots: $('dots'),
+    toast: $('toast'),
+    accessibilityBtn: $('accessibilityBtn'),
+    aboutBtn: $('aboutBtn'),
+    aboutModal: $('aboutModal'),
+    closeAbout: $('closeAbout'),
+    qImage: $('qImage'),
+    qImageCap: $('qImageCap'),
+    // Stats
+    statsBtn: $('statsBtn'),
+    stats: $('stats'),
+    statsSummary: $('statsSummary'),
+    leaderboard: $('leaderboard'),
+    refreshStats: $('refreshStats'),
+    clearHistory: $('clearHistory'),
+    downloadCsv: $('downloadCsv'),
+    downloadCsv2: $('downloadCsv2'),
+    exportJson: $('exportJson'),
+    historyTableBody: document.querySelector('#historyTable tbody'),
+    demoBtn: $('demoBtn')
+  };
 
-    /* ===== THEME ===== */
-    const savedTheme = localStorage.getItem('seccoach_theme') || 'dark';
-    if(savedTheme==='light') document.body.classList.add('light');
-    els.themeToggle.onclick = ()=>{
-      document.body.classList.toggle('light');
-      localStorage.setItem('seccoach_theme', document.body.classList.contains('light') ? 'light' : 'dark');
-    };
+  /* ===== THEME ===== */
+  const savedTheme = localStorage.getItem('seccoach_theme') || 'dark';
+  if(savedTheme==='light') document.body.classList.add('light');
+  els.themeToggle.onclick = ()=>{
+    document.body.classList.toggle('light');
+    localStorage.setItem('seccoach_theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  };
 
-    /* ===== AUTH ===== */
-    const email = localStorage.getItem('quizUserEmail') || '';
-    if(!email){ location.href = 'login.html'; }
-    els.userEmail.textContent = email;
-    if(isAdmin){ els.adminBadge.style.display = 'inline-flex'; }
+  /* ===== AUTH ===== */
+  const email = localStorage.getItem('quizUserEmail') || '';
+  if(!email){ location.href = 'login.html'; }
+  els.userEmail.textContent = email;
+  if(isAdmin){ els.adminBadge.style.display = 'inline-flex'; }
 
-    /* ===== TOAST ===== */
-    function toast(msg){ els.toast.textContent = msg; els.toast.classList.add('show'); setTimeout(()=>els.toast.classList.remove('show'),2000); }
+  /* ===== TOAST ===== */
+  function toast(msg){
+    els.toast.textContent = msg;
+    els.toast.classList.add('show');
+    setTimeout(()=>els.toast.classList.remove('show'),2000);
+  }
 
-    /* ===== POMOCNICZE ===== */
-    function clampCount(max){
-      const raw = String(els.count.value || '').replace(/[^0-9]/g,'');
-      let n = parseInt(raw,10); if(isNaN(n)||n<1) n=1; if(max) n=Math.min(n,max);
-      els.count.value = String(n); return n;
+  /* ===== POMOCNICZE ===== */
+  function clampCount(max){
+    const raw = String(els.count.value || '').replace(/[^0-9]/g,'');
+    let n = parseInt(raw,10); if(isNaN(n)||n<1) n=1; if(max) n=Math.min(n,max);
+    els.count.value = String(n); return n;
+  }
+  function percent(score,total){ return total>0 ? Math.round((score/total)*100) : 0; }
+
+  /* ===== UTYLITARNE ===== */
+  function shuffle(arr){
+    for(let i=arr.length-1; i>0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    function percent(score,total){ return total>0 ? Math.round((score/total)*100) : 0; }
+    return arr;
+  }
 
-    /* ===== TIMER ===== */
-    function startTimer(){ clearInterval(timerInterval); state.timer = 180; updateTimer();
-      timerInterval = setInterval(()=>{ state.timer--; updateTimer(); if(state.timer<=0){ clearInterval(timerInterval); finishQuiz(); toast('Czas minął!'); } },1000);
-    }
-    function updateTimer(){ const m=Math.floor(state.timer/60), s=state.timer%60; els.timer.textContent = `Czas: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
-
-    /* ===== RENDER PYTANIA ===== */
-    let focusIndex = 0; // dla klawiatury
-    function renderQuestion(){
-      const q = state.pool[state.current];
-      els.qText.textContent = q.text;
-      els.answers.innerHTML = ''; els.explanation.textContent = '';
-      els.qIndex.textContent = state.current+1; els.qTotal.textContent = state.pool.length;
-      const pct = Math.round((state.current/state.pool.length)*100); els.bar.style.width = pct+'%'; els.percent.textContent = pct+'%';
-
-      // kropki
-      els.dots.innerHTML = '';
-      state.pool.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===state.current?' active':''); d.onclick=()=>{state.current=i; renderQuestion();}; els.dots.appendChild(d); });
-
-      // obrazek (opcjonalny)
-      if(q.image){ els.qImage.style.display='block'; els.qImage.src=q.image; els.qImage.alt=q.imageAlt||'Grafika do pytania'; els.qImageCap.textContent=q.imageAlt||''; els.qImage.onerror=()=>{ els.qImage.removeAttribute('src'); els.qImage.style.display='none'; els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)'; }; }
-      else { els.qImage.removeAttribute('src'); els.qImage.style.display='none'; els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)'; }
-
-      // odpowiedzi + ARIA + TAB
-      q.options.forEach((opt,idx)=>{
-        const btn=document.createElement('button');
-        btn.className='option';
-        btn.setAttribute('role','radio');
-        btn.setAttribute('aria-checked','false');
-        btn.setAttribute('tabindex','0');
-        btn.textContent=opt;
-        btn.onclick=()=>selectAnswer(idx);
-        els.answers.appendChild(btn);
-      });
-      focusIndex = 0;
-      els.answers.children[0]?.focus();
-
-      // jeśli była wcześniejsza odpowiedź – odtwórz
-      const prev = state.answers[state.current];
-      if(prev){
-        [...els.answers.children].forEach((b,i)=>{ if(i===q.correct) b.classList.add('correct'); if(prev.choice===i && !prev.correct) b.classList.add('wrong'); b.disabled = true; });
-        els.explanation.textContent = q.why || '';
+  /* ===== TIMER ===== */
+  function startTimer(){
+    clearInterval(timerInterval);
+    updateTimer();
+    timerInterval = setInterval(()=>{
+      state.timer--;
+      updateTimer();
+      if(state.timer <= 0){
+        clearInterval(timerInterval);
+        finishQuiz();
+        toast('Czas minął!');
       }
-    }
+    },1000);
+  }
+  function updateTimer(){
+    const m=Math.floor(state.timer/60), s=state.timer%60;
+    els.timer.textContent = `Czas: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
 
-    /* ===== DOSTĘPNOŚĆ: klawiatura (strzałki / Enter) ===== */
-    document.addEventListener('keydown', (e)=>{
-      if(els.quiz.style.display==='none') return;
-      const total = els.answers.children.length;
-      if(e.key==='ArrowDown' || e.key==='ArrowRight'){ e.preventDefault(); focusIndex = (focusIndex+1)%total; els.answers.children[focusIndex]?.focus(); }
-      if(e.key==='ArrowUp' || e.key==='ArrowLeft'){ e.preventDefault(); focusIndex = (focusIndex-1+total)%total; els.answers.children[focusIndex]?.focus(); }
-      if(e.key==='Enter' || e.key===' '){ const focused = document.activeElement; const idx = [...els.answers.children].indexOf(focused); if(idx>=0) selectAnswer(idx); }
+  /* ===== RENDER PYTANIA ===== */
+  let focusIndex = 0; // dla klawiatury
+  function renderQuestion(){
+    const q = state.pool[state.current];
+    els.qText.textContent = q.text;
+    els.answers.innerHTML = ''; els.explanation.textContent = '';
+    els.qIndex.textContent = state.current+1; els.qTotal.textContent = state.pool.length;
+    const pct = Math.round((state.current/state.pool.length)*100);
+    els.bar.style.width = pct+'%'; els.percent.textContent = pct+'%';
+
+    // kropki
+    els.dots.innerHTML = '';
+    state.pool.forEach((_,i)=>{
+      const d=document.createElement('div');
+      d.className='dot'+(i===state.current?' active':'');
+      d.onclick=()=>{state.current=i; renderQuestion();};
+      els.dots.appendChild(d);
     });
 
-    /* ===== ODP. I WYJAŚNIENIE ===== */
-    function selectAnswer(idx){
-      const q = state.pool[state.current]; const correct = idx===q.correct;
-      state.answers[state.current] = { choice: idx, correct };
-      [...els.answers.children].forEach((b,i)=>{ b.disabled=true; if(i===q.correct) b.classList.add('correct'); if(i===idx && !correct) b.classList.add('wrong'); b.setAttribute('aria-checked', i===idx ? 'true':'false'); });
+    // obrazek (opcjonalny)
+    if(q.image){
+      els.qImage.style.display='block';
+      els.qImage.src=q.image;
+      els.qImage.alt=q.imageAlt||'Grafika do pytania';
+      els.qImageCap.textContent=q.imageAlt||'';
+      els.qImage.onerror=()=>{
+        els.qImage.removeAttribute('src');
+        els.qImage.style.display='none';
+        els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)';
+      };
+    } else {
+      els.qImage.removeAttribute('src');
+      els.qImage.style.display='none';
+      els.qImageCap.textContent='Miejsce na grafikę (opcjonalnie)';
+    }
+
+    // odpowiedzi + ARIA + TAB
+    q.options.forEach((opt,idx)=>{
+      const btn=document.createElement('button');
+      btn.className='option';
+      btn.setAttribute('role','radio');
+      btn.setAttribute('aria-checked','false');
+      btn.setAttribute('tabindex','0');
+      btn.textContent=opt;
+      btn.onclick=()=>selectAnswer(idx);
+      els.answers.appendChild(btn);
+    });
+    focusIndex = 0;
+    els.answers.children[0]?.focus();
+
+    // jeśli była wcześniejsza odpowiedź – odtwórz
+    const prev = state.answers[state.current];
+    if(prev){
+      [...els.answers.children].forEach((b,i)=>{
+        if(i===q.correct) b.classList.add('correct');
+        if(prev.choice===i && !prev.correct) b.classList.add('wrong');
+        b.disabled = true;
+      });
       els.explanation.textContent = q.why || '';
-      saveProgress();
+    }
+  }
+
+  /* ===== DOSTĘPNOŚĆ: klawiatura ===== */
+  document.addEventListener('keydown', (e)=>{
+    if(els.quiz.style.display==='none') return;
+    const total = els.answers.children.length;
+    if(e.key==='ArrowDown' || e.key==='ArrowRight'){ e.preventDefault(); focusIndex = (focusIndex+1)%total; els.answers.children[focusIndex]?.focus(); }
+    if(e.key==='ArrowUp' || e.key==='ArrowLeft'){ e.preventDefault(); focusIndex = (focusIndex-1+total)%total; els.answers.children[focusIndex]?.focus(); }
+    if(e.key==='Enter' || e.key===' '){
+      const focused = document.activeElement;
+      const idx = [...els.answers.children].indexOf(focused);
+      if(idx>=0) selectAnswer(idx);
+    }
+  });
+
+  /* ===== ODP. I WYJAŚNIENIE ===== */
+  function selectAnswer(idx){
+    const q = state.pool[state.current];
+    const correct = idx===q.correct;
+    state.answers[state.current] = { choice: idx, correct };
+    [...els.answers.children].forEach((b,i)=>{
+      b.disabled=true;
+      if(i===q.correct) b.classList.add('correct');
+      if(i===idx && !correct) b.classList.add('wrong');
+      b.setAttribute('aria-checked', i===idx ? 'true':'false');
+    });
+    els.explanation.textContent = q.why || '';
+    saveProgress();
+  }
+
+  function next(){ if(state.current<state.pool.length-1){ state.current++; renderQuestion(); } else { finishQuiz(); } }
+  function prev(){ if(state.current>0){ state.current--; renderQuestion(); } }
+
+  function finishQuiz(){
+    clearInterval(timerInterval);
+    const good = state.answers.filter(a=>a&&a.correct).length;
+    els.quiz.style.display='none'; els.result.style.display='block';
+    els.score.textContent = `Wynik: ${good}/${state.pool.length} (${percent(good,state.pool.length)}%)`;
+
+    const initial = state.initialTimer || 180;
+    const elapsed = initial - Math.max(0, state.timer);
+    const resultObj = { email, score: good, total: state.pool.length, seconds: elapsed, date: new Date().toLocaleString() };
+    const hist = JSON.parse(localStorage.getItem('quizHistory') || '[]'); hist.push(resultObj);
+    localStorage.setItem('quizHistory', JSON.stringify(hist));
+    localStorage.removeItem('quizProgress');
+    showStats();
+  }
+
+  /* ===== START QUIZU ===== */
+  function startQuiz(){
+    const cat = els.category.value;
+    const limitPerLevel = 10;
+    const DEFAULT_TIME = 180; // <--- zmień tutaj globalny czas quizu (sekundy)
+
+    const maxForCat = cat==='mix'
+      ? Math.min(limitPerLevel*3, (questions.latwe?.length||0)+(questions.srednie?.length||0)+(questions.trudne?.length||0))
+      : Math.min(limitPerLevel, (questions[cat]||[]).length);
+
+    els.count.max = String(maxForCat || 10);
+    const cnt = clampCount(maxForCat || 10);
+
+    let pool=[];
+    if(cat==='mix'){
+      const l = shuffle([...(questions.latwe||[])]).slice(0, limitPerLevel);
+      const s = shuffle([...(questions.srednie||[])]).slice(0, limitPerLevel);
+      const t = shuffle([...(questions.trudne||[])]).slice(0, limitPerLevel);
+      pool = shuffle([...l, ...s, ...t]).slice(0, cnt);
+    } else {
+      pool = shuffle([...(questions[cat]||[])]).slice(0, cnt);
     }
 
-    function next(){ if(state.current<state.pool.length-1){ state.current++; renderQuestion(); } else { finishQuiz(); } }
-    function prev(){ if(state.current>0){ state.current--; renderQuestion(); } }
+    state = { pool, current: 0, answers: new Array(pool.length), timer: DEFAULT_TIME, initialTimer: DEFAULT_TIME };
 
-    function finishQuiz(){
-      clearInterval(timerInterval);
-      const good = state.answers.filter(a=>a&&a.correct).length;
-      els.quiz.style.display='none'; els.result.style.display='block';
-      els.score.textContent = `Wynik: ${good}/${state.pool.length} (${percent(good,state.pool.length)}%)`;
+    els.settings.style.display='none';
+    els.quiz.style.display='block';
+    els.result.style.display='none';
 
-      // zapis historii
-      const elapsed = 180 - state.timer;
-      const resultObj = { email, score: good, total: state.pool.length, seconds: elapsed, date: new Date().toLocaleString() };
-      const hist = JSON.parse(localStorage.getItem('quizHistory') || '[]'); hist.push(resultObj);
-      localStorage.setItem('quizHistory', JSON.stringify(hist));
-      localStorage.removeItem('quizProgress');
-      // (opcjonalnie) pokaż statystyki od razu
-      showStats();
-    }
+    renderQuestion();
+    startTimer();
+    saveProgress();
+  }
 
-    /* ===== START QUIZU ===== */
-    function startQuiz(){
-      const cat = els.category.value; const limitPerLevel = 10;
-      const maxForCat = cat==='mix'
-        ? Math.min(limitPerLevel*3, questions.latwe.length + questions.srednie.length + questions.trudne.length)
-        : Math.min(limitPerLevel, questions[cat].length);
-      els.count.max = String(maxForCat || 10);
-      const cnt = clampCount(maxForCat || 10);
-
-      let pool=[];
-      if(cat==='mix'){ pool=[...questions.latwe.slice(0,limitPerLevel), ...questions.srednie.slice(0,limitPerLevel), ...questions.trudne.slice(0,limitPerLevel)]; pool = pool.slice(0,cnt); }
-      else { pool=[...questions[cat]].slice(0,cnt); }
-
-      state={pool,current:0,answers:new Array(pool.length),timer:180};
-      els.settings.style.display='none'; els.quiz.style.display='block'; els.result.style.display='none';
-      renderQuestion(); startTimer(); saveProgress();
-    }
-
-    /* ===== ZAPIS/WZNOWIENIE SESJI ===== */
-    function saveProgress(){ localStorage.setItem('quizProgress', JSON.stringify({state})); }
-    function loadProgress(){
-      const data=localStorage.getItem('quizProgress');
-      if(data){ try{ const saved=JSON.parse(data).state; if(saved&&saved.pool&&saved.pool.length){ state=saved; els.settings.style.display='none'; els.quiz.style.display='block'; renderQuestion(); startTimer(); } }catch{} }
-    }
-
-    /* ===== DEMO 50 WYNIKÓW ===== */
-    function generateDemoData(){
-      const domains=['twojafirma.pl','firma.pl','example.com']; const now=new Date();
-      const hist=JSON.parse(localStorage.getItem('quizHistory')||'[]');
-      for(let i=1;i<=50;i++){
-        const total=Math.random()<0.65?10:30;
-        const score=Math.max(0,Math.min(total,Math.round(total*(0.45+Math.random()*0.4))));
-        const seconds=35+Math.floor(Math.random()*145);
-        const pastDays=Math.floor(Math.random()*30);
-        const date=new Date(now.getTime()-pastDays*24*60*60*1000);
-        const uid=String(i).padStart(2,'0'); const e=`demo${uid}@${domains[Math.floor(Math.random()*domains.length)]}`;
-        hist.push({email:e,score,total,seconds,date:date.toLocaleString()});
+  /* ===== ZAPIS/WZNOWIENIE SESJI ===== */
+  function saveProgress(){ localStorage.setItem('quizProgress', JSON.stringify({state})); }
+  function loadProgress(){
+    const data=localStorage.getItem('quizProgress');
+    if(!data) return;
+    try{
+      const saved=JSON.parse(data).state;
+      if(saved && saved.pool && saved.pool.length){
+        state=saved;
+        els.settings.style.display='none'; 
+        els.quiz.style.display='block'; 
+        els.result.style.display='none';
+        renderQuestion();
+        startTimer(); // wznawiamy z state.timer
       }
-      localStorage.setItem('quizHistory', JSON.stringify(hist));
-      toast('Dodano 50 wyników demo.');
-      renderStats();
+    }catch{}
+  }
+
+  /* ===== DEMO 50 WYNIKÓW ===== */
+  function generateDemoData(){
+    const domains=['twojafirma.pl','firma.pl','example.com']; const now=new Date();
+    const hist=JSON.parse(localStorage.getItem('quizHistory')||'[]');
+    for(let i=1;i<=50;i++){
+      const total=Math.random()<0.65?10:30;
+      const score=Math.max(0,Math.min(total,Math.round(total*(0.45+Math.random()*0.4))));
+      const seconds=35+Math.floor(Math.random()*145);
+      const pastDays=Math.floor(Math.random()*30);
+      const date=new Date(now.getTime()-pastDays*24*60*60*1000);
+      const uid=String(i).padStart(2,'0'); const e=`demo${uid}@${domains[Math.floor(Math.random()*domains.length)]}`;
+      hist.push({email:e,score,total,seconds,date:date.toLocaleString()});
     }
+    localStorage.setItem('quizHistory', JSON.stringify(hist));
+    toast('Dodano 50 wyników demo.');
+    renderStats();
+  }
 
-    /* ===== STATYSTYKI / TABELA / WYKRESY ===== */
-    function getHistory(){ try{return JSON.parse(localStorage.getItem('quizHistory')||'[]');}catch{return[];} }
-    function avg(arr){ return !arr.length ? 0 : arr.reduce((a,b)=>a+b,0)/arr.length; }
+  /* ===== STATYSTYKI / TABELA / WYKRESY ===== */
+  function getHistory(){ try{return JSON.parse(localStorage.getItem('quizHistory')||'[]');}catch{return[];} }
+  function avg(arr){ return !arr.length ? 0 : arr.reduce((a,b)=>a+b,0)/arr.length; }
 
-    function renderStats(){
-      const hist=getHistory();
-      // KPI
-      const count=hist.length;
-      const avgScore=Math.round(avg(hist.map(h=>h.score)));
-      const avgTotal=Math.round(avg(hist.map(h=>h.total)));
-      const avgPct=Math.round(avg(hist.map(h=>percent(h.score,h.total))));
-      const avgTime=Math.round(avg(hist.map(h=>h.seconds)));
-      els.statsSummary.innerHTML = `
-        <div class="kpi"><div class="kpi-label">Liczba wyników</div><div class="kpi-value">${count}</div></div>
-        <div class="kpi"><div class="kpi-label">Średni wynik</div><div class="kpi-value">${isNaN(avgScore)?0:avgScore}/${isNaN(avgTotal)?0:avgTotal}</div></div>
-        <div class="kpi"><div class="kpi-label">Średnio %</div><div class="kpi-value">${isNaN(avgPct)?0:avgPct}%</div></div>
-        <div class="kpi"><div class="kpi-label">Średni czas</div><div class="kpi-value">${isNaN(avgTime)?0:avgTime}s</div></div>
-      `;
+  function renderStats(){
+    const hist=getHistory();
+    const count=hist.length;
+    const avgScore=Math.round(avg(hist.map(h=>h.score)));
+    const avgTotal=Math.round(avg(hist.map(h=>h.total)));
+    const avgPct=Math.round(avg(hist.map(h=>percent(h.score,h.total))));
+    const avgTime=Math.round(avg(hist.map(h=>h.seconds)));
+    els.statsSummary.innerHTML = `
+      <div class="kpi"><div class="kpi-label">Liczba wyników</div><div class="kpi-value">${count}</div></div>
+      <div class="kpi"><div class="kpi-label">Średni wynik</div><div class="kpi-value">${isNaN(avgScore)?0:avgScore}/${isNaN(avgTotal)?0:avgTotal}</div></div>
+      <div class="kpi"><div class="kpi-label">Średnio %</div><div class="kpi-value">${isNaN(avgPct)?0:avgPct}%</div></div>
+      <div class="kpi"><div class="kpi-label">Średni czas</div><div class="kpi-value">${isNaN(avgTime)?0:avgTime}s</div></div>
+    `;
 
-      // Ranking TOP 5
-      const top=[...hist].sort((a,b)=>{ const pa=percent(a.score,a.total), pb=percent(b.score,b.total); if(pb!==pa) return pb-pa; return a.seconds-b.seconds; }).slice(0,5);
-      els.leaderboard.innerHTML = top.length ? top.map(r=>`<li><strong>${r.email||'—'}</strong> — ${r.score}/${r.total} (${percent(r.score,r.total)}%), ${r.seconds}s</li>`).join('') : '<li>Brak danych</li>';
+    const top=[...hist].sort((a,b)=>{
+      const pa=percent(a.score,a.total), pb=percent(b.score,b.total);
+      if(pb!==pa) return pb-pa;
+      return a.seconds-b.seconds;
+    }).slice(0,5);
+    els.leaderboard.innerHTML = top.length
+      ? top.map(r=>`<li><strong>${r.email||'—'}</strong> - ${r.score}/${r.total} (${percent(r.score,r.total)}%), ${r.seconds}s</li>`).join('')
+      : '<li>Brak danych</li>';
 
-      // Tabela (najnowsze na górze)
-      const rows=[...hist].reverse().map((r,i)=>`<tr><td>${i+1}</td><td>${r.email||'—'}</td><td>${r.score}</td><td>${r.total}</td><td>${r.seconds}</td><td>${r.date}</td></tr>`).join('');
-      els.historyTableBody.innerHTML = rows || '<tr><td colspan="6" style="color:var(--muted)">Brak wyników</td></tr>';
+    const rows=[...hist].reverse().map((r,i)=>`<tr><td>${i+1}</td><td>${r.email||'—'}</td><td>${r.score}</td><td>${r.total}</td><td>${r.seconds}</td><td>${r.date}</td></tr>`).join('');
+    els.historyTableBody.innerHTML = rows || '<tr><td colspan="6" style="color:var(--muted)">Brak wyników</td></tr>';
 
-      // WYKRES 1: rozkład wyników
-      const buckets=new Array(10).fill(0);
-      hist.forEach(h=>{ const p=percent(h.score,h.total); const b=Math.min(9,Math.floor(p/10)); buckets[b]++; });
-      drawChart('chartScores','bar',{labels:['0-9%','10-19%','20-29%','30-39%','40-49%','50-59%','60-69%','70-79%','80-89%','90-100%'], datasets:[{label:'Liczba osób', data:buckets}]});
+    // WYKRES 1
+    const buckets=new Array(10).fill(0);
+    hist.forEach(h=>{ const p=percent(h.score,h.total); const b=Math.min(9,Math.floor(p/10)); buckets[b]++; });
+    drawChart('chartScores','bar',{labels:['0-9%','10-19%','20-29%','30-39%','40-49%','50-59%','60-69%','70-79%','80-89%','90-100%'], datasets:[{label:'Liczba osób', data:buckets}]});
 
-      // WYKRES 2: udział poziomów (heurystyka 10 vs 30)
-      const lvl = { 'Poziom (10 pytań)': hist.filter(h=>h.total===10).length, 'Miks (30 pytań)': hist.filter(h=>h.total===30).length };
-      drawChart('chartLevels','pie',{labels:Object.keys(lvl), datasets:[{data:Object.values(lvl)}]});
+    // WYKRES 2
+    const lvl = { 'Poziom (10 pytań)': hist.filter(h=>h.total===10).length, 'Miks (30 pytań)': hist.filter(h=>h.total===30).length };
+    drawChart('chartLevels','pie',{labels:Object.keys(lvl), datasets:[{data:Object.values(lvl)}]});
 
-      // WYKRES 3: linia – liczba prób per dzień
-      const byDay = {};
-      hist.forEach(h=>{ const d = new Date(h.date); const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; byDay[key]=(byDay[key]||0)+1; });
-      const days = Object.keys(byDay).sort();
-      drawChart('chartTimeline','line',{labels:days, datasets:[{label:'Próby', data:days.map(d=>byDay[d])}]});
-    }
+    // WYKRES 3
+    const byDay = {};
+    hist.forEach(h=>{
+      const d = new Date(h.date);
+      const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      byDay[key]=(byDay[key]||0)+1;
+    });
+    const days = Object.keys(byDay).sort();
+    drawChart('chartTimeline','line',{labels:days, datasets:[{label:'Próby', data:days.map(d=>byDay[d])}]});
+  }
 
-    function drawChart(id,type,dataCfg){
-      const ctx = document.getElementById(id).getContext('2d');
-      if(charts[id]){ charts[id].destroy(); }
-      charts[id] = new Chart(ctx, {
-        type,
-        data: dataCfg,
-        options: {
-          responsive:true,
-          plugins:{ legend:{labels:{color:getComputedStyle(document.body).getPropertyValue('--text')}}, tooltip:{} },
-          scales: type==='pie' ? {} : {
-            x:{ ticks:{ color:getComputedStyle(document.body).getPropertyValue('--muted') }, grid:{ color:'rgba(148,163,184,.2)'} },
-            y:{ ticks:{ color:getComputedStyle(document.body).getPropertyValue('--muted') }, grid:{ color:'rgba(148,163,184,.2)'} }
-          }
+  function drawChart(id,type,dataCfg){
+    const ctx = document.getElementById(id).getContext('2d');
+    if(charts[id]){ charts[id].destroy(); }
+    charts[id] = new Chart(ctx, {
+      type,
+      data: dataCfg,
+      options: {
+        responsive:true,
+        plugins:{ legend:{labels:{color:getComputedStyle(document.body).getPropertyValue('--text')}}, tooltip:{} },
+        scales: type==='pie' ? {} : {
+          x:{ ticks:{ color:getComputedStyle(document.body).getPropertyValue('--muted') }, grid:{ color:'rgba(148,163,184,.2)'} },
+          y:{ ticks:{ color:getComputedStyle(document.body).getPropertyValue('--muted') }, grid:{ color:'rgba(148,163,184,.2)'} }
         }
-      });
-    }
+      }
+    });
+  }
 
-    function showStats(){ els.stats.style.display='block'; renderStats(); }
+  function showStats(){ els.stats.style.display='block'; renderStats(); }
 
-    /* ===== EXPORT ===== */
-    function downloadCsvCommon(){
-      const hist=getHistory(); if(!hist.length){ toast('Brak zapisanych wyników'); return; }
-      const header=['E-mail','Wynik','Liczba pytań','Czas (s)','Data'];
-      const rows=hist.map(r=>[r.email||'',r.score,r.total,r.seconds,r.date]);
-      const csv=[header,...rows].map(e=>e.join(',')).join('\n');
-      const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');
-      a.href=url; a.download='historia_quiz.csv'; a.click(); URL.revokeObjectURL(url);
-    }
-    function exportJson(){
-      const hist=getHistory(); const blob=new Blob([JSON.stringify(hist,null,2)],{type:'application/json'});
-      const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='historia_quiz.json'; a.click(); URL.revokeObjectURL(url);
-    }
+  /* ===== EXPORT ===== */
+  function downloadCsvCommon(){
+    const hist=getHistory(); if(!hist.length){ toast('Brak zapisanych wyników'); return; }
+    const header=['E-mail','Wynik','Liczba pytań','Czas (s)','Data'];
+    const rows=hist.map(r=>[r.email||'',r.score,r.total,r.seconds,r.date]);
+    const csv=[header,...rows].map(e=>e.join(',')).join('\n');
+    const blob=new Blob([csv],{type:'text/csv'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='historia_quiz.csv'; a.click();
+    URL.revokeObjectURL(url);
+  }
+  function exportJson(){
+    const hist=getHistory();
+    const blob=new Blob([JSON.stringify(hist,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download='historia_quiz.json'; a.click();
+    URL.revokeObjectURL(url);
+  }
 
-    /* ===== MODAL „O PROJEKCIE” – blokada tła ===== */
-    els.aboutBtn.onclick=()=>{
-      document.body.classList.add('no-scroll');
-      els.aboutModal.classList.add('show');
-    };
-    els.closeAbout.onclick=()=>{
-      els.aboutModal.classList.remove('show');
-      document.body.classList.remove('no-scroll');
-    };
+  /* ===== MODAL „O PROJEKCIE” ===== */
+  els.aboutBtn.onclick=()=>{
+    document.body.classList.add('no-scroll');
+    els.aboutModal.classList.add('show');
+  };
+  els.closeAbout.onclick=()=>{
+    els.aboutModal.classList.remove('show');
+    document.body.classList.remove('no-scroll');
+  };
 
-    /* ===== LOGOUT ===== */
-    els.logoutBtn.onclick=()=>{ localStorage.removeItem('quizUserEmail'); location.href='login.html'; };
+  /* ===== LOGOUT ===== */
+  els.logoutBtn.onclick=()=>{ localStorage.removeItem('quizUserEmail'); location.href='login.html'; };
 
-    /* ===== Sekretny przełącznik ADMIN ===== */
-    (function adminSecret(){
-      let clicks=0, t=null;
-      document.querySelector('.site-logo').addEventListener('click', ()=>{
-        clicks++; if(!t) t=setTimeout(()=>{clicks=0; t=null;}, 3000);
-        if(clicks>=5){ isAdmin = !isAdmin; localStorage.setItem('isAdmin', isAdmin?'1':'0'); els.adminBadge.style.display=isAdmin?'inline-flex':'none'; toast(isAdmin?'Tryb ADMIN włączony':'Tryb ADMIN wyłączony'); }
-      });
-    })();
+  /* ===== Sekretny przełącznik ADMIN ===== */
+  (function adminSecret(){
+    let clicks=0, t=null;
+    document.querySelector('.site-logo').addEventListener('click', ()=>{
+      clicks++; if(!t) t=setTimeout(()=>{clicks=0; t=null;}, 3000);
+      if(clicks>=5){
+        isAdmin = !isAdmin;
+        localStorage.setItem('isAdmin', isAdmin?'1':'0');
+        els.adminBadge.style.display=isAdmin?'inline-flex':'none';
+        toast(isAdmin?'Tryb ADMIN włączony':'Tryb ADMIN wyłączony');
+      }
+    });
+  })();
 
-    /* ===== ZDARZENIA ===== */
-    els.startBtn.onclick=startQuiz;
-    els.nextBtn.onclick=next;
-    els.prevBtn.onclick=prev;
-    els.retryBtn.onclick=()=>{ localStorage.removeItem('quizProgress'); location.reload(); };
-    els.statsBtn.onclick=showStats;
-    els.refreshStats.onclick=renderStats;
-    els.clearHistory.onclick=()=>{ localStorage.removeItem('quizHistory'); renderStats(); toast('Wyczyszczono lokalną historię.'); };
-    els.downloadCsv.onclick=downloadCsvCommon;
-    els.downloadCsv2.onclick=downloadCsvCommon;
-    els.exportJson.onclick=exportJson;
-    els.demoBtn.onclick=generateDemoData;
+  /* ===== ZDARZENIA ===== */
+  els.startBtn.onclick=startQuiz;
+  els.nextBtn.onclick=next;
+  els.prevBtn.onclick=prev;
+  els.retryBtn.onclick=()=>{ localStorage.removeItem('quizProgress'); location.reload(); };
+  els.statsBtn.onclick=showStats;
+  els.refreshStats.onclick=renderStats;
+  els.clearHistory.onclick=()=>{ localStorage.removeItem('quizHistory'); renderStats(); toast('Wyczyszczono lokalną historię.'); };
+  els.downloadCsv.onclick=downloadCsvCommon;
+  els.downloadCsv2.onclick=downloadCsvCommon;
+  els.exportJson.onclick=exportJson;
+  els.demoBtn.onclick=generateDemoData;
 
-    /* ===== ŁADOWANIE PYTAŃ ===== */
-    fetch('assets/questions.json')
-      .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
-      .then(d=>{ questions=d; loadProgress(); })
-      .catch(err=>{ console.error(err); toast('Nie udało się załadować pytań (assets/questions.json)'); });
+  /* ===== ŁADOWANIE PYTAŃ ===== */
+  fetch('assets/questions.json')
+    .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(d=>{
+      questions=d;
 
-    /* dopasuj max count przy zmianie kategorii */
-    els.category.addEventListener('change', ()=>{
+      // przelicz limity po wczytaniu
       const cat=els.category.value, limit=10;
       const maxForCat = cat==='mix'
         ? Math.min(limit*3, (questions.latwe?.length||0)+(questions.srednie?.length||0)+(questions.trudne?.length||0))
         : Math.min(limit, (questions[cat]||[]).length);
-      els.count.max = String(maxForCat||10); clampCount(maxForCat||10);
-    });
-    els.count.addEventListener('input', ()=> clampCount(parseInt(els.count.max,10)||10) );
-  </script>
+      els.count.max = String(maxForCat||10);
+      clampCount(maxForCat||10);
+
+      loadProgress();
+    })
+    .catch(err=>{ console.error(err); toast('Nie udało się załadować pytań (assets/questions.json)'); });
+
+  /* dopasuj max count przy zmianie kategorii */
+  els.category.addEventListener('change', ()=>{
+    const cat=els.category.value, limit=10;
+    const maxForCat = cat==='mix'
+      ? Math.min(limit*3, (questions.latwe?.length||0)+(questions.srednie?.length||0)+(questions.trudne?.length||0))
+      : Math.min(limit, (questions[cat]||[]).length);
+    els.count.max = String(maxForCat||10);
+    clampCount(maxForCat||10);
+  });
+  els.count.addEventListener('input', ()=> clampCount(parseInt(els.count.max,10)||10) );
+</script>
+
 </body>
 </html>
+
 
 
