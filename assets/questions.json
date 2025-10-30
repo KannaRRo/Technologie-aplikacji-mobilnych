@@ -160,10 +160,7 @@
       "image": "assets/img/pytanie_latwe_20.png",
       "imageAlt": "Szkic: identyfikator i telefon, ostrzeżenie"
     }
-  ]
-}
-
-  {
+  ],
   "srednie": [
     {
       "text": "Otrzymujesz e-mail od działu HR z prośbą o zalogowanie się w celu aktualizacji danych, ale adres domeny to hr-company.support. Co robisz?",
@@ -325,8 +322,7 @@
       "image": "assets/img/pytanie_srednie_20.png",
       "imageAlt": "Manipulacja rozmową – ofiara przy komputerze"
     }
-  ]
-}
+  ],
   "trudne": [
     {
       "text": "Czym jest atak typu 'Man-in-the-Middle'?",
@@ -354,4 +350,3 @@
     }
   ]
 }
-
